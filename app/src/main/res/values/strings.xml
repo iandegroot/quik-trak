@@ -4,4 +4,11 @@
     <string name="title_activity_add_transaction">AddTransactionActivity</string>
     <string name="date_text_view">Date</string>
     <string name="amount_text_view">Amount</string>
+    <string name="category_text_view">Category</string>
+    <string name="note_text_view">Note</string>
+    <string name="add_transaction_button">Add Transaction</string>
+    <string-array name="categories">
+        <item>Eating out</item>
+        <item>Longboards</item>
+    </string-array>
 </resources>
