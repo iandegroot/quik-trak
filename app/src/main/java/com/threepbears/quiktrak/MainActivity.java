@@ -1,6 +1,7 @@
 package com.threepbears.quiktrak;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -8,12 +9,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,43 +39,47 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(new Intent(MainActivity.this, AddTransactionActivity.class), ADD_TRANS_REQUEST_CODE);
             }
         });
-
-        Intent intent = getIntent();
-        String message = intent.getStringExtra("message");
-        TextView textView = findViewById(R.id.testTextView);
-        textView.setText(message);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        TextView textView = findViewById(R.id.testTextView);
-
-        StringBuilder sb = new StringBuilder();
+        TableLayout transTable = findViewById(R.id.transactionTable);
 
         if (requestCode == ADD_TRANS_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            transactions.add(new Transaction(data.getStringExtra(getString(R.string.date_text_view)),
+            Transaction newTrans = new Transaction(data.getStringExtra(getString(R.string.date_text_view)),
                     data.getFloatExtra(getString(R.string.amount_text_view), 0),
                     data.getStringExtra(getString(R.string.category_text_view)),
-                    data.getStringExtra(getString(R.string.note_text_view))));
+                    data.getStringExtra(getString(R.string.note_text_view)));
 
-            for (Transaction trans : transactions) {
-                sb.append("Date: ");
-                sb.append(trans.getDate());
-                sb.append("\n");
+            transactions.add(newTrans);
 
-                sb.append("Amount: ");
-                sb.append(trans.getAmount());
-                sb.append("\n");
+            TableRow newRow = new TableRow(this);
 
-                sb.append("Category: ");
-                sb.append(trans.getCategory());
-                sb.append("\n");
+            TextView dateTextView = new TextView(this);
+            dateTextView.setGravity(Gravity.CENTER);
+            dateTextView.setText(newTrans.getDate());
+            dateTextView.setTextColor(Color.BLACK);
+            newRow.addView(dateTextView);
 
-                sb.append("Note: ");
-                sb.append(trans.getNote());
-                sb.append("\n");
-            }
-            textView.setText(sb.toString());
+            TextView amountTextView = new TextView(this);
+            amountTextView.setGravity(Gravity.CENTER);
+            amountTextView.setText(String.format(Locale.ENGLISH, "%.2f", newTrans.getAmount()));
+            amountTextView.setTextColor(Color.BLACK);
+            newRow.addView(amountTextView);
+
+            TextView categoryTextView = new TextView(this);
+            categoryTextView.setGravity(Gravity.CENTER);
+            categoryTextView.setText(newTrans.getCategory());
+            categoryTextView.setTextColor(Color.BLACK);
+            newRow.addView(categoryTextView);
+
+            TextView noteTextView = new TextView(this);
+            noteTextView.setGravity(Gravity.CENTER);
+            noteTextView.setText(newTrans.getNote());
+            noteTextView.setTextColor(Color.BLACK);
+            newRow.addView(noteTextView);
+
+            transTable.addView(newRow);
         }
     }
 

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -20,6 +21,7 @@ public class AddTransactionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_transaction);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -35,10 +37,6 @@ public class AddTransactionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AddTransactionActivity.this, MainActivity.class);
-
-//                final Transaction newTrans = new Transaction(dateEditText.getText().toString(),
-//                        Float.parseFloat(amountEditText.getText().toString()),
-//                        categorySpinner.toString(), noteEditText.getText().toString());
 
                 intent.putExtra(getString(R.string.date_text_view), dateEditText.getText().toString());
                 intent.putExtra(getString(R.string.amount_text_view), Float.parseFloat(amountEditText.getText().toString()));
