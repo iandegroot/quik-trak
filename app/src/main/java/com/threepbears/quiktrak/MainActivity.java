@@ -1,5 +1,6 @@
 package com.threepbears.quiktrak;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,14 +18,24 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    final static private int ADD_TRANS_REQUEST_CODE = 0;
+    private static final int ADD_TRANS_REQUEST_CODE = 0;
     private ArrayList<Transaction> transactions = new ArrayList<>();
+    private static final String TRANACTION_FILE_NAME = "transactions";
 
+    // This only runs once, the first time this activity is started
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +50,71 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(new Intent(MainActivity.this, AddTransactionActivity.class), ADD_TRANS_REQUEST_CODE);
             }
         });
+
+        readAllTransactionsFromFile();
+        addAllTransactionRows();
+    }
+
+    private void readAllTransactionsFromFile()
+    {
+        FileInputStream fis;
+        ObjectInputStream is;
+        try {
+            fis = openFileInput(TRANACTION_FILE_NAME);
+            is = new ObjectInputStream(fis);
+
+            while (fis.available() != 0) {
+                Transaction trans = (Transaction) is.readObject();
+                transactions.add(trans);
+            }
+//
+//            for (Transaction t : input) {
+//                transactions.add(t);
+//            }
+//
+            is.close();
+            fis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addAllTransactionRows() {
+        TableLayout transTable = findViewById(R.id.transactionTable);
+
+        for (Transaction t : transactions) {
+            addTransactionRow(transTable, t);
+        }
+    }
+
+    private void addTransactionRow(TableLayout transTable, Transaction trans) {
+        TableRow newRow = new TableRow(this);
+
+        TextView dateTextView = new TextView(this);
+        dateTextView.setGravity(Gravity.CENTER);
+        dateTextView.setText(trans.getDate());
+        dateTextView.setTextColor(Color.BLACK);
+        newRow.addView(dateTextView);
+
+        TextView amountTextView = new TextView(this);
+        amountTextView.setGravity(Gravity.CENTER);
+        amountTextView.setText(String.format(Locale.ENGLISH, "%.2f", trans.getAmount()));
+        amountTextView.setTextColor(Color.BLACK);
+        newRow.addView(amountTextView);
+
+        TextView categoryTextView = new TextView(this);
+        categoryTextView.setGravity(Gravity.CENTER);
+        categoryTextView.setText(trans.getCategory());
+        categoryTextView.setTextColor(Color.BLACK);
+        newRow.addView(categoryTextView);
+
+        TextView noteTextView = new TextView(this);
+        noteTextView.setGravity(Gravity.CENTER);
+        noteTextView.setText(trans.getNote());
+        noteTextView.setTextColor(Color.BLACK);
+        newRow.addView(noteTextView);
+
+        transTable.addView(newRow);
     }
 
     @Override
@@ -51,35 +127,26 @@ public class MainActivity extends AppCompatActivity {
                     data.getStringExtra(getString(R.string.category_text_view)),
                     data.getStringExtra(getString(R.string.note_text_view)));
 
+            writeTractionToFile(newTrans);
             transactions.add(newTrans);
 
-            TableRow newRow = new TableRow(this);
+            addTransactionRow(transTable, newTrans);
+        }
+    }
 
-            TextView dateTextView = new TextView(this);
-            dateTextView.setGravity(Gravity.CENTER);
-            dateTextView.setText(newTrans.getDate());
-            dateTextView.setTextColor(Color.BLACK);
-            newRow.addView(dateTextView);
+    private void writeTractionToFile(Transaction newTrans) {
+        FileOutputStream outputStream;
+        ObjectOutputStream objectOutputStream;
 
-            TextView amountTextView = new TextView(this);
-            amountTextView.setGravity(Gravity.CENTER);
-            amountTextView.setText(String.format(Locale.ENGLISH, "%.2f", newTrans.getAmount()));
-            amountTextView.setTextColor(Color.BLACK);
-            newRow.addView(amountTextView);
+        try {
+            outputStream = openFileOutput(TRANACTION_FILE_NAME, Context.MODE_PRIVATE);
+            objectOutputStream = new ObjectOutputStream(outputStream);
+            objectOutputStream.writeObject(newTrans);
 
-            TextView categoryTextView = new TextView(this);
-            categoryTextView.setGravity(Gravity.CENTER);
-            categoryTextView.setText(newTrans.getCategory());
-            categoryTextView.setTextColor(Color.BLACK);
-            newRow.addView(categoryTextView);
-
-            TextView noteTextView = new TextView(this);
-            noteTextView.setGravity(Gravity.CENTER);
-            noteTextView.setText(newTrans.getNote());
-            noteTextView.setTextColor(Color.BLACK);
-            newRow.addView(noteTextView);
-
-            transTable.addView(newRow);
+            objectOutputStream.close();
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
