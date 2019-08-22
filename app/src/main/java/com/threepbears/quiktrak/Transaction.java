@@ -1,19 +1,32 @@
 package com.threepbears.quiktrak;
 
-import java.io.Serializable;
-import java.util.Date;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class Transaction implements Serializable {
+@Entity(tableName = "transactions_table")
+public class Transaction {
+
+    @PrimaryKey
+    private long id;
     private String date;
     private float amount;
     private String category;
     private String note;
 
-    public Transaction(String date, float amount, String category, String note) {
+    public Transaction(long id, String date, float amount, String category, String note) {
+        this.id = id;
         this.date = date;
         this.amount = amount;
         this.category = category;
         this.note = note;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getDate() {

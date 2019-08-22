@@ -19,13 +19,11 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int ADD_TRANS_REQUEST_CODE = 0;
     private ArrayList<Transaction> transactions = new ArrayList<>();
     private static final String TRANACTION_FILE_NAME = "transactions";
+    private TransactionRoomDatabase transDB;
 
     // This only runs once, the first time this activity is started
     @Override
@@ -51,32 +50,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        readAllTransactionsFromFile();
+        transDB = TransactionRoomDatabase.getDatabase(this);
+
+        readAllTransactionsFromDB();
         addAllTransactionRows();
     }
 
-    private void readAllTransactionsFromFile()
-    {
-        FileInputStream fis;
-        ObjectInputStream is;
-        try {
-            fis = openFileInput(TRANACTION_FILE_NAME);
-            is = new ObjectInputStream(fis);
+    private void readAllTransactionsFromDB() {
+        TransactionDao transDao = transDB.transactionDao();
 
-            while (fis.available() != 0) {
-                Transaction trans = (Transaction) is.readObject();
-                transactions.add(trans);
-            }
-//
-//            for (Transaction t : input) {
-//                transactions.add(t);
-//            }
-//
-            is.close();
-            fis.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        List<Transaction> transactionsFromDB = transDao.getAllTransactions();
+        transactions.addAll(transactionsFromDB);
     }
 
     private void addAllTransactionRows() {
@@ -122,32 +106,23 @@ public class MainActivity extends AppCompatActivity {
         TableLayout transTable = findViewById(R.id.transactionTable);
 
         if (requestCode == ADD_TRANS_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            Transaction newTrans = new Transaction(data.getStringExtra(getString(R.string.date_text_view)),
+            Transaction newTrans = new Transaction(new Date().getTime(),
+                    data.getStringExtra(getString(R.string.date_text_view)),
                     data.getFloatExtra(getString(R.string.amount_text_view), 0),
                     data.getStringExtra(getString(R.string.category_text_view)),
                     data.getStringExtra(getString(R.string.note_text_view)));
 
-            writeTractionToFile(newTrans);
+            writeTransactionToDB(newTrans);
             transactions.add(newTrans);
 
             addTransactionRow(transTable, newTrans);
         }
     }
 
-    private void writeTractionToFile(Transaction newTrans) {
-        FileOutputStream outputStream;
-        ObjectOutputStream objectOutputStream;
+    private void writeTransactionToDB(Transaction newTrans) {
+        TransactionDao transDao = transDB.transactionDao();
 
-        try {
-            outputStream = openFileOutput(TRANACTION_FILE_NAME, Context.MODE_PRIVATE);
-            objectOutputStream = new ObjectOutputStream(outputStream);
-            objectOutputStream.writeObject(newTrans);
-
-            objectOutputStream.close();
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        transDao.insert(newTrans);
     }
 
     @Override
