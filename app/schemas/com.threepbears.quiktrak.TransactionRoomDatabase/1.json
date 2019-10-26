@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "90f526717bfb959e9a5e49178c4742d9",
+    "identityHash": "69d077e4c147ea31a6c015a585bac12f",
     "entities": [
       {
         "tableName": "transactions_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `date` TEXT, `amount` REAL NOT NULL, `category` TEXT, `note` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `date` INTEGER, `amount` REAL NOT NULL, `category` TEXT, `note` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -17,7 +17,7 @@
           {
             "fieldPath": "date",
             "columnName": "date",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": false
           },
           {
@@ -52,7 +52,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '90f526717bfb959e9a5e49178c4742d9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '69d077e4c147ea31a6c015a585bac12f')"
     ]
   }
 }

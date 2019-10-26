@@ -1,7 +1,6 @@
 package com.threepbears.quiktrak;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +14,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddTransactionActivity extends AppCompatActivity {
+
+    private TransactionRoomDatabase transDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +30,16 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        transDB = TransactionRoomDatabase.getDatabase(this);
+
         final EditText dateEditText = findViewById(R.id.dateEditText);
         final EditText amountEditText = findViewById(R.id.amountEditText);
         final Spinner categorySpinner = findViewById(R.id.categorySpinner);
         final EditText noteEditText = findViewById(R.id.noteEditText);
         final Button addTransButton = findViewById(R.id.addTransactionButton);
 
+        Calendar cal = Calendar.getInstance();
+        dateEditText.setText(DateFormatter.intsToStringDate(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR)));
         dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,7 +51,7 @@ public class AddTransactionActivity extends AppCompatActivity {
                 DatePickerDialog datePicker = new DatePickerDialog(AddTransactionActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        final String date = (month+1) + "/" + day + "/" + year;
+                        final String date = DateFormatter.intsToStringDate(day, month+1, year);
                         dateEditText.setText(date);
                     }
                 }, year, month, day);
@@ -57,19 +63,24 @@ public class AddTransactionActivity extends AppCompatActivity {
         addTransButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddTransactionActivity.this, MainActivity.class);
+                Transaction newTrans = new Transaction(new Date().getTime(),
+                        DateFormatter.stringToDate(dateEditText.getText().toString()),
+                        Float.parseFloat(amountEditText.getText().toString()),
+                        categorySpinner.getSelectedItem().toString(),
+                        noteEditText.getText().toString());
 
-                intent.putExtra(getString(R.string.date_text_view), dateEditText.getText().toString());
-                intent.putExtra(getString(R.string.amount_text_view), Float.parseFloat(amountEditText.getText().toString()));
-                intent.putExtra(getString(R.string.category_text_view), categorySpinner.getSelectedItem().toString());
-                intent.putExtra(getString(R.string.note_text_view), noteEditText.getText().toString());
+                writeTransactionToDB(newTrans);
 
-                setResult(RESULT_OK, intent);
                 finish();
             }
         });
+
+        amountEditText.requestFocus();
     }
 
+    private void writeTransactionToDB(Transaction newTrans) {
+        TransactionDao transDao = transDB.transactionDao();
 
-
+        transDao.insert(newTrans);
+    }
 }

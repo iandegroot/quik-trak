@@ -15,7 +15,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.AnimationUtils;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -28,9 +27,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int ADD_TRANS_REQUEST_CODE = 0;
     private ArrayList<Transaction> transactions = new ArrayList<>();
-    private static final String TRANACTION_FILE_NAME = "transactions";
     private static final int MIN_ROW_HEIGHT = 100;
     private TransactionRoomDatabase transDB;
 
@@ -46,11 +43,16 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, AddTransactionActivity.class), ADD_TRANS_REQUEST_CODE);
+                startActivity(new Intent(MainActivity.this, AddTransactionActivity.class));
             }
         });
 
         transDB = TransactionRoomDatabase.getDatabase(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         readAllTransactionsFromDB();
         addAllTransactionRows();
@@ -71,6 +73,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        transactions.clear();
+        removeAllTransactionRows();
+    }
+
     private void removeAllTransactionRows() {
         TableLayout transTable = findViewById(R.id.transactionTable);
 
@@ -87,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
         final TextView dateTextView = new TextView(this);
         dateTextView.setGravity(Gravity.CENTER);
-        dateTextView.setText(trans.getDate());
+        dateTextView.setText(DateFormatter.dateToString(trans.getDate()));
         dateTextView.setTextColor(Color.BLACK);
         newRow.addView(dateTextView);
 
@@ -146,7 +156,9 @@ public class MainActivity extends AppCompatActivity {
         while (iter.hasNext()) {
             Transaction tempTrans = iter.next();
 
-            if (tempTrans.getDate().equals(date)
+            Date formattedDate = DateFormatter.stringToDate(date);
+
+            if (tempTrans.getDate().equals(formattedDate)
                     && String.format(Locale.ENGLISH, "%.2f", tempTrans.getAmount()).equals(amount)
                     && tempTrans.getCategory().equals(cat)
                     && tempTrans.getNote().equals(note)) {
@@ -163,30 +175,6 @@ public class MainActivity extends AppCompatActivity {
         TransactionDao transDao = transDB.transactionDao();
 
         transDao.deleteUser(newTrans.getId());
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        TableLayout transTable = findViewById(R.id.transactionTable);
-
-        if (requestCode == ADD_TRANS_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            Transaction newTrans = new Transaction(new Date().getTime(),
-                    data.getStringExtra(getString(R.string.date_text_view)),
-                    data.getFloatExtra(getString(R.string.amount_text_view), 0),
-                    data.getStringExtra(getString(R.string.category_text_view)),
-                    data.getStringExtra(getString(R.string.note_text_view)));
-
-            writeTransactionToDB(newTrans);
-            transactions.add(newTrans);
-
-            addTransactionRow(transTable, newTrans);
-        }
-    }
-
-    private void writeTransactionToDB(Transaction newTrans) {
-        TransactionDao transDao = transDB.transactionDao();
-
-        transDao.insert(newTrans);
     }
 
     @Override

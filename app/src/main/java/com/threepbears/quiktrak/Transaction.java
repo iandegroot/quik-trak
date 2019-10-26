@@ -2,18 +2,22 @@ package com.threepbears.quiktrak;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import java.util.Date;
 
 @Entity(tableName = "transactions_table")
 public class Transaction {
 
     @PrimaryKey
     private long id;
-    private String date;
+    @TypeConverters({DateConverter.class})
+    private Date date;
     private float amount;
     private String category;
     private String note;
 
-    public Transaction(long id, String date, float amount, String category, String note) {
+    public Transaction(long id, Date date, float amount, String category, String note) {
         this.id = id;
         this.date = date;
         this.amount = amount;
@@ -29,11 +33,11 @@ public class Transaction {
         this.id = id;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
