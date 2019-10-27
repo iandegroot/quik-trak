@@ -10,14 +10,14 @@ import java.util.Date;
 public class Transaction {
 
     @PrimaryKey
-    private long id;
+    private int id;
     @TypeConverters({DateConverter.class})
     private Date date;
     private float amount;
     private String category;
     private String note;
 
-    public Transaction(long id, Date date, float amount, String category, String note) {
+    public Transaction(int id, Date date, float amount, String category, String note) {
         this.id = id;
         this.date = date;
         this.amount = amount;
@@ -25,11 +25,11 @@ public class Transaction {
         this.note = note;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

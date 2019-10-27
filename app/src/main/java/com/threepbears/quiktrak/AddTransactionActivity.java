@@ -69,7 +69,9 @@ public class AddTransactionActivity extends AppCompatActivity {
         addTransButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Transaction newTrans = new Transaction(new Date().getTime(),
+                // Dividing the current time by 1000 to make it fit into an int and using that as
+                // the id of the transaction
+                Transaction newTrans = new Transaction((int) (new Date().getTime() / 1000),
                         DateFormatter.stringToDate(dateEditText.getText().toString()),
                         Float.parseFloat(amountEditText.getText().toString()),
                         categorySpinner.getSelectedItem().toString(),

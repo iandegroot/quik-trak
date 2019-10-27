@@ -20,8 +20,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -61,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private void readAllTransactionsFromDB() {
         TransactionDao transDao = transDB.transactionDao();
 
+        transactions.clear();
         List<Transaction> transactionsFromDB = transDao.getAllTransactions();
         transactions.addAll(transactionsFromDB);
     }
@@ -95,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
     private void addTransactionRow(TableLayout transTable, Transaction trans) {
         final TableRow newRow = new TableRow(this);
 
+        newRow.setId(trans.getId());
+
         final TextView dateTextView = new TextView(this);
         dateTextView.setGravity(Gravity.CENTER);
         dateTextView.setText(DateFormatter.dateToString(trans.getDate()));
@@ -124,15 +125,12 @@ public class MainActivity extends AppCompatActivity {
         newRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final View finalView = v;
-
                 new AlertDialog.Builder(v.getContext())
                         .setMessage("Are you sure you want to delete the transaction?")
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                removeRow(dateTextView.getText().toString(), amountTextView.getText().toString(),
-                                        categoryTextView.getText().toString(), noteTextView.getText().toString());
+                                removeTransactionAndRow(newRow.getId());
                             }
                         })
                         .setNegativeButton("No", null)
@@ -142,39 +140,34 @@ public class MainActivity extends AppCompatActivity {
         transTable.addView(newRow);
     }
 
-    private void removeRow(String date, String amount, String cat, String note) {
-        if (deleteTransaction(date, amount, cat, note)) {
+    private void removeTransactionAndRow(int transId) {
+        if (deleteTransaction(transId)) {
             removeAllTransactionRows();
             addAllTransactionRows();
         }
     }
 
-    private boolean deleteTransaction(String date, String amount, String cat, String note) {
+    private boolean deleteTransaction(int id) {
 
-        Iterator<Transaction> iter = transactions.iterator();
-
-        while (iter.hasNext()) {
-            Transaction tempTrans = iter.next();
-
-            Date formattedDate = DateFormatter.stringToDate(date);
-
-            if (tempTrans.getDate().equals(formattedDate)
-                    && String.format(Locale.ENGLISH, "%.2f", tempTrans.getAmount()).equals(amount)
-                    && tempTrans.getCategory().equals(cat)
-                    && tempTrans.getNote().equals(note)) {
-                deleteTransactionFromDB(tempTrans);
-                iter.remove();
-                return true;
-            }
+        if (!checkForTransactionInDB(id).isEmpty()) {
+            deleteTransactionFromDB(id);
+            readAllTransactionsFromDB();
+            return true;
         }
 
         return false;
     }
 
-    private void deleteTransactionFromDB(Transaction newTrans) {
+    private void deleteTransactionFromDB(int id) {
         TransactionDao transDao = transDB.transactionDao();
 
-        transDao.deleteUser(newTrans.getId());
+        transDao.deleteTransaction(id);
+    }
+
+    private List<Transaction> checkForTransactionInDB(int id) {
+        TransactionDao transDao = transDB.transactionDao();
+
+        return transDao.getTransaction(id);
     }
 
     @Override
