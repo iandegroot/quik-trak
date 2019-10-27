@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.InputType;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -37,6 +38,11 @@ public class AddTransactionActivity extends AppCompatActivity {
         final Spinner categorySpinner = findViewById(R.id.categorySpinner);
         final EditText noteEditText = findViewById(R.id.noteEditText);
         final Button addTransButton = findViewById(R.id.addTransactionButton);
+
+        // Disabling manual editing of the date field, must use the popup calendar
+        dateEditText.setShowSoftInputOnFocus(false);
+        dateEditText.setInputType(InputType.TYPE_NULL);
+        dateEditText.setFocusable(false);
 
         Calendar cal = Calendar.getInstance();
         dateEditText.setText(DateFormatter.intsToStringDate(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR)));
