@@ -6,8 +6,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-public class DateFormatter
-{
+public class DateFormatter {
     private static final String DATE_FORMAT_PATTERN = "MM/dd/yyyy";
 
     public static String dateToString(Date date) {

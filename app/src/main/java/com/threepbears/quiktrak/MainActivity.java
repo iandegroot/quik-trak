@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         final TextView amountTextView = new TextView(this);
         amountTextView.setGravity(Gravity.CENTER);
-        amountTextView.setText(String.format(Locale.ENGLISH, "%.2f", trans.getAmount()));
+        amountTextView.setText(CurrencyFormatter.createCurrencyFormattedString(trans.getAmount()));
         amountTextView.setTextColor(Color.BLACK);
         newRow.addView(amountTextView);
 

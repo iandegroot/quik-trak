@@ -73,7 +73,7 @@ public class AddTransactionActivity extends AppCompatActivity {
                 // the id of the transaction
                 Transaction newTrans = new Transaction((int) (new Date().getTime() / 1000),
                         DateFormatter.stringToDate(dateEditText.getText().toString()),
-                        Float.parseFloat(amountEditText.getText().toString()),
+                        Integer.parseInt(amountEditText.getText().toString().replaceAll("[$,.]", "")),
                         categorySpinner.getSelectedItem().toString(),
                         noteEditText.getText().toString());
 
@@ -84,6 +84,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         });
 
         amountEditText.requestFocus();
+        amountEditText.addTextChangedListener(new CurrencyEditTextWatcher(amountEditText));
     }
 
     private void writeTransactionToDB(Transaction newTrans) {

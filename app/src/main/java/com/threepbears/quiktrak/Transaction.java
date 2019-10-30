@@ -13,11 +13,11 @@ public class Transaction {
     private int id;
     @TypeConverters({DateConverter.class})
     private Date date;
-    private float amount;
+    private int amount;
     private String category;
     private String note;
 
-    public Transaction(int id, Date date, float amount, String category, String note) {
+    public Transaction(int id, Date date, int amount, String category, String note) {
         this.id = id;
         this.date = date;
         this.amount = amount;
@@ -41,11 +41,11 @@ public class Transaction {
         this.date = date;
     }
 
-    public float getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
