@@ -7,6 +7,9 @@
     <string name="category_text_view">Category</string>
     <string name="note_text_view">Note</string>
     <string name="add_transaction_button">Add Transaction</string>
+    <string name="month_text_view">Month</string>
+    <string name="button_earlier_month">Earlier</string>
+    <string name="button_later_month">Later</string>
     <string-array name="categories">
         <item>Eating out</item>
         <item>Longboards</item>

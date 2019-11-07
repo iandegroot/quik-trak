@@ -6,16 +6,48 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".SpendingActivity"
-    tools:showIn="@layout/activity_spending">
+    tools:showIn="@layout/activity_spending" >
 
-    <TableLayout
-        android:id="@+id/spendingTable"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:divider="@color/colorPrimary"
-        android:showDividers="middle"
-        android:shrinkColumns="*"
-        android:stretchColumns="*">
-    </TableLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonEarlierMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/button_earlier_month" />
+
+            <TextView
+                android:id="@+id/monthTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/month_text_view"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/buttonLaterMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/button_later_month" />
+        </LinearLayout>
+
+        <TableLayout
+            android:id="@+id/spendingTable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:divider="@color/colorPrimary"
+            android:showDividers="middle"></TableLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,19 +6,22 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class SpendingActivity extends AppCompatActivity {
 
     private ArrayList<Transaction> transactions = new ArrayList<>();
-    private HashMap<String, Integer> spendingByCategory = new HashMap<>();
+    private Map<String, Integer> spendingByCategory = new HashMap<>();
     private static final int MIN_ROW_HEIGHT = 100;
     private TransactionRoomDatabase transDB;
 
@@ -26,6 +29,28 @@ public class SpendingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spending);
+
+        final Calendar cal = Calendar.getInstance();
+
+        final Button buttonEarlierMonth = findViewById(R.id.buttonEarlierMonth);
+        final TextView monthTextView = findViewById(R.id.monthTextView);
+        final Button buttonLaterMonth = findViewById(R.id.buttonLaterMonth);
+
+        buttonEarlierMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cal.add(Calendar.MONTH, -1);
+                monthTextView.setText(cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+            }
+        });
+        monthTextView.setText(cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+        buttonLaterMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cal.add(Calendar.MONTH, 1);
+                monthTextView.setText(cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+            }
+        });
 
         transDB = TransactionRoomDatabase.getDatabase(this);
     }
