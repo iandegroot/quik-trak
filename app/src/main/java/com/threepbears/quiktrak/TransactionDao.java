@@ -3,7 +3,9 @@ package com.threepbears.quiktrak;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.TypeConverters;
 
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -17,9 +19,13 @@ public interface TransactionDao {
     @Query("DELETE FROM transactions_table WHERE id = :id")
     void deleteTransaction(int id);
 
-    @Query("SELECT * from transactions_table ORDER BY date ASC")
+    @Query("SELECT * from transactions_table ORDER BY date DESC")
     List<Transaction> getAllTransactions();
 
     @Query("SELECT * from transactions_table WHERE id = :id")
     List<Transaction> getTransaction(int id);
+
+    @TypeConverters({DateConverter.class})
+    @Query("SELECT * FROM transactions_table WHERE date BETWEEN :startDate AND :endDate")
+    List<Transaction> getTransactionsForMonth(Date startDate, Date endDate);
 }

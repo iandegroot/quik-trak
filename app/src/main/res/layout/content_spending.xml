@@ -22,7 +22,7 @@
                 android:id="@+id/buttonEarlierMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0"
                 android:text="@string/button_earlier_month" />
 
             <TextView
@@ -38,7 +38,7 @@
                 android:id="@+id/buttonLaterMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0"
                 android:text="@string/button_later_month" />
         </LinearLayout>
 
