@@ -10,6 +10,7 @@
     <string name="month_text_view">Month</string>
     <string name="button_earlier_month">Earlier</string>
     <string name="button_later_month">Later</string>
+    <string name="total_text_view">$$$$</string>
     <string-array name="categories">
         <item>Eating out</item>
         <item>Longboards</item>

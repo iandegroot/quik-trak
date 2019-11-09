@@ -71,8 +71,11 @@ public class SpendingActivity extends AppCompatActivity {
     }
 
     private void showSpendingForMonth(Calendar cal) {
+        final TextView totalTextView = findViewById(R.id.totalTextView);
+
         readAllTransactionsInMonth(cal);
         addAllTransactionRows();
+        totalTextView.setText(String.format("Total: %s", CurrencyFormatter.createCurrencyFormattedString(getSpendingTotal())));
     }
 
     private void readAllTransactionsInMonth(Calendar cal) {
@@ -137,6 +140,16 @@ public class SpendingActivity extends AppCompatActivity {
         newRow.setGravity(Gravity.CENTER);
         newRow.setLayoutParams(layoutParams);
         transTable.addView(newRow);
+    }
+
+    private int getSpendingTotal() {
+        int total = 0;
+
+        for (Transaction trans : transactions) {
+            total += trans.getAmount();
+        }
+
+        return total;
     }
 
     private void removeAllSpendingRows() {

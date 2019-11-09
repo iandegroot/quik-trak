@@ -45,10 +45,19 @@
         <TableLayout
             android:id="@+id/spendingTable"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="#FFFFFF"
             android:divider="@color/colorPrimary"
-            android:showDividers="middle">
-        </TableLayout>
+            android:showDividers="middle" />
+
+        <View style="@style/Divider"/>
+
+        <TextView
+            android:id="@+id/totalTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/total_text_view"
+            android:textSize="24sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
