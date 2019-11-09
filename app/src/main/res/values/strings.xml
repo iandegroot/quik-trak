@@ -13,6 +13,14 @@
     <string name="total_text_view">$$$$</string>
     <string-array name="categories">
         <item>Eating out</item>
-        <item>Longboards</item>
+        <item>Groceries</item>
+        <item>Entertainment</item>
+        <item>Fuel</item>
+        <item>Gifts</item>
+        <item>Trips</item>
+        <item>Car</item>
+        <item>Clothes</item>
+        <item>Haircut</item>
+        <item>Home Improvement</item>
     </string-array>
 </resources>
