@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -116,20 +117,25 @@ public class SpendingActivity extends AppCompatActivity {
     private void addTransactionRow(TableLayout transTable, Map.Entry<String, Integer> spendingTotal) {
         final TableRow newRow = new TableRow(this);
 
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 1f);
+
         final TextView categoryTextView = new TextView(this);
         categoryTextView.setGravity(Gravity.CENTER);
         categoryTextView.setText(spendingTotal.getKey());
         categoryTextView.setTextColor(Color.BLACK);
+        categoryTextView.setLayoutParams(layoutParams);
         newRow.addView(categoryTextView);
 
         final TextView amountTextView = new TextView(this);
         amountTextView.setGravity(Gravity.CENTER);
         amountTextView.setText(CurrencyFormatter.createCurrencyFormattedString(spendingTotal.getValue()));
         amountTextView.setTextColor(Color.BLACK);
+        amountTextView.setLayoutParams(layoutParams);
         newRow.addView(amountTextView);
 
         newRow.setMinimumHeight(MIN_ROW_HEIGHT);
         newRow.setGravity(Gravity.CENTER);
+        newRow.setLayoutParams(layoutParams);
         transTable.addView(newRow);
     }
 

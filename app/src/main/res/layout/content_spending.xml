@@ -48,6 +48,7 @@
             android:layout_height="match_parent"
             android:background="#FFFFFF"
             android:divider="@color/colorPrimary"
-            android:showDividers="middle"></TableLayout>
+            android:showDividers="middle">
+        </TableLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
