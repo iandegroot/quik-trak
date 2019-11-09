@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">QuikTrak</string>
-    <string name="spending_page">Spending Page</string>
-    <string name="title_activity_add_transaction">Add Transaction</string>
+    <string name="transactions_page">Transactions</string>
     <string name="title_activity_spending">Spending</string>
+    <string name="title_activity_transactions">Transactions</string>
+    <string name="title_activity_add_transaction">Add Transaction</string>
     <string name="date_text_view">Date</string>
     <string name="amount_text_view">Amount</string>
     <string name="category_text_view">Category</string>

@@ -3,16 +3,20 @@ package com.threepbears.quiktrak;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,11 +38,16 @@ public class SpendingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spending);
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SpendingActivity.this, AddTransactionActivity.class));
+            }
+        });
 
         final Calendar cal = Calendar.getInstance();
 
@@ -106,6 +115,14 @@ public class SpendingActivity extends AppCompatActivity {
         showSpendingForMonth(Calendar.getInstance());
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        transactions.clear();
+        clearSpendingRowsAndData();
+    }
+
     private void addAllTransactionRows() {
         TableLayout transTable = findViewById(R.id.spendingTable);
 
@@ -163,5 +180,28 @@ public class SpendingActivity extends AppCompatActivity {
         TableLayout transTable = findViewById(R.id.spendingTable);
 
         transTable.removeAllViews();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.transactions_page) {
+            startActivity(new Intent(SpendingActivity.this, TransactionsActivity.class));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

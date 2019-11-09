@@ -1,10 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.threepbears.quiktrak.MainActivity">
+    tools:context="com.threepbears.quiktrak.TransactionsActivity">
     <item
-        android:id="@+id/spending_page"
+        android:id="@+id/transactions_page"
         android:orderInCategory="100"
-        android:title="@string/spending_page"
+        android:title="@string/transactions_page"
         app:showAsAction="never" />
 </menu>

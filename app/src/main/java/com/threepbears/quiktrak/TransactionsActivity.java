@@ -13,8 +13,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Gravity;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -22,7 +20,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class TransactionsActivity extends AppCompatActivity {
 
     private ArrayList<Transaction> transactions = new ArrayList<>();
     private static final int MIN_ROW_HEIGHT = 100;
@@ -32,15 +30,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_transactions);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, AddTransactionActivity.class));
+                startActivity(new Intent(TransactionsActivity.this, AddTransactionActivity.class));
             }
         });
 
@@ -167,28 +167,5 @@ public class MainActivity extends AppCompatActivity {
         TransactionDao transDao = transDB.transactionDao();
 
         return transDao.getTransaction(id);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.spending_page) {
-            startActivity(new Intent(MainActivity.this, SpendingActivity.class));
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
