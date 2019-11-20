@@ -21,7 +21,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -29,7 +31,7 @@ import java.util.Map;
 public class SpendingActivity extends AppCompatActivity {
 
     private ArrayList<Transaction> transactions = new ArrayList<>();
-    private Map<String, Integer> spendingByCategory = new HashMap<>();
+    private Map<String, Integer> spendingByCategory = new LinkedHashMap<>();
     private static final int MIN_ROW_HEIGHT = 100;
     SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     private TransactionRoomDatabase transDB;
@@ -136,8 +138,26 @@ public class SpendingActivity extends AppCompatActivity {
             }
         }
 
+        sortSpendingByAmount();
         for (Map.Entry<String, Integer> s : spendingByCategory.entrySet()) {
             addTransactionRow(transTable, s);
+        }
+    }
+
+    private void sortSpendingByAmount() {
+        // TODO - Make this more efficient
+        List<Map.Entry<String, Integer>> mapAsList = new ArrayList<>(spendingByCategory.entrySet());
+
+        Collections.sort(mapAsList, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
+                return entry2.getValue().compareTo(entry1.getValue());
+            }
+        });
+
+        spendingByCategory.clear();
+        for (Map.Entry<String, Integer> entry : mapAsList) {
+            spendingByCategory.put(entry.getKey(), entry.getValue());
         }
     }
 
