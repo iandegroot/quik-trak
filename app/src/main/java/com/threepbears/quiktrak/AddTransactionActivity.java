@@ -85,6 +85,7 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         amountEditText.requestFocus();
         amountEditText.addTextChangedListener(new CurrencyEditTextWatcher(amountEditText));
+        amountEditText.setText("0");
     }
 
     private void writeTransactionToDB(Transaction newTrans) {
