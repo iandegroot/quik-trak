@@ -18,15 +18,15 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/dateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:labelFor="@id/dateEditText"
                 android:text="@string/date_text_view"
                 android:textSize="@dimen/text_view_size" />
@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_weight="1"
+                android:gravity="center"
                 android:labelFor="@id/amountEditText"
                 android:text="@string/amount_text_view"
                 android:textSize="@dimen/text_view_size" />
@@ -46,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/category_text_view"
                 android:textSize="@dimen/text_view_size" />
 
@@ -54,6 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:labelFor="@id/noteEditText"
                 android:text="@string/note_text_view"
                 android:textSize="@dimen/text_view_size" />
@@ -74,6 +77,11 @@
                 android:inputType="date"
                 tools:ignore="Autofill" />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/vertical_spacing_height"
+                android:layout_weight="1" />
+
             <EditText
                 android:id="@+id/amountEditText"
                 android:layout_width="wrap_content"
@@ -84,6 +92,11 @@
                 android:inputType="numberDecimal"
                 tools:ignore="Autofill" />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/vertical_spacing_height"
+                android:layout_weight="1" />
+
             <Spinner
                 android:id="@+id/categorySpinner"
                 android:layout_width="wrap_content"
@@ -91,6 +104,11 @@
 
                 android:layout_weight="1"
                 android:entries="@array/categories" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/vertical_spacing_height"
+                android:layout_weight="1" />
 
             <EditText
                 android:id="@+id/noteEditText"

@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -18,6 +20,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class AddTransactionActivity extends AppCompatActivity {
+
+    private EditText dateEditText;
+    private EditText amountEditText;
+    private Spinner categorySpinner;
+    private EditText noteEditText;
+    private Button addTransButton;
 
     private TransactionRoomDatabase transDB;
 
@@ -33,11 +41,11 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         transDB = TransactionRoomDatabase.getDatabase(this);
 
-        final EditText dateEditText = findViewById(R.id.dateEditText);
-        final EditText amountEditText = findViewById(R.id.amountEditText);
-        final Spinner categorySpinner = findViewById(R.id.categorySpinner);
-        final EditText noteEditText = findViewById(R.id.noteEditText);
-        final Button addTransButton = findViewById(R.id.addTransactionButton);
+        dateEditText = findViewById(R.id.dateEditText);
+        amountEditText = findViewById(R.id.amountEditText);
+        categorySpinner = findViewById(R.id.categorySpinner);
+        noteEditText = findViewById(R.id.noteEditText);
+        addTransButton = findViewById(R.id.addTransactionButton);
 
         // Disabling manual editing of the date field, must use the popup calendar
         dateEditText.setShowSoftInputOnFocus(false);
@@ -69,16 +77,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         addTransButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Dividing the current time by 1000 to make it fit into an int and using that as
-                // the id of the transaction
-                Transaction newTrans = new Transaction((int) (new Date().getTime() / 1000),
-                        DateFormatter.stringToDate(dateEditText.getText().toString()),
-                        Integer.parseInt(amountEditText.getText().toString().replaceAll("[$,.]", "")),
-                        categorySpinner.getSelectedItem().toString(),
-                        noteEditText.getText().toString());
-
-                writeTransactionToDB(newTrans);
-
+                addNewTransaction();
                 finish();
             }
         });
@@ -88,9 +87,35 @@ public class AddTransactionActivity extends AppCompatActivity {
         amountEditText.setText("0");
     }
 
+    private void addNewTransaction() {
+        // Dividing the current time by 1000 to make it fit into an int and using that as
+        // the id of the transaction
+        Transaction newTrans = new Transaction((int) (new Date().getTime() / 1000),
+                DateFormatter.stringToDate(dateEditText.getText().toString()),
+                Integer.parseInt(amountEditText.getText().toString().replaceAll("[$,.]", "")),
+                categorySpinner.getSelectedItem().toString(),
+                noteEditText.getText().toString());
+
+        writeTransactionToDB(newTrans);
+    }
+
     private void writeTransactionToDB(Transaction newTrans) {
         TransactionDao transDao = transDB.transactionDao();
 
         transDao.insert(newTrans);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_done, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        addNewTransaction();
+        finish();
+        return true;
     }
 }
