@@ -43,12 +43,10 @@
         </LinearLayout>
 
         <TableLayout
+            style="@style/TableLayoutStyle"
             android:id="@+id/spendingTable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:divider="@color/colorPrimary"
-            android:showDividers="middle" />
+            android:layout_height="wrap_content" />
 
         <View style="@style/Divider"/>
 

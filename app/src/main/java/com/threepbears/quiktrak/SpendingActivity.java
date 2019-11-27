@@ -169,14 +169,12 @@ public class SpendingActivity extends AppCompatActivity {
         final TextView categoryTextView = new TextView(this);
         categoryTextView.setGravity(Gravity.CENTER);
         categoryTextView.setText(spendingTotal.getKey());
-        categoryTextView.setTextColor(Color.BLACK);
         categoryTextView.setLayoutParams(layoutParams);
         newRow.addView(categoryTextView);
 
         final TextView amountTextView = new TextView(this);
         amountTextView.setGravity(Gravity.CENTER);
         amountTextView.setText(CurrencyFormatter.createCurrencyFormattedString(spendingTotal.getValue()));
-        amountTextView.setTextColor(Color.BLACK);
         amountTextView.setLayoutParams(layoutParams);
         newRow.addView(amountTextView);
 

@@ -98,25 +98,21 @@ public class TransactionsActivity extends AppCompatActivity {
         final TextView dateTextView = new TextView(this);
         dateTextView.setGravity(Gravity.CENTER);
         dateTextView.setText(DateFormatter.dateToString(trans.getDate()));
-        dateTextView.setTextColor(Color.BLACK);
         newRow.addView(dateTextView);
 
         final TextView amountTextView = new TextView(this);
         amountTextView.setGravity(Gravity.CENTER);
         amountTextView.setText(CurrencyFormatter.createCurrencyFormattedString(trans.getAmount()));
-        amountTextView.setTextColor(Color.BLACK);
         newRow.addView(amountTextView);
 
         final TextView categoryTextView = new TextView(this);
         categoryTextView.setGravity(Gravity.CENTER);
         categoryTextView.setText(trans.getCategory());
-        categoryTextView.setTextColor(Color.BLACK);
         newRow.addView(categoryTextView);
 
         final TextView noteTextView = new TextView(this);
         noteTextView.setGravity(Gravity.CENTER);
         noteTextView.setText(trans.getNote());
-        noteTextView.setTextColor(Color.BLACK);
         newRow.addView(noteTextView);
 
         newRow.setMinimumHeight(MIN_ROW_HEIGHT);

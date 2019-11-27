@@ -20,12 +20,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TableLayout
+            style="@style/TableLayoutStyle"
             android:id="@+id/transactionTable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:divider="@color/colorPrimary"
-            android:showDividers="middle"
             android:shrinkColumns="*"
             android:stretchColumns="*">
 
