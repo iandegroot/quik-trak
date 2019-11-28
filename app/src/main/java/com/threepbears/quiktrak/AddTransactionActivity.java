@@ -10,14 +10,16 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class AddTransactionActivity extends AppCompatActivity {
 
@@ -28,6 +30,7 @@ public class AddTransactionActivity extends AppCompatActivity {
     private Button addTransButton;
 
     private TransactionRoomDatabase transDB;
+    private CategoryRoomDatabase categoryDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         transDB = TransactionRoomDatabase.getDatabase(this);
+        categoryDB = CategoryRoomDatabase.getDatabase(this);
 
         dateEditText = findViewById(R.id.dateEditText);
         amountEditText = findViewById(R.id.amountEditText);
@@ -84,6 +88,8 @@ public class AddTransactionActivity extends AppCompatActivity {
         amountEditText.requestFocus();
         amountEditText.addTextChangedListener(new CurrencyEditTextWatcher(amountEditText));
         amountEditText.setText("0");
+
+        setupCategorySpinner();
     }
 
     private void addNewTransaction() {
@@ -102,6 +108,16 @@ public class AddTransactionActivity extends AppCompatActivity {
         TransactionDao transDao = transDB.transactionDao();
 
         transDao.insert(newTrans);
+    }
+
+    private void setupCategorySpinner() {
+        List<String> categoryNames = new ArrayList<>();
+        for (Category category : categoryDB.categoryDao().getAllCategories()) {
+            categoryNames.add(category.getCategoryName());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoryNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(adapter);
     }
 
     @Override
