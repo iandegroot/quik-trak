@@ -1,6 +1,7 @@
 package com.threepbears.quiktrak;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -9,7 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
@@ -42,6 +43,8 @@ public class CategoriesActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addNewCategory(addCategoryEditText.getText().toString());
+
+                closeKeyboardAndClearEditText(addCategoryEditText);
             }
         });
 
@@ -64,6 +67,12 @@ public class CategoriesActivity extends AppCompatActivity {
         CategoryDao categoryDao = categoryDB.categoryDao();
 
         categoryDao.insert(newCategory);
+    }
+
+    private void closeKeyboardAndClearEditText(EditText addCategoryEditText) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(addCategoryEditText.getWindowToken(), 0);
+        addCategoryEditText.getText().clear();
     }
 
     @Override
