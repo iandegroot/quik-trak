@@ -19,6 +19,9 @@ public interface TransactionDao {
     @Query("DELETE FROM transactions_table WHERE id = :id")
     void deleteTransaction(int id);
 
+    @Query("DELETE FROM transactions_table WHERE category = :category")
+    void deleteAllCategoryTransactions(String category);
+
     @Query("SELECT * from transactions_table ORDER BY date DESC")
     List<Transaction> getAllTransactions();
 

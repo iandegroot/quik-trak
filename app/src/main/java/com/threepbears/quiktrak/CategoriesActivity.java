@@ -25,6 +25,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
     private ArrayList<Category> categories = new ArrayList<>();
     private CategoryRoomDatabase categoryDB;
+    private TransactionRoomDatabase transDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class CategoriesActivity extends AppCompatActivity {
         });
 
         categoryDB = CategoryRoomDatabase.getDatabase(this);
+        transDB = TransactionRoomDatabase.getDatabase(this);
     }
 
     private void addNewCategory(String categoryName) {
@@ -109,11 +111,11 @@ public class CategoriesActivity extends AppCompatActivity {
 
         TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f);
 
-        final TextView amountTextView = new TextView(this);
-        amountTextView.setGravity(Gravity.CENTER);
-        amountTextView.setText(category.getCategoryName());
-        amountTextView.setLayoutParams(layoutParams);
-        newRow.addView(amountTextView);
+        final TextView categoryTextView = new TextView(this);
+        categoryTextView.setGravity(Gravity.CENTER);
+        categoryTextView.setText(category.getCategoryName());
+        categoryTextView.setLayoutParams(layoutParams);
+        newRow.addView(categoryTextView);
 
         newRow.setMinimumHeight(Constants.MIN_ROW_HEIGHT);
         newRow.setGravity(Gravity.CENTER);
@@ -122,11 +124,14 @@ public class CategoriesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(v.getContext())
-                        .setMessage("Are you sure you want to delete the category?")
+                        .setMessage("Are you sure you want to delete the category '" + categoryTextView.getText().toString() + "'?\n" +
+                                "All transactions of that category will also be deleted.")
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                removeCategoryAndRow(newRow.getId());
+                                if (removeCategoryAndRow(newRow.getId())) {
+                                    deleteAllCategoryTransactions(categoryTextView.getText().toString());
+                                }
                             }
                         })
                         .setNegativeButton("No", null)
@@ -136,11 +141,14 @@ public class CategoriesActivity extends AppCompatActivity {
         categoryTable.addView(newRow);
     }
 
-    private void removeCategoryAndRow(int transId) {
-        if (deleteCategory(transId)) {
+    private boolean removeCategoryAndRow(int categoryId) {
+        if (deleteCategory(categoryId)) {
             removeAllCategoryRows();
             addAllCategoryRows();
+            return true;
         }
+
+        return false;
     }
 
     private boolean deleteCategory(int id) {
@@ -164,6 +172,12 @@ public class CategoriesActivity extends AppCompatActivity {
         CategoryDao categoryDao = categoryDB.categoryDao();
 
         return categoryDao.getCategory(id);
+    }
+
+    private void deleteAllCategoryTransactions(String category) {
+        TransactionDao transDao = transDB.transactionDao();
+
+        transDao.deleteAllCategoryTransactions(category);
     }
 
     @Override
