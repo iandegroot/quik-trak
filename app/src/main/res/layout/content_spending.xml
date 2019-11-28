@@ -18,12 +18,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+            <ImageButton
                 android:id="@+id/buttonEarlierMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="@string/button_earlier_month" />
+                android:src="@drawable/ic_keyboard_arrow_left_white_24dp" />
 
             <TextView
                 android:id="@+id/monthTextView"
@@ -34,14 +34,16 @@
                 android:text="@string/month_text_view"
                 android:textSize="24sp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/buttonLaterMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="@string/button_later_month" />
+                android:src="@drawable/ic_keyboard_arrow_right_white_24dp" />
         </LinearLayout>
 
+        <View style="@style/Divider"/>
+        
         <TableLayout
             style="@style/TableLayoutStyle"
             android:id="@+id/spendingTable"

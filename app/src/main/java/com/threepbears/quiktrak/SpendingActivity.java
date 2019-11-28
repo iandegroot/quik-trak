@@ -4,13 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
@@ -53,9 +52,9 @@ public class SpendingActivity extends AppCompatActivity {
 
         final Calendar cal = Calendar.getInstance();
 
-        final Button buttonEarlierMonth = findViewById(R.id.buttonEarlierMonth);
+        final ImageButton buttonEarlierMonth = findViewById(R.id.buttonEarlierMonth);
         final TextView monthTextView = findViewById(R.id.monthTextView);
-        final Button buttonLaterMonth = findViewById(R.id.buttonLaterMonth);
+        final ImageButton buttonLaterMonth = findViewById(R.id.buttonLaterMonth);
 
         buttonEarlierMonth.setOnClickListener(new View.OnClickListener() {
             @Override
