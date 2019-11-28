@@ -21,7 +21,7 @@
 
         <TableLayout
             style="@style/TableLayoutStyle"
-            android:id="@+id/transactionTable"
+            android:id="@+id/transactionsTable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:shrinkColumns="*"

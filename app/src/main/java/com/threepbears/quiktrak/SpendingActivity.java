@@ -31,7 +31,6 @@ public class SpendingActivity extends AppCompatActivity {
 
     private ArrayList<Transaction> transactions = new ArrayList<>();
     private Map<String, Integer> spendingByCategory = new LinkedHashMap<>();
-    private static final int MIN_ROW_HEIGHT = 100;
     SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     private TransactionRoomDatabase transDB;
 
@@ -177,7 +176,7 @@ public class SpendingActivity extends AppCompatActivity {
         amountTextView.setLayoutParams(layoutParams);
         newRow.addView(amountTextView);
 
-        newRow.setMinimumHeight(MIN_ROW_HEIGHT);
+        newRow.setMinimumHeight(Constants.MIN_ROW_HEIGHT);
         newRow.setGravity(Gravity.CENTER);
         newRow.setLayoutParams(layoutParams);
         transTable.addView(newRow);

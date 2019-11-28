@@ -64,7 +64,7 @@ public class TransactionsActivity extends AppCompatActivity {
     }
 
     private void addAllTransactionRows() {
-        TableLayout transTable = findViewById(R.id.transactionTable);
+        TableLayout transTable = findViewById(R.id.transactionsTable);
 
         for (Transaction t : transactions) {
             addTransactionRow(transTable, t);
@@ -80,7 +80,7 @@ public class TransactionsActivity extends AppCompatActivity {
     }
 
     private void removeAllTransactionRows() {
-        TableLayout transTable = findViewById(R.id.transactionTable);
+        TableLayout transTable = findViewById(R.id.transactionsTable);
 
         int childCount = transTable.getChildCount();
 

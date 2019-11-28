@@ -1,4 +1,5 @@
 <resources>
+    <!--TODO: Group these by file they are used in-->
     <string name="app_name">QuikTrak</string>
     <string name="transactions_page">Transactions</string>
     <string name="categories_page">Categories</string>
@@ -25,5 +26,10 @@
         <item>Haircut</item>
         <item>Home Improvement</item>
     </string-array>
-    <string name="title_activity_categories">CategoriesActivity</string>
+
+
+    <string name="title_activity_categories">Categories</string>
+
+    <string name="add_category_button">Add Category</string>
+    <string name="add_category_text_view">New category name...</string>
 </resources>
