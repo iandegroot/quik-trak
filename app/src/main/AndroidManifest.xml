@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".CategoriesActivity"
+            android:label="@string/title_activity_categories"
+            android:parentActivityName=".SpendingActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.threepbears.quiktrak.SpendingActivity" />
+        </activity>
+        <activity
             android:name=".SpendingActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">

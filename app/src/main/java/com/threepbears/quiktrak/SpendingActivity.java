@@ -217,6 +217,9 @@ public class SpendingActivity extends AppCompatActivity {
         if (id == R.id.transactions_page) {
             startActivity(new Intent(SpendingActivity.this, TransactionsActivity.class));
             return true;
+        } else if (id == R.id.categories_page) {
+            startActivity(new Intent(SpendingActivity.this, CategoriesActivity.class));
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

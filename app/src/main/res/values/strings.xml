@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">QuikTrak</string>
     <string name="transactions_page">Transactions</string>
+    <string name="categories_page">Categories</string>
     <string name="title_activity_spending">Spending</string>
     <string name="title_activity_transactions">Transactions</string>
     <string name="title_activity_add_transaction">Add Transaction</string>
@@ -24,4 +25,5 @@
         <item>Haircut</item>
         <item>Home Improvement</item>
     </string-array>
+    <string name="title_activity_categories">CategoriesActivity</string>
 </resources>

@@ -7,4 +7,10 @@
         android:orderInCategory="100"
         android:title="@string/transactions_page"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/categories_page"
+        android:orderInCategory="100"
+        android:title="@string/categories_page"
+        app:showAsAction="never" />
 </menu>
