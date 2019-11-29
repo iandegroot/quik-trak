@@ -36,6 +36,9 @@ public class CategoriesActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        categoryDB = CategoryRoomDatabase.getDatabase(this);
+        transDB = TransactionRoomDatabase.getDatabase(this);
+
         final Button addCategoryButton = findViewById(R.id.addCategoryButton);
         final EditText addCategoryEditText = findViewById(R.id.addCategoryEditText);
         addCategoryButton.requestFocus();
@@ -48,9 +51,6 @@ public class CategoriesActivity extends AppCompatActivity {
                 closeKeyboardAndClearEditText(addCategoryEditText);
             }
         });
-
-        categoryDB = CategoryRoomDatabase.getDatabase(this);
-        transDB = TransactionRoomDatabase.getDatabase(this);
     }
 
     private void addNewCategory(String categoryName) {

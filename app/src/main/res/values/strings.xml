@@ -1,35 +1,30 @@
 <resources>
-    <!--TODO: Group these by file they are used in-->
     <string name="app_name">QuikTrak</string>
+
     <string name="transactions_page">Transactions</string>
     <string name="categories_page">Categories</string>
+
     <string name="title_activity_spending">Spending</string>
+    <string name="month_text_view">Month</string>
+    <string name="total_text_view">$$$$</string>
+    <string name="previous_month_button">Previous</string>
+    <string name="next_month_button">Next</string>
+    <string name="quick_op_category_button_1">Category 1</string>
+    <string name="quick_op_category_button_2">Category 2</string>
+    <string name="quick_op_category_button_3">Category 3</string>
+    <string name="quick_op_category_button_4">Category 4</string>
+
     <string name="title_activity_transactions">Transactions</string>
+
     <string name="title_activity_add_transaction">Add Transaction</string>
     <string name="date_text_view">Date</string>
     <string name="amount_text_view">Amount</string>
     <string name="category_text_view">Category</string>
     <string name="note_text_view">Note</string>
     <string name="add_transaction_button">Add Transaction</string>
-    <string name="month_text_view">Month</string>
-    <string name="total_text_view">$$$$</string>
-    <string name="add_transaction_done">Add Transaction</string>
-    <string-array name="categories">
-        <item>Eating out</item>
-        <item>Groceries</item>
-        <item>Entertainment</item>
-        <item>Fuel</item>
-        <item>Gifts</item>
-        <item>Trips</item>
-        <item>Car</item>
-        <item>Clothes</item>
-        <item>Haircut</item>
-        <item>Home Improvement</item>
-    </string-array>
-
+    <string name="add_transaction_check_mark">Add Transaction</string>
 
     <string name="title_activity_categories">Categories</string>
-
     <string name="add_category_button">Add Category</string>
     <string name="add_category_text_view">New category name...</string>
 </resources>

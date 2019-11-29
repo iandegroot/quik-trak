@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -55,6 +56,11 @@ public class SpendingActivity extends AppCompatActivity {
         final TextView monthTextView = findViewById(R.id.monthTextView);
         final ImageButton buttonLaterMonth = findViewById(R.id.buttonLaterMonth);
 
+        final Button quickOpCatButton1 = findViewById(R.id.quickOpCategoryButton1);
+        final Button quickOpCatButton2 = findViewById(R.id.quickOpCategoryButton2);
+        final Button quickOpCatButton3 = findViewById(R.id.quickOpCategoryButton3);
+        final Button quickOpCatButton4 = findViewById(R.id.quickOpCategoryButton4);
+
         buttonEarlierMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,7 +83,29 @@ public class SpendingActivity extends AppCompatActivity {
             }
         });
 
+        // TODO: Pull these from the Category DB
+        quickOpCatButton1.setText("Eating out");
+        quickOpCatButton2.setText("Groceries");
+        quickOpCatButton3.setText("Entertainment");
+        quickOpCatButton4.setText("Fuel");
+
+        quickOpCatButton1.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton1.getText().toString()));
+        quickOpCatButton2.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton2.getText().toString()));
+        quickOpCatButton3.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton3.getText().toString()));
+        quickOpCatButton4.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton4.getText().toString()));
+
         transDB = TransactionRoomDatabase.getDatabase(this);
+    }
+
+    private View.OnClickListener createOnClickListenerForQuickOpCatButton(final String category) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SpendingActivity.this, AddTransactionActivity.class);
+                intent.putExtra(Constants.CATEGORY_EXTRA_NAME, category);
+                startActivity(intent);
+            }
+        };
     }
 
     private void clearSpendingRowsAndData() {

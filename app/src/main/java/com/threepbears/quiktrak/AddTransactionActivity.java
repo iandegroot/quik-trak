@@ -1,6 +1,7 @@
 package com.threepbears.quiktrak;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -118,6 +119,12 @@ public class AddTransactionActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoryNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(adapter);
+
+        Intent intent = getIntent();
+        String chosenCategory = intent.getStringExtra(Constants.CATEGORY_EXTRA_NAME);
+        if (chosenCategory != null) {
+            categorySpinner.setSelection(adapter.getPosition(chosenCategory));
+        }
     }
 
     @Override
