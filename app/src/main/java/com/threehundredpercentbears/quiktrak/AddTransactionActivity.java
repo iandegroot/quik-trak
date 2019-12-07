@@ -136,8 +136,12 @@ public class AddTransactionActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        addNewTransaction();
-        finish();
-        return true;
+        if (item.getItemId() == R.id.addTransactionCheckMark) {
+            addNewTransaction();
+            finish();
+            return true;
+        }
+
+        return false;
     }
 }
