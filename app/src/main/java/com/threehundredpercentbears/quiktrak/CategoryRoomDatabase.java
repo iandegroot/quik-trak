@@ -1,4 +1,4 @@
-package com.threepbears.quiktrak;
+package com.threehundredpercentbears.quiktrak;
 
 import android.content.Context;
 
@@ -7,7 +7,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import java.util.Date;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Category.class}, version = 1)

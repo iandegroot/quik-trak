@@ -1,4 +1,4 @@
-package com.threepbears.quiktrak;
+package com.threehundredpercentbears.quiktrak;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

@@ -1,4 +1,4 @@
-package com.threepbears.quiktrak;
+package com.threehundredpercentbears.quiktrak;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

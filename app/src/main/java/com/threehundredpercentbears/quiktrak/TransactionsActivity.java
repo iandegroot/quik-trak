@@ -1,9 +1,8 @@
-package com.threepbears.quiktrak;
+package com.threehundredpercentbears.quiktrak;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

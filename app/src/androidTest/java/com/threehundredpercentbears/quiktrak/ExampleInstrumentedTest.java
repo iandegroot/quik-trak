@@ -1,4 +1,4 @@
-package com.threepbears.quiktrak;
+package com.threehundredpercentbears.quiktrak;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.threepbears.quiktrak", appContext.getPackageName());
+        assertEquals("com.threehundredpercentbears.quiktrak", appContext.getPackageName());
     }
 }

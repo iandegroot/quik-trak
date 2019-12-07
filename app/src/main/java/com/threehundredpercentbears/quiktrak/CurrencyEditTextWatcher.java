@@ -1,4 +1,4 @@
-package com.threepbears.quiktrak;
+package com.threehundredpercentbears.quiktrak;
 
 import android.text.Editable;
 import android.text.TextWatcher;
