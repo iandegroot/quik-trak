@@ -7,6 +7,7 @@
     <string name="title_activity_spending">Spending</string>
     <string name="month_text_view">Month</string>
     <string name="total_text_view">$$$$</string>
+    <string name="quick_op_text_view">Quik Add Options</string>
     <string name="previous_month_button">Previous</string>
     <string name="next_month_button">Next</string>
     <string name="quick_op_category_button_1">Category 1</string>

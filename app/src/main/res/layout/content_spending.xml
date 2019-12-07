@@ -45,12 +45,20 @@
         </LinearLayout>
 
         <View style="@style/Divider"/>
-        
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical">
+
         <TableLayout
             style="@style/TableLayoutStyle"
             android:id="@+id/spendingTable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        </ScrollView>
 
         <View style="@style/Divider"/>
 
@@ -60,7 +68,19 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/total_text_view"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/quickOpTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/quick_op_text_view"
+            android:textSize="24sp"
+            android:layout_marginTop="30dp"/>
+
+        <View style="@style/Divider"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,14 +89,14 @@
 
             <Button
                 android:id="@+id/quickOpCategoryButton1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/quick_op_category_button_1" />
 
             <Button
                 android:id="@+id/quickOpCategoryButton2"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/quick_op_category_button_2" />
@@ -89,18 +109,21 @@
 
             <Button
                 android:id="@+id/quickOpCategoryButton3"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/quick_op_category_button_3" />
 
             <Button
                 android:id="@+id/quickOpCategoryButton4"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/quick_op_category_button_4" />
         </LinearLayout>
+
+        <View style="@style/Divider"
+            android:layout_marginBottom="80dp"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
