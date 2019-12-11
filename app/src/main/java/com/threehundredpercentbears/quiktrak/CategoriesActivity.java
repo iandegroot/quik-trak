@@ -1,31 +1,31 @@
 package com.threehundredpercentbears.quiktrak;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 public class CategoriesActivity extends AppCompatActivity {
 
     private ArrayList<Category> categories = new ArrayList<>();
     private CategoryRoomDatabase categoryDB;
     private TransactionRoomDatabase transDB;
+    private RecyclerView recyclerView;
+    private RecyclerViewAdapter recyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +51,25 @@ public class CategoriesActivity extends AppCompatActivity {
                 closeKeyboardAndClearEditText(addCategoryEditText);
             }
         });
+
+        recyclerView = findRecyclerView();
+        readAllCategoriesFromDB();
+        recyclerAdapter = new RecyclerViewAdapter(categories, categoryDB, transDB);
+        recyclerView.setAdapter(recyclerAdapter);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private void addNewCategory(String categoryName) {
-        TableLayout categoryTable = findViewById(R.id.categoriesTable);
-
         // Dividing the current time by 1000 to make it fit into an int and using that as
         // the id of the transaction
         Category newCategory = new Category((int) (new Date().getTime() / 1000), categoryName);
 
         categories.add(newCategory);
-        addCategoryRow(categoryTable, newCategory);
         writeCategoryToDB(newCategory);
     }
 
@@ -80,14 +88,8 @@ public class CategoriesActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        showAllCategories();
     }
 
-    private void showAllCategories() {
-        readAllCategoriesFromDB();
-        addAllCategoryRows();
-    }
 
     private void readAllCategoriesFromDB() {
         CategoryDao categoryDao = categoryDB.categoryDao();
@@ -96,95 +98,10 @@ public class CategoriesActivity extends AppCompatActivity {
         categories.addAll(categoryDao.getAllCategories());
     }
 
-    private void addAllCategoryRows() {
-        TableLayout categoryTable = findViewById(R.id.categoriesTable);
-
-        for (Category category : categories) {
-            addCategoryRow(categoryTable, category);
-        }
-    }
-
-    private void addCategoryRow(TableLayout categoryTable, Category category) {
-        final TableRow newRow = new TableRow(this);
-
-        newRow.setId(category.getId());
-
-        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f);
-
-        final TextView categoryTextView = new TextView(this);
-        categoryTextView.setGravity(Gravity.CENTER);
-        categoryTextView.setText(category.getCategoryName());
-        categoryTextView.setLayoutParams(layoutParams);
-        newRow.addView(categoryTextView);
-
-        newRow.setMinimumHeight(Constants.MIN_ROW_HEIGHT);
-        newRow.setGravity(Gravity.CENTER);
-        newRow.setLayoutParams(layoutParams);
-        newRow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AlertDialog.Builder(v.getContext())
-                        .setMessage("Are you sure you want to delete the category '" + categoryTextView.getText().toString() + "'?\n" +
-                                "All transactions of that category will also be deleted.")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                if (removeCategoryAndRow(newRow.getId())) {
-                                    deleteAllCategoryTransactions(categoryTextView.getText().toString());
-                                }
-                            }
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
-            }
-        });
-        categoryTable.addView(newRow);
-    }
-
-    private boolean removeCategoryAndRow(int categoryId) {
-        if (deleteCategory(categoryId)) {
-            removeAllCategoryRows();
-            addAllCategoryRows();
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean deleteCategory(int id) {
-
-        if (!checkForCategoryInDB(id).isEmpty()) {
-            deleteCategoryFromDB(id);
-            readAllCategoriesFromDB();
-            return true;
-        }
-
-        return false;
-    }
-
-    private void deleteCategoryFromDB(int id) {
-        CategoryDao categoryDao = categoryDB.categoryDao();
-
-        categoryDao.deleteCategory(id);
-    }
-
-    private List<Category> checkForCategoryInDB(int id) {
-        CategoryDao categoryDao = categoryDB.categoryDao();
-
-        return categoryDao.getCategory(id);
-    }
-
-    private void deleteAllCategoryTransactions(String category) {
-        TransactionDao transDao = transDB.transactionDao();
-
-        transDao.deleteAllCategoryTransactions(category);
-    }
-
     @Override
     protected void onStop() {
         super.onStop();
 
-        categories.clear();
         clearCategoriesRowsAndData();
     }
 
@@ -194,9 +111,26 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     private void removeAllCategoryRows() {
-        TableLayout categoriesTable = findViewById(R.id.categoriesTable);
-
-        categoriesTable.removeAllViews();
+        findRecyclerView().removeAllViews();
     }
 
+    private RecyclerView findRecyclerView() {
+        return findViewById(R.id.categoriesRecyclerView);
+    }
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            int fromPosition = viewHolder.getAdapterPosition();
+            int toPosition = target.getAdapterPosition();
+            Collections.swap(categories, fromPosition, toPosition);
+            recyclerView.getAdapter().notifyItemMoved(fromPosition, toPosition);
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+        }
+    };
 }
