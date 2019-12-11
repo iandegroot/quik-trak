@@ -34,6 +34,7 @@ public class SpendingActivity extends AppCompatActivity {
     private Map<String, Integer> spendingByCategory = new LinkedHashMap<>();
     SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     private TransactionRoomDatabase transDB;
+    private CategoryRoomDatabase categoryDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,11 @@ public class SpendingActivity extends AppCompatActivity {
         quickOpCatButton3.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton3.getText().toString()));
         quickOpCatButton4.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton4.getText().toString()));
 
+        categoryDB = CategoryRoomDatabase.getDatabase(this);
         transDB = TransactionRoomDatabase.getDatabase(this);
+
+        // Make this call to initialize the categories DB. The onCreate callback doesn't get called until the DB is accessed.
+        categoryDB.categoryDao().getAllCategories();
     }
 
     private View.OnClickListener createOnClickListenerForQuickOpCatButton(final String category) {
