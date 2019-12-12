@@ -20,6 +20,9 @@ public interface CategoryDao {
     @Query("SELECT * from categories_table WHERE id = :id")
     List<Category> getCategory(int id);
 
-    @Query("SELECT * from categories_table")
+    @Query("SELECT * from categories_table ORDER BY rank ASC")
     List<Category> getAllCategories();
+
+    @Query("UPDATE categories_table SET rank = :rank WHERE id = :id")
+    void updateRank(int id, int rank);
 }

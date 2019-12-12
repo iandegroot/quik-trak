@@ -67,7 +67,7 @@ public class CategoriesActivity extends AppCompatActivity {
     private void addNewCategory(String categoryName) {
         // Dividing the current time by 1000 to make it fit into an int and using that as
         // the id of the transaction
-        Category newCategory = new Category((int) (new Date().getTime() / 1000), categoryName);
+        Category newCategory = new Category((int) (new Date().getTime() / 1000), categoryName, categories.size());
 
         categories.add(newCategory);
         writeCategoryToDB(newCategory);
@@ -85,11 +85,6 @@ public class CategoriesActivity extends AppCompatActivity {
         addCategoryEditText.getText().clear();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
 
     private void readAllCategoriesFromDB() {
         CategoryDao categoryDao = categoryDB.categoryDao();
@@ -99,10 +94,21 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
 
+        writeNewRankingsToDB();
         clearCategoriesRowsAndData();
+    }
+
+    private void writeNewRankingsToDB() {
+        CategoryDao categoryDao = categoryDB.categoryDao();
+
+        for (int i = 0; i < categories.size(); i++) {
+            Category category = categories.get(i);
+            category.setRank(i);
+            categoryDao.updateRank(category.getId(), category.getRank());
+        }
     }
 
     private void clearCategoriesRowsAndData() {

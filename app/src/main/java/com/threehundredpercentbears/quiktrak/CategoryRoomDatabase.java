@@ -29,16 +29,16 @@ public abstract class CategoryRoomDatabase extends RoomDatabase {
                                     Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
                                         @Override
                                         public void run() {
-                                            getDatabase(context).categoryDao().insert(new Category(0, "Eating out"));
-                                            getDatabase(context).categoryDao().insert(new Category(1, "Groceries"));
-                                            getDatabase(context).categoryDao().insert(new Category(2, "Entertainment"));
-                                            getDatabase(context).categoryDao().insert(new Category(3, "Fuel"));
-                                            getDatabase(context).categoryDao().insert(new Category(4, "Gifts"));
-                                            getDatabase(context).categoryDao().insert(new Category(5, "Trips"));
-                                            getDatabase(context).categoryDao().insert(new Category(6, "Car"));
-                                            getDatabase(context).categoryDao().insert(new Category(7, "Clothes"));
-                                            getDatabase(context).categoryDao().insert(new Category(8, "Haircut"));
-                                            getDatabase(context).categoryDao().insert(new Category(9, "Home Improvement"));
+                                            getDatabase(context).categoryDao().insert(new Category(0, "Eating out", 0));
+                                            getDatabase(context).categoryDao().insert(new Category(1, "Groceries", 1));
+                                            getDatabase(context).categoryDao().insert(new Category(2, "Entertainment", 2));
+                                            getDatabase(context).categoryDao().insert(new Category(3, "Fuel", 3));
+                                            getDatabase(context).categoryDao().insert(new Category(4, "Gifts", 4));
+                                            getDatabase(context).categoryDao().insert(new Category(5, "Trips", 5));
+                                            getDatabase(context).categoryDao().insert(new Category(6, "Car", 6));
+                                            getDatabase(context).categoryDao().insert(new Category(7, "Clothes", 7));
+                                            getDatabase(context).categoryDao().insert(new Category(8, "Haircut", 8));
+                                            getDatabase(context).categoryDao().insert(new Category(9, "Home Improvement", 9));
                                         }
                                     });
                                 }

@@ -36,6 +36,11 @@ public class SpendingActivity extends AppCompatActivity {
     private TransactionRoomDatabase transDB;
     private CategoryRoomDatabase categoryDB;
 
+    Button quickOpCatButton1;
+    Button quickOpCatButton2;
+    Button quickOpCatButton3;
+    Button quickOpCatButton4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +62,10 @@ public class SpendingActivity extends AppCompatActivity {
         final TextView monthTextView = findViewById(R.id.monthTextView);
         final ImageButton buttonLaterMonth = findViewById(R.id.buttonLaterMonth);
 
-        final Button quickOpCatButton1 = findViewById(R.id.quickOpCategoryButton1);
-        final Button quickOpCatButton2 = findViewById(R.id.quickOpCategoryButton2);
-        final Button quickOpCatButton3 = findViewById(R.id.quickOpCategoryButton3);
-        final Button quickOpCatButton4 = findViewById(R.id.quickOpCategoryButton4);
+        quickOpCatButton1 = findViewById(R.id.quickOpCategoryButton1);
+        quickOpCatButton2 = findViewById(R.id.quickOpCategoryButton2);
+        quickOpCatButton3 = findViewById(R.id.quickOpCategoryButton3);
+        quickOpCatButton4 = findViewById(R.id.quickOpCategoryButton4);
 
         buttonEarlierMonth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,17 +88,6 @@ public class SpendingActivity extends AppCompatActivity {
                 showSpendingForMonth(cal);
             }
         });
-
-        // TODO: Pull these from the Category DB
-        quickOpCatButton1.setText("Eating out");
-        quickOpCatButton2.setText("Groceries");
-        quickOpCatButton3.setText("Entertainment");
-        quickOpCatButton4.setText("Fuel");
-
-        quickOpCatButton1.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton1.getText().toString()));
-        quickOpCatButton2.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton2.getText().toString()));
-        quickOpCatButton3.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton3.getText().toString()));
-        quickOpCatButton4.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton4.getText().toString()));
 
         categoryDB = CategoryRoomDatabase.getDatabase(this);
         transDB = TransactionRoomDatabase.getDatabase(this);
@@ -146,7 +140,24 @@ public class SpendingActivity extends AppCompatActivity {
         super.onStart();
 
         showSpendingForMonth(Calendar.getInstance());
+        setupQuikAddButtons();
     }
+
+    private void setupQuikAddButtons() {
+        List<Category> categories = categoryDB.categoryDao().getAllCategories();
+
+        quickOpCatButton1.setText(categories.get(0).getCategoryName());
+        quickOpCatButton2.setText(categories.get(1).getCategoryName());
+        quickOpCatButton3.setText(categories.get(2).getCategoryName());
+        quickOpCatButton4.setText(categories.get(3).getCategoryName());
+
+        quickOpCatButton1.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton1.getText().toString()));
+        quickOpCatButton2.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton2.getText().toString()));
+        quickOpCatButton3.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton3.getText().toString()));
+        quickOpCatButton4.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton4.getText().toString()));
+    }
+
+
 
     @Override
     protected void onStop() {
