@@ -30,9 +30,9 @@ import java.util.Map;
 
 public class SpendingActivity extends AppCompatActivity {
 
-    private ArrayList<Transaction> transactions = new ArrayList<>();
+    private List<Transaction> transactions = new ArrayList<>();
     private Map<String, Integer> spendingByCategory = new LinkedHashMap<>();
-    SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
+    private SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     private TransactionRoomDatabase transDB;
     private CategoryRoomDatabase categoryDB;
 
