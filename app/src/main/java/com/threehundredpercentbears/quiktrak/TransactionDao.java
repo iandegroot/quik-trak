@@ -1,5 +1,6 @@
 package com.threehundredpercentbears.quiktrak;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -23,12 +24,12 @@ public interface TransactionDao {
     void deleteAllCategoryTransactions(String category);
 
     @Query("SELECT * from transactions_table ORDER BY date DESC")
-    List<Transaction> getAllTransactions();
+    LiveData<List<Transaction>> getAllTransactions();
 
     @Query("SELECT * from transactions_table WHERE id = :id")
-    List<Transaction> getTransaction(int id);
+    LiveData<List<Transaction>> getTransaction(int id);
 
     @TypeConverters({DateConverter.class})
     @Query("SELECT * FROM transactions_table WHERE date BETWEEN :startDate AND :endDate")
-    List<Transaction> getTransactionsForMonth(Date startDate, Date endDate);
+    LiveData<List<Transaction>> getTransactionsForMonth(Date startDate, Date endDate);
 }
