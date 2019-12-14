@@ -131,8 +131,8 @@ public class SpendingActivity extends AppCompatActivity {
         lastDayOfMonth.setTime(cal.getTime());
         lastDayOfMonth.set(Calendar.DAY_OF_MONTH, lastDayOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        List<Transaction> transactionsFromDB = transDao.getTransactionsForMonth(firstDayOfMonth.getTime(), lastDayOfMonth.getTime());
-        transactions.addAll(transactionsFromDB);
+//        List<Transaction> transactionsFromDB = transDao.getTransactionsForMonth(firstDayOfMonth.getTime(), lastDayOfMonth.getTime());
+//        transactions.addAll(transactionsFromDB);
     }
 
     @Override
