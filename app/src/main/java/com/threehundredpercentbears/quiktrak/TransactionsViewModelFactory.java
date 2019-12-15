@@ -2,6 +2,7 @@ package com.threehundredpercentbears.quiktrak;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -13,7 +14,7 @@ public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
         this.application = application;
     }
 
-    public <T extends ViewModel> T create(Class<T> modelClass) {
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(TransactionsViewModel.class)) {
             return (T) new TransactionsViewModel(application);
         }
