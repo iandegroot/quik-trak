@@ -14,8 +14,8 @@ public class TransactionViewModelFactory implements ViewModelProvider.Factory {
     }
 
     public <T extends ViewModel> T create(Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(TransactionViewModel.class)) {
-            return (T) new TransactionViewModel(application);
+        if (modelClass.isAssignableFrom(TransactionsViewModel.class)) {
+            return (T) new TransactionsViewModel(application);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

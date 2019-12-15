@@ -18,7 +18,7 @@ import java.util.List;
 
 public class TransactionsActivity extends AppCompatActivity {
 
-    private TransactionViewModel transactionViewModel;
+    private TransactionsViewModel transactionsViewModel;
 
     // This only runs once, the first time this activity is started
     @Override
@@ -36,9 +36,9 @@ public class TransactionsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         TransactionViewModelFactory factory = new TransactionViewModelFactory(this.getApplication());
-        transactionViewModel = new ViewModelProvider(this, factory).get(TransactionViewModel.class);
+        transactionsViewModel = new ViewModelProvider(this, factory).get(TransactionsViewModel.class);
 
-        transactionViewModel.getAllTransactions().observe(this, new Observer<List<Transaction>>() {
+        transactionsViewModel.getAllTransactions().observe(this, new Observer<List<Transaction>>() {
             @Override
             public void onChanged(@Nullable final List<Transaction> transactions) {
                 // Update the cached copy of the words in the adapter.
