@@ -1,5 +1,6 @@
 package com.threehundredpercentbears.quiktrak;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -18,10 +19,10 @@ public interface CategoryDao {
     void deleteCategory(int id);
 
     @Query("SELECT * from categories_table WHERE id = :id")
-    List<Category> getCategory(int id);
+    LiveData<List<Category>> getCategory(int id);
 
     @Query("SELECT * from categories_table ORDER BY rank ASC")
-    List<Category> getAllCategories();
+    LiveData<List<Category>> getAllCategories();
 
     @Query("UPDATE categories_table SET rank = :rank WHERE id = :id")
     void updateRank(int id, int rank);
