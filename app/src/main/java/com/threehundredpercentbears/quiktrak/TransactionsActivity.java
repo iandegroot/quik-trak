@@ -35,8 +35,8 @@ public class TransactionsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // TODO: Figure out how to use: new ViewModelProvider(this).get(TransactionViewModel.class);
-        transactionViewModel = new TransactionViewModel(this.getApplication());
+        TransactionViewModelFactory factory = new TransactionViewModelFactory(this.getApplication());
+        transactionViewModel = new ViewModelProvider(this, factory).get(TransactionViewModel.class);
 
         transactionViewModel.getAllTransactions().observe(this, new Observer<List<Transaction>>() {
             @Override

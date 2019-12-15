@@ -4,8 +4,11 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.text.InputType;
 import android.view.Menu;
@@ -33,6 +36,8 @@ public class AddTransactionActivity extends AppCompatActivity {
     private TransactionRoomDatabase transDB;
     private CategoryRoomDatabase categoryDB;
 
+    private AddTransactionViewModel addTransactionViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,14 +47,27 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        transDB = TransactionRoomDatabase.getDatabase(this);
-        categoryDB = CategoryRoomDatabase.getDatabase(this);
+//        transDB = TransactionRoomDatabase.getDatabase(this);
+//        categoryDB = CategoryRoomDatabase.getDatabase(this);
 
         dateEditText = findViewById(R.id.dateEditText);
         amountEditText = findViewById(R.id.amountEditText);
         categorySpinner = findViewById(R.id.categorySpinner);
         noteEditText = findViewById(R.id.noteEditText);
         addTransButton = findViewById(R.id.addTransactionButton);
+
+        AddTransactionViewModelFactory factory = new AddTransactionViewModelFactory(this.getApplication());
+        addTransactionViewModel = new ViewModelProvider(this, factory).get(AddTransactionViewModel.class);
+
+        // TODO: Setup spinner on categories change
+//        addTransactionViewModel.getAllTransactions().observe(this, this, new Observer<List<Transaction>>() {
+//            @Override
+//            public void onChanged(@Nullable final List<Transaction> transactions) {
+//                // Update the cached copy of the words in the adapter.
+////                adapter.setTransactions(transactions);
+//
+//            }
+//        });
 
         // Disabling manual editing of the date field, must use the popup calendar
         dateEditText.setShowSoftInputOnFocus(false);
@@ -102,14 +120,26 @@ public class AddTransactionActivity extends AppCompatActivity {
                 categorySpinner.getSelectedItem().toString(),
                 noteEditText.getText().toString());
 
-        writeTransactionToDB(newTrans);
+        addTransactionViewModel.insert(newTrans);
     }
 
-    private void writeTransactionToDB(Transaction newTrans) {
-        TransactionDao transDao = transDB.transactionDao();
+//    private void addNewTransaction() {
+//        // Dividing the current time by 1000 to make it fit into an int and using that as
+//        // the id of the transaction
+//        Transaction newTrans = new Transaction((int) (new Date().getTime() / 1000),
+//                DateFormatter.stringToDate(dateEditText.getText().toString()),
+//                Integer.parseInt(amountEditText.getText().toString().replaceAll("[$,.]", "")),
+//                categorySpinner.getSelectedItem().toString(),
+//                noteEditText.getText().toString());
+//
+//        writeTransactionToDB(newTrans);
+//    }
 
-        transDao.insert(newTrans);
-    }
+//    private void writeTransactionToDB(Transaction newTrans) {
+//        TransactionDao transDao = transDB.transactionDao();
+//
+//        transDao.insert(newTrans);
+//    }
 
     private void setupCategorySpinner() {
         List<String> categoryNames = new ArrayList<>();
