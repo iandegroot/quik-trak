@@ -5,11 +5,11 @@ import android.app.Application;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-public class TransactionViewModelFactory implements ViewModelProvider.Factory {
+public class TransactionsViewModelFactory implements ViewModelProvider.Factory {
 
     private final Application application;
 
-    public TransactionViewModelFactory(Application application) {
+    public TransactionsViewModelFactory(Application application) {
         this.application = application;
     }
 
