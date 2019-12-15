@@ -6,40 +6,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.TransactionViewHolder> {
 
-    class TransactionViewHolder extends RecyclerView.ViewHolder {
-        private final TextView dateTextView;
-        private final TextView amountTextView;
-        private final TextView categoryTextView;
-        private final TextView noteTextView;
-
-        private TransactionViewHolder(View itemView) {
-            super(itemView);
-            dateTextView = itemView.findViewById(R.id.dateTextView);
-            amountTextView = itemView.findViewById(R.id.amountTextView);
-            categoryTextView = itemView.findViewById(R.id.categoryTextView);
-            noteTextView = itemView.findViewById(R.id.noteTextView);
-        }
-    }
-
     private final LayoutInflater inflater;
-    private List<Transaction> transactions; // Cached copy of transactions
+    private List<Transaction> transactions;
 
     TransactionsAdapter(Context context) { inflater = LayoutInflater.from(context); }
 
+    @NonNull
     @Override
-    public TransactionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TransactionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = inflater.inflate(R.layout.transactions_row_item, parent, false);
         return new TransactionViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(TransactionViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
         if (transactions != null) {
             Transaction currentTrans = transactions.get(position);
             holder.dateTextView.setText(DateFormatter.dateToString(currentTrans.getDate()));
@@ -62,5 +49,20 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         if (transactions != null)
             return transactions.size();
         else return 0;
+    }
+
+    class TransactionViewHolder extends RecyclerView.ViewHolder {
+        private final TextView dateTextView;
+        private final TextView amountTextView;
+        private final TextView categoryTextView;
+        private final TextView noteTextView;
+
+        private TransactionViewHolder(View itemView) {
+            super(itemView);
+            dateTextView = itemView.findViewById(R.id.dateTextView);
+            amountTextView = itemView.findViewById(R.id.amountTextView);
+            categoryTextView = itemView.findViewById(R.id.categoryTextView);
+            noteTextView = itemView.findViewById(R.id.noteTextView);
+        }
     }
 }
