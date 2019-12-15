@@ -33,4 +33,13 @@ public class CategoryRepository {
             }
         });
     }
+
+    void updateRank(final int id, final int rank) {
+        CategoryRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                categoryDao.updateRank(id, rank);
+            }
+        });
+    }
 }

@@ -67,6 +67,18 @@ public class SpendingActivity extends AppCompatActivity {
         quickOpCatButton3 = findViewById(R.id.quickOpCategoryButton3);
         quickOpCatButton4 = findViewById(R.id.quickOpCategoryButton4);
 
+        quickOpCatButton1.setText("1");
+        quickOpCatButton2.setText("2");
+        quickOpCatButton3.setText("3");
+        quickOpCatButton4.setText("4");
+
+//        categoryDB.categoryDao().getAllCategories().observe(this, new Observer<List<Category>>() {
+//            @Override
+//            public void onChanged(List<Category> categories) {
+//                setupQuikAddButtons(categories);
+//            }
+//        });
+
         buttonEarlierMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,12 +152,10 @@ public class SpendingActivity extends AppCompatActivity {
         super.onStart();
 
         showSpendingForMonth(Calendar.getInstance());
-        setupQuikAddButtons();
+//        setupQuikAddButtons(categoryDB.categoryDao().getAllCategories().getValue());
     }
 
-    private void setupQuikAddButtons() {
-        List<Category> categories = categoryDB.categoryDao().getAllCategories();
-
+    private void setupQuikAddButtons(List<Category> categories) {
         quickOpCatButton1.setText(categories.get(0).getCategoryName());
         quickOpCatButton2.setText(categories.get(1).getCategoryName());
         quickOpCatButton3.setText(categories.get(2).getCategoryName());
