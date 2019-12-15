@@ -21,7 +21,7 @@ public class CategoryRepository {
         allCategories = categoryDao.getAllCategories();
     }
 
-    LiveData<List<Category>> getAllCategorys() {
+    LiveData<List<Category>> getAllCategories() {
         return allCategories;
     }
 

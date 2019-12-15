@@ -9,21 +9,22 @@ import java.util.List;
 
 public class AddTransactionViewModel extends AndroidViewModel {
 
-    private TransactionRepository repository;
+    private TransactionRepository transactionRepository;
+    private CategoryRepository categoryRepository;
 
-    private LiveData<List<Transaction>> allTransactions;
+    private LiveData<List<Category>> allCategories;
 
     public AddTransactionViewModel(Application application) {
         super(application);
-        repository = new TransactionRepository(application);
-        allTransactions = repository.getAllTransactions();
+        transactionRepository = new TransactionRepository(application);
+        allCategories = categoryRepository.getAllCategories();
     }
 
-    LiveData<List<Transaction>> getAllTransactions() {
-        return allTransactions;
+    LiveData<List<Category>> getAllCategories() {
+        return allCategories;
     }
 
     public void insert(Transaction transaction) {
-        repository.insert(transaction);
+        transactionRepository.insert(transaction);
     }
 }
