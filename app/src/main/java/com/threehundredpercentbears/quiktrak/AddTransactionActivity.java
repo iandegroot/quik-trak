@@ -60,14 +60,12 @@ public class AddTransactionActivity extends AppCompatActivity {
         addTransactionViewModel = new ViewModelProvider(this, factory).get(AddTransactionViewModel.class);
 
         // TODO: Setup spinner on categories change
-//        addTransactionViewModel.getAllTransactions().observe(this, this, new Observer<List<Transaction>>() {
-//            @Override
-//            public void onChanged(@Nullable final List<Transaction> transactions) {
-//                // Update the cached copy of the words in the adapter.
-////                adapter.setTransactions(transactions);
-//
-//            }
-//        });
+        addTransactionViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
+            @Override
+            public void onChanged(@Nullable final List<Category> categories) {
+                setupCategorySpinner(categories);
+            }
+        });
 
         // Disabling manual editing of the date field, must use the popup calendar
         dateEditText.setShowSoftInputOnFocus(false);
@@ -141,9 +139,9 @@ public class AddTransactionActivity extends AppCompatActivity {
 //        transDao.insert(newTrans);
 //    }
 
-    private void setupCategorySpinner() {
+    private void setupCategorySpinner(List<Category> categories) {
         List<String> categoryNames = new ArrayList<>();
-        for (Category category : categoryDB.categoryDao().getAllCategories()) {
+        for (Category category : categories) {
             categoryNames.add(category.getCategoryName());
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoryNames);
