@@ -17,6 +17,7 @@ public class AddTransactionViewModel extends AndroidViewModel {
     public AddTransactionViewModel(Application application) {
         super(application);
         transactionRepository = new TransactionRepository(application);
+        categoryRepository = new CategoryRepository(application);
         allCategories = categoryRepository.getAllCategories();
     }
 

@@ -106,7 +106,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         amountEditText.addTextChangedListener(new CurrencyEditTextWatcher(amountEditText));
         amountEditText.setText("0");
 
-        setupCategorySpinner();
+//        setupCategorySpinner();
     }
 
     private void addNewTransaction() {
