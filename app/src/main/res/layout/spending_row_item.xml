@@ -11,14 +11,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingTop="@dimen/recycler_view_text_margin"
-        android:paddingBottom="@dimen/recycler_view_text_margin"/>
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/spendingTotalByCategoryTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingTop="@dimen/recycler_view_text_margin"
-        android:paddingBottom="@dimen/recycler_view_text_margin"/>
+        android:gravity="center"/>
 </LinearLayout>
