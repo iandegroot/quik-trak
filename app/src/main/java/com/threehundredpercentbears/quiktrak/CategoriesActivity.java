@@ -1,6 +1,8 @@
 package com.threehundredpercentbears.quiktrak;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -50,7 +52,7 @@ public class CategoriesActivity extends AppCompatActivity {
         });
 
         RecyclerView recyclerView = findViewById(R.id.categoriesRecyclerView);
-        final CategoriesAdapter adapter = new CategoriesAdapter(this);
+        final CategoriesAdapter adapter = new CategoriesAdapter(this, createRecyclerViewItemClickListener(this));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -118,4 +120,26 @@ public class CategoriesActivity extends AppCompatActivity {
 
         }
     };
+
+    private OnItemClickListener<Category> createRecyclerViewItemClickListener(final Context context) {
+        return new OnItemClickListener<Category>() {
+
+            @Override
+            public void onItemClick(final Category category) {
+
+                new AlertDialog.Builder(context)
+                        .setMessage("Are you sure you want to delete the category '" + category.getCategoryName() + "'?\n" +
+                            "All transactions of that category will also be deleted.")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                categoriesViewModel.deleteAllCategoryTransactions(category.getCategoryName());
+                                categoriesViewModel.deleteCategory(category.getId());
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+            }
+        };
+    }
 }

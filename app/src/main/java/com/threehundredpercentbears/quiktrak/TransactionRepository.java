@@ -69,6 +69,15 @@ public class TransactionRepository {
         });
     }
 
+    void deleteAllCategoryTransactions(final String categoryName) {
+        TransactionRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                transactionDao.deleteAllCategoryTransactions(categoryName);
+            }
+        });
+    }
+
     static class MyMonth {
         final Date startDate;
         final Date endDate;

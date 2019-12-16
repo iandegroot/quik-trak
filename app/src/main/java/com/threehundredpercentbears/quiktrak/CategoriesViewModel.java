@@ -9,14 +9,16 @@ import java.util.List;
 
 public class CategoriesViewModel extends AndroidViewModel {
 
-    private CategoryRepository repository;
+    private CategoryRepository categoryRepository;
+    private TransactionRepository transactionRepository;
 
     private LiveData<List<Category>> allCategories;
 
     public CategoriesViewModel(Application application) {
         super(application);
-        repository = new CategoryRepository(application);
-        allCategories = repository.getAllCategories();
+        categoryRepository = new CategoryRepository(application);
+        transactionRepository = new TransactionRepository(application);
+        allCategories = categoryRepository.getAllCategories();
     }
 
     LiveData<List<Category>> getAllCategories() {
@@ -24,14 +26,18 @@ public class CategoriesViewModel extends AndroidViewModel {
     }
 
     public void insert(Category category) {
-        repository.insert(category);
+        categoryRepository.insert(category);
     }
 
     public void updateRank(int id, int rank) {
-        repository.updateRank(id, rank);
+        categoryRepository.updateRank(id, rank);
     }
 
     public void deleteCategory(int id) {
-        repository.deleteCategory(id);
+        categoryRepository.deleteCategory(id);
+    }
+
+    public void deleteAllCategoryTransactions(String categoryName) {
+        transactionRepository.deleteAllCategoryTransactions(categoryName);
     }
 }
