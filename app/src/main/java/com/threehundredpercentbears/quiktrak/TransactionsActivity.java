@@ -1,5 +1,8 @@
 package com.threehundredpercentbears.quiktrak;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -32,7 +35,7 @@ public class TransactionsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         RecyclerView recyclerView = findViewById(R.id.transactionsRecyclerView);
-        final TransactionsAdapter adapter = new TransactionsAdapter(this);
+        final TransactionsAdapter adapter = new TransactionsAdapter(this, createRecyclerViewItemClickListener(this));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -57,5 +60,25 @@ public class TransactionsActivity extends AppCompatActivity {
                 startActivity(new Intent(TransactionsActivity.this, AddTransactionActivity.class));
             }
         });
+    }
+
+    private OnItemClickListener<Transaction> createRecyclerViewItemClickListener(final Context context) {
+        return new OnItemClickListener<Transaction>() {
+
+            @Override
+            public void onItemClick(final Transaction transaction) {
+
+                new AlertDialog.Builder(context)
+                    .setMessage("Are you sure you want to delete the transaction?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            transactionsViewModel.deleteTransaction(transaction.getId());
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+            }
+        };
     }
 }

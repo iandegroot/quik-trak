@@ -14,9 +14,13 @@ import java.util.List;
 public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.TransactionViewHolder> {
 
     private final LayoutInflater inflater;
+    private final OnItemClickListener<Transaction> listener;
     private List<Transaction> transactions;
 
-    TransactionsAdapter(Context context) { inflater = LayoutInflater.from(context); }
+    TransactionsAdapter(Context context, OnItemClickListener<Transaction> listener) {
+        this.inflater = LayoutInflater.from(context);
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -33,6 +37,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
             holder.amountTextView.setText(CurrencyFormatter.createCurrencyFormattedString(currentTrans.getAmount()));
             holder.categoryTextView.setText(currentTrans.getCategory());
             holder.noteTextView.setText(currentTrans.getNote());
+            holder.bind(currentTrans, listener);
         }
         // TODO: Add else to set rows to default values if no transactions is null
     }
@@ -63,6 +68,14 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
             amountTextView = itemView.findViewById(R.id.amountTextView);
             categoryTextView = itemView.findViewById(R.id.categoryTextView);
             noteTextView = itemView.findViewById(R.id.noteTextView);
+        }
+
+        private void bind(final Transaction item, final OnItemClickListener<Transaction> listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(item);
+                }
+            });
         }
     }
 }

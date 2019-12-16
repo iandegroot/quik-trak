@@ -148,15 +148,17 @@ public class SpendingActivity extends AppCompatActivity {
     }
 
     private void setupQuikAddButtons(List<Category> categories) {
-        quickOpCatButton1.setText(categories.get(0).getCategoryName());
-        quickOpCatButton2.setText(categories.get(1).getCategoryName());
-        quickOpCatButton3.setText(categories.get(2).getCategoryName());
-        quickOpCatButton4.setText(categories.get(3).getCategoryName());
+        if (categories.size() >= 4) {
+            quickOpCatButton1.setText(categories.get(0).getCategoryName());
+            quickOpCatButton2.setText(categories.get(1).getCategoryName());
+            quickOpCatButton3.setText(categories.get(2).getCategoryName());
+            quickOpCatButton4.setText(categories.get(3).getCategoryName());
 
-        quickOpCatButton1.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton1.getText().toString()));
-        quickOpCatButton2.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton2.getText().toString()));
-        quickOpCatButton3.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton3.getText().toString()));
-        quickOpCatButton4.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton4.getText().toString()));
+            quickOpCatButton1.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton1.getText().toString()));
+            quickOpCatButton2.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton2.getText().toString()));
+            quickOpCatButton3.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton3.getText().toString()));
+            quickOpCatButton4.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton4.getText().toString()));
+        }
     }
 
     private int getSpendingTotal() {
