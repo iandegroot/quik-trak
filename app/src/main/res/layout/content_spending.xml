@@ -46,19 +46,11 @@
 
         <View style="@style/Divider"/>
 
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:scrollbars="vertical">
-
-        <TableLayout
-            style="@style/TableLayoutStyle"
-            android:id="@+id/spendingTable"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/spendingRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        </ScrollView>
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
         <View style="@style/Divider"/>
 
