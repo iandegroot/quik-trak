@@ -52,12 +52,21 @@ public class TransactionRepository {
         });
     }
 
-    public void setMonthFilter(Date startDate, Date endDate) {
+    void setMonthFilter(Date startDate, Date endDate) {
         MyMonth update = new MyMonth(startDate, endDate);
         if (Objects.equals(transactionsForMonthFilter.getValue(), update)) {
             return;
         }
         transactionsForMonthFilter.setValue(update);
+    }
+
+    void deleteTransaction(final int id) {
+        TransactionRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                transactionDao.deleteTransaction(id);
+            }
+        });
     }
 
     static class MyMonth {

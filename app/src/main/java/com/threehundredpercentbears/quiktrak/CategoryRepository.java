@@ -42,4 +42,13 @@ public class CategoryRepository {
             }
         });
     }
+
+    void deleteCategory(final int id) {
+        CategoryRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                categoryDao.deleteCategory(id);
+            }
+        });
+    }
 }

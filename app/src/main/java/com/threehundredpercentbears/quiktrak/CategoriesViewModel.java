@@ -30,4 +30,8 @@ public class CategoriesViewModel extends AndroidViewModel {
     public void updateRank(int id, int rank) {
         repository.updateRank(id, rank);
     }
+
+    public void deleteCategory(int id) {
+        repository.deleteCategory(id);
+    }
 }
