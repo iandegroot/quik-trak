@@ -10,36 +10,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class SpendingActivity extends AppCompatActivity {
 
-//    private List<Transaction> transactions = new ArrayList<>();
-//    private Map<String, Integer> spendingByCategory = new LinkedHashMap<>();
     private SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
-//    private TransactionRoomDatabase transDB;
-//    private CategoryRoomDatabase categoryDB;
-
     private SpendingViewModel spendingViewModel;
 
     Button quickOpCatButton1;
@@ -81,7 +68,7 @@ public class SpendingActivity extends AppCompatActivity {
             public void onChanged(@Nullable final List<Transaction> transactionsForMonth) {
                 // Update the cached copy of the words in the adapter.
                 adapter.setCategorySpendings(spendingViewModel.groupByCategoryAndSort(transactionsForMonth));
-                showSpendingForMonth(cal);
+                showTotalSpendingForMonth();
             }
         });
 
@@ -97,25 +84,11 @@ public class SpendingActivity extends AppCompatActivity {
             }
         });
 
-//        quickOpCatButton1.setText("1");
-//        quickOpCatButton2.setText("2");
-//        quickOpCatButton3.setText("3");
-//        quickOpCatButton4.setText("4");
-
-//        categoryDB.categoryDao().getAllCategories().observe(this, new Observer<List<Category>>() {
-//            @Override
-//            public void onChanged(List<Category> categories) {
-//                setupQuikAddButtons(categories);
-//            }
-//        });
-
         buttonEarlierMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cal.add(Calendar.MONTH, -1);
                 monthTextView.setText(format.format(cal.getTime()));
-//                clearSpendingRowsAndData();
-//                showSpendingForMonth(cal);
                 updateMonthFilter(cal);
             }
         });
@@ -127,14 +100,11 @@ public class SpendingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 cal.add(Calendar.MONTH, 1);
                 monthTextView.setText(format.format(cal.getTime()));
-//                clearSpendingRowsAndData();
-//                showSpendingForMonth(cal);
                 updateMonthFilter(cal);
             }
         });
 
-        // Make this call to initialize the categories DB. The onCreate callback doesn't get called until the DB is accessed.
-//        categoryDB.categoryDao().getAllCategories();
+        updateMonthFilter(cal);
     }
 
     private View.OnClickListener createOnClickListenerForQuickOpCatButton(final String category) {
@@ -148,33 +118,11 @@ public class SpendingActivity extends AppCompatActivity {
         };
     }
 
-//    private void clearSpendingRowsAndData() {
-//        spendingByCategory.clear();
-//        transactions.clear();
-//        removeAllSpendingRows();
-//    }
-
-    private void showSpendingForMonth(Calendar cal) {
+    private void showTotalSpendingForMonth() {
         final TextView totalTextView = findViewById(R.id.totalTextView);
 
-//        readAllTransactionsInMonth(cal);
-//        addAllTransactionRows();
         totalTextView.setText(String.format("Total: %s", CurrencyFormatter.createCurrencyFormattedString(getSpendingTotal())));
     }
-
-//    private void readAllTransactionsInMonth(Calendar cal) {
-//        TransactionDao transDao = transDB.transactionDao();
-//        Calendar firstDayOfMonth = Calendar.getInstance();
-//        firstDayOfMonth.setTime(cal.getTime());
-//        firstDayOfMonth.set(Calendar.DAY_OF_MONTH, 1);
-//
-//        Calendar lastDayOfMonth = Calendar.getInstance();
-//        lastDayOfMonth.setTime(cal.getTime());
-//        lastDayOfMonth.set(Calendar.DAY_OF_MONTH, lastDayOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
-//
-////        List<Transaction> transactionsFromDB = transDao.getTransactionsForMonth(firstDayOfMonth.getTime(), lastDayOfMonth.getTime());
-////        transactions.addAll(transactionsFromDB);
-//    }
 
     private void updateMonthFilter(Calendar cal) {
         Calendar firstDayOfMonth = Calendar.getInstance();
@@ -192,8 +140,7 @@ public class SpendingActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-//        showSpendingForMonth(Calendar.getInstance());
-//        setupQuikAddButtons(categoryDB.categoryDao().getAllCategories().getValue());
+        showTotalSpendingForMonth();
     }
 
     private void setupQuikAddButtons(List<Category> categories) {
@@ -208,90 +155,19 @@ public class SpendingActivity extends AppCompatActivity {
         quickOpCatButton4.setOnClickListener(createOnClickListenerForQuickOpCatButton(quickOpCatButton4.getText().toString()));
     }
 
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-//        transactions.clear();
-//        clearSpendingRowsAndData();
-    }
-
-//    private void addAllTransactionRows() {
-//        TableLayout transTable = findViewById(R.id.spendingTable);
-//
-//        for (Transaction t : transactions) {
-//            if (spendingByCategory.containsKey(t.getCategory())) {
-//                int currentValue = spendingByCategory.get(t.getCategory());
-//                spendingByCategory.put(t.getCategory(), currentValue + t.getAmount());
-//            }
-//            else {
-//                spendingByCategory.put(t.getCategory(), t.getAmount());
-//            }
-//        }
-//
-//        sortSpendingByAmount();
-//        for (Map.Entry<String, Integer> s : spendingByCategory.entrySet()) {
-//            addTransactionRow(transTable, s);
-//        }
-//    }
-//
-//    private void sortSpendingByAmount() {
-//        // TODO - Make this more efficient
-//        List<Map.Entry<String, Integer>> mapAsList = new ArrayList<>(spendingByCategory.entrySet());
-//
-//        Collections.sort(mapAsList, new Comparator<Map.Entry<String, Integer>>() {
-//            @Override
-//            public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
-//                return entry2.getValue().compareTo(entry1.getValue());
-//            }
-//        });
-//
-//        spendingByCategory.clear();
-//        for (Map.Entry<String, Integer> entry : mapAsList) {
-//            spendingByCategory.put(entry.getKey(), entry.getValue());
-//        }
-//    }
-
-    private void addTransactionRow(TableLayout transTable, Map.Entry<String, Integer> spendingTotal) {
-        final TableRow newRow = new TableRow(this);
-
-        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 1f);
-
-        final TextView categoryTextView = new TextView(this);
-        categoryTextView.setGravity(Gravity.CENTER);
-        categoryTextView.setText(spendingTotal.getKey());
-        categoryTextView.setLayoutParams(layoutParams);
-        newRow.addView(categoryTextView);
-
-        final TextView amountTextView = new TextView(this);
-        amountTextView.setGravity(Gravity.CENTER);
-        amountTextView.setText(CurrencyFormatter.createCurrencyFormattedString(spendingTotal.getValue()));
-        amountTextView.setLayoutParams(layoutParams);
-        newRow.addView(amountTextView);
-
-        newRow.setMinimumHeight(Constants.MIN_ROW_HEIGHT);
-        newRow.setGravity(Gravity.CENTER);
-        newRow.setLayoutParams(layoutParams);
-        transTable.addView(newRow);
-    }
-
     private int getSpendingTotal() {
         int total = 0;
 
-        for (Transaction trans : spendingViewModel.getTransactionsForMonth().getValue()) {
-            total += trans.getAmount();
+        List<Transaction> transactions = spendingViewModel.getTransactionsForMonth().getValue();
+
+        if (transactions != null) {
+            for (Transaction trans : transactions) {
+                total += trans.getAmount();
+            }
         }
 
         return total;
     }
-
-//    private void removeAllSpendingRows() {
-//        TableLayout transTable = findViewById(R.id.spendingTable);
-//
-//        transTable.removeAllViews();
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
