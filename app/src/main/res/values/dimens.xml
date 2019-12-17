@@ -3,4 +3,5 @@
     <dimen name="text_view_size">24sp</dimen>
     <dimen name="vertical_spacing_height">16dp</dimen>
     <dimen name="recycler_view_text_margin">8dp</dimen>
+    <dimen name="recycler_view_heading_padding">8dp</dimen>
 </resources>
