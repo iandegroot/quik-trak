@@ -10,17 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CategoriesActivity"
+            android:name=".categories.CategoriesActivity"
             android:label="@string/title_activity_categories"
-            android:parentActivityName=".SpendingActivity"
+            android:parentActivityName=".spending.SpendingActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.threehundredpercentbears.quiktrak.SpendingActivity" />
+                android:value="com.threehundredpercentbears.quiktrak.spending.SpendingActivity" />
         </activity>
         <activity
-            android:name=".SpendingActivity"
+            android:name=".spending.SpendingActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -30,23 +30,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddTransactionActivity"
+            android:name=".addtransaction.AddTransactionActivity"
             android:label="@string/title_activity_add_transaction"
-            android:parentActivityName=".SpendingActivity"
+            android:parentActivityName=".spending.SpendingActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.threehundredpercentbears.quiktrak.SpendingActivity" />
+                android:value="com.threehundredpercentbears.quiktrak.spending.SpendingActivity" />
         </activity>
         <activity
-            android:name=".TransactionsActivity"
+            android:name=".transactions.TransactionsActivity"
             android:label="@string/title_activity_transactions"
-            android:parentActivityName=".SpendingActivity"
+            android:parentActivityName=".spending.SpendingActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.threehundredpercentbears.quiktrak.SpendingActivity" />
+                android:value="com.threehundredpercentbears.quiktrak.spending.SpendingActivity" />
         </activity>
     </application>
 
