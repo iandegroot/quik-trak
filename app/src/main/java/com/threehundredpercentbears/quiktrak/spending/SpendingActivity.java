@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +22,7 @@ import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivi
 import com.threehundredpercentbears.quiktrak.categories.CategoriesActivity;
 import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.Constants;
+import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.formatters.CurrencyFormatter;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
@@ -64,10 +64,11 @@ public class SpendingActivity extends AppCompatActivity {
         final TextView monthTextView = findViewById(R.id.monthTextView);
         final ImageButton buttonLaterMonth = findViewById(R.id.buttonLaterMonth);
 
-        RecyclerView recyclerView = findViewById(R.id.spendingRecyclerView);
+        EmptyMessageRecyclerView recyclerView = findViewById(R.id.spendingRecyclerView);
         final SpendingAdapter adapter = new SpendingAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setEmptyMessageView(findViewById(R.id.spendingEmptyRecyclerViewTextView));
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);

@@ -46,11 +46,20 @@
 
         <View style="@style/Divider"/>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView
             android:id="@+id/spendingRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/spendingEmptyRecyclerViewTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/spending_no_transactions_message"
+            android:layout_weight="1"
+            android:textSize="24sp" />
 
         <View style="@style/Divider"/>
 
