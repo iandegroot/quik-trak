@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/spending_no_transactions_message"
+            android:text="@string/no_transactions_for_month_message"
             android:layout_weight="1"
             android:textSize="24sp" />
 

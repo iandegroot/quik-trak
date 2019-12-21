@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.threehundredpercentbears.quiktrak.models.category.Category;
+import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
 import com.threehundredpercentbears.quiktrak.R;
 
@@ -55,10 +56,11 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
 
-        RecyclerView recyclerView = findViewById(R.id.categoriesRecyclerView);
+        EmptyMessageRecyclerView recyclerView = findViewById(R.id.categoriesRecyclerView);
         final CategoriesAdapter adapter = new CategoriesAdapter(this, createRecyclerViewItemClickListener(this));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setEmptyMessageView(findViewById(R.id.categoriesEmptyRecyclerViewTextView));
 
         CategoriesViewModelFactory factory = new CategoriesViewModelFactory(this.getApplication());
         categoriesViewModel = new ViewModelProvider(this, factory).get(CategoriesViewModel.class);

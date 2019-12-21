@@ -14,10 +14,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivity;
+import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
@@ -38,10 +38,11 @@ public class TransactionsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        RecyclerView recyclerView = findViewById(R.id.transactionsRecyclerView);
+        EmptyMessageRecyclerView recyclerView = findViewById(R.id.transactionsRecyclerView);
         final TransactionsAdapter adapter = new TransactionsAdapter(this, createRecyclerViewItemClickListener(this));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setEmptyMessageView(findViewById(R.id.transactionsEmptyRecyclerViewTextView));
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);

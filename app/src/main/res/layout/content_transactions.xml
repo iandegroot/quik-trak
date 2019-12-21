@@ -61,11 +61,20 @@
 
         <View style="@style/Divider"/>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView
             android:id="@+id/transactionsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem="@layout/transactions_row_item" />
+
+        <TextView
+            android:id="@+id/transactionsEmptyRecyclerViewTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="@string/no_transactions_message"
+            android:layout_weight="1"
+            android:textSize="24sp" />
 
     </LinearLayout>
 </layout>
