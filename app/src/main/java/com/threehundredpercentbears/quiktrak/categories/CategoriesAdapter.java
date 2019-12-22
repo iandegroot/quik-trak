@@ -2,8 +2,10 @@ package com.threehundredpercentbears.quiktrak.categories;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,18 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
 import com.threehundredpercentbears.quiktrak.R;
+import com.threehundredpercentbears.quiktrak.utils.OnStartDragListener;
 
 import java.util.List;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder> {
 
     private final LayoutInflater inflater;
-    private final OnItemClickListener<Category> listener;
+    private final OnItemClickListener<Category> clickListener;
+    private final OnStartDragListener dragStartListener;
     private List<Category> categories;
 
-    public CategoriesAdapter(Context context, OnItemClickListener<Category> listener) {
+    public CategoriesAdapter(Context context, OnItemClickListener<Category> clickListener, OnStartDragListener dragStartListener) {
         this.inflater = LayoutInflater.from(context);
-        this.listener = listener;
+        this.clickListener = clickListener;
+        this.dragStartListener = dragStartListener;
     }
 
     @NonNull
@@ -38,7 +43,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         if (categories != null) {
             Category currentCat = categories.get(position);
             holder.categoryTextView.setText(currentCat.getCategoryName());
-            holder.bind(currentCat, listener);
+            holder.bind(currentCat, clickListener, dragStartListener);
         }
         // TODO: Add else to set rows to default values if no transactions is null
     }
@@ -60,36 +65,31 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     class CategoryViewHolder extends RecyclerView.ViewHolder {
 
         TextView categoryTextView;
+        ImageView dragHandleImageView;
 
         private CategoryViewHolder(View itemView) {
             super(itemView);
 
             categoryTextView = itemView.findViewById(R.id.recyclerViewRowItemTextView);
+            dragHandleImageView = itemView.findViewById(R.id.categoriesDragHandle);
         }
 
-        private void bind(final Category item, final OnItemClickListener<Category> listener) {
+        private void bind(final Category item, final OnItemClickListener<Category> clickListener, final OnStartDragListener startDragListener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    listener.onItemClick(item);
+                    clickListener.onItemClick(item);
+                }
+            });
+
+            dragHandleImageView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        startDragListener.onStartDrag(CategoryViewHolder.this);
+                    }
+                    return false;
                 }
             });
         }
-
-//        @Override
-//        public void onClick(View view) {
-//            new AlertDialog.Builder(view.getContext())
-//                    .setMessage("Are you sure you want to delete the category '" + categoryTextView.getText().toString() + "'?\n" +
-//                            "All transactions of that category will also be deleted.")
-//                    .setCancelable(false)
-//                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            if (removeCategoryAndRow(getAdapterPosition())) {
-//                                deleteAllCategoryTransactions(categoryTextView.getText().toString());
-//                            }
-//                        }
-//                    })
-//                    .setNegativeButton("No", null)
-//                    .show();
-//        }
     }
 }

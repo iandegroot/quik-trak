@@ -31,7 +31,7 @@ import java.util.List;
 public class TransactionsActivity extends AppCompatActivity {
 
     private TransactionsViewModel transactionsViewModel;
-    
+
     private MonthlyTransactionsHelper monthlyTransactionsHelper = new MonthlyTransactionsHelper();
 
     // This only runs once, the first time this activity is started

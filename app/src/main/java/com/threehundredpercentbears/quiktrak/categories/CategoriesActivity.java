@@ -25,6 +25,7 @@ import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
 import com.threehundredpercentbears.quiktrak.R;
+import com.threehundredpercentbears.quiktrak.utils.OnStartDragListener;
 
 import java.util.Collections;
 import java.util.Date;
@@ -33,6 +34,7 @@ import java.util.List;
 public class CategoriesActivity extends AppCompatActivity {
 
     private CategoriesViewModel categoriesViewModel;
+    private ItemTouchHelper itemTouchHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class CategoriesActivity extends AppCompatActivity {
         });
 
         EmptyMessageRecyclerView recyclerView = findViewById(R.id.categoriesRecyclerView);
-        final CategoriesAdapter adapter = new CategoriesAdapter(this, createRecyclerViewItemClickListener(this));
+        final CategoriesAdapter adapter = new CategoriesAdapter(this, createRecyclerViewItemClickListener(this), createRecyclerViewStartDragListener());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setEmptyMessageView(findViewById(R.id.categoriesEmptyRecyclerViewTextView));
@@ -76,7 +78,7 @@ public class CategoriesActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
@@ -122,6 +124,11 @@ public class CategoriesActivity extends AppCompatActivity {
         }
 
         @Override
+        public boolean isLongPressDragEnabled() {
+            return false;
+        }
+
+        @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
         }
@@ -145,6 +152,16 @@ public class CategoriesActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("No", null)
                         .show();
+            }
+        };
+    }
+
+    private OnStartDragListener createRecyclerViewStartDragListener() {
+        return new OnStartDragListener() {
+
+            @Override
+            public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+                itemTouchHelper.startDrag(viewHolder);
             }
         };
     }
