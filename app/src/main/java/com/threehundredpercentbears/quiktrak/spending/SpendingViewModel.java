@@ -23,7 +23,6 @@ public class SpendingViewModel extends AndroidViewModel {
     private TransactionRepository transactionRepository;
     private CategoryRepository categoryRepository;
 
-    private LiveData<List<Transaction>> allTransactions;
     private LiveData<List<Transaction>> transactionsForMonth;
     private LiveData<List<Category>> allCategories;
 
@@ -31,13 +30,8 @@ public class SpendingViewModel extends AndroidViewModel {
         super(application);
         transactionRepository = new TransactionRepository(application);
         categoryRepository = new CategoryRepository(application);
-        allTransactions = transactionRepository.getAllTransactions();
         transactionsForMonth = transactionRepository.getTransactionsForMonth();
         allCategories = categoryRepository.getAllCategories();
-    }
-
-    LiveData<List<Transaction>> getAllTransactions() {
-        return allTransactions;
     }
 
     LiveData<List<Transaction>> getTransactionsForMonth() {
