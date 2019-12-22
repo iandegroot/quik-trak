@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,10 +24,14 @@ import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class TransactionsActivity extends AppCompatActivity {
 
+    private SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     private TransactionsViewModel transactionsViewModel;
 
     // This only runs once, the first time this activity is started
@@ -37,6 +43,12 @@ public class TransactionsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        final Calendar cal = Calendar.getInstance();
+
+        final ImageButton buttonEarlierMonth = findViewById(R.id.transactionsEarlierMonthButton);
+        final TextView monthTextView = findViewById(R.id.transactionsMonthTextView);
+        final ImageButton buttonLaterMonth = findViewById(R.id.transactionsLaterMonthButton);
 
         EmptyMessageRecyclerView recyclerView = findViewById(R.id.transactionsRecyclerView);
         final TransactionsAdapter adapter = new TransactionsAdapter(this, createRecyclerViewItemClickListener(this));
@@ -50,13 +62,35 @@ public class TransactionsActivity extends AppCompatActivity {
         TransactionsViewModelFactory factory = new TransactionsViewModelFactory(this.getApplication());
         transactionsViewModel = new ViewModelProvider(this, factory).get(TransactionsViewModel.class);
 
-        transactionsViewModel.getAllTransactions().observe(this, new Observer<List<Transaction>>() {
+        transactionsViewModel.getTransactionsForMonth().observe(this, new Observer<List<Transaction>>() {
             @Override
             public void onChanged(@Nullable final List<Transaction> transactions) {
                 // Update the cached copy of the words in the adapter.
                 adapter.setTransactions(transactions);
             }
         });
+
+        buttonEarlierMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cal.add(Calendar.MONTH, -1);
+                monthTextView.setText(format.format(cal.getTime()));
+                updateMonthFilter(cal);
+            }
+        });
+
+        monthTextView.setText(format.format(cal.getTime()));
+
+        buttonLaterMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cal.add(Calendar.MONTH, 1);
+                monthTextView.setText(format.format(cal.getTime()));
+                updateMonthFilter(cal);
+            }
+        });
+
+        updateMonthFilter(cal);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -85,5 +119,23 @@ public class TransactionsActivity extends AppCompatActivity {
                     .show();
             }
         };
+    }
+
+    private void updateMonthFilter(Calendar cal) {
+        Calendar firstDayOfMonth = Calendar.getInstance();
+        firstDayOfMonth.setTime(cal.getTime());
+        firstDayOfMonth.set(Calendar.DAY_OF_MONTH, 1);
+        firstDayOfMonth.set(Calendar.HOUR_OF_DAY, 0);
+        firstDayOfMonth.set(Calendar.MINUTE, 0);
+        firstDayOfMonth.set(Calendar.SECOND, 0);
+
+        Calendar lastDayOfMonth = Calendar.getInstance();
+        lastDayOfMonth.setTime(cal.getTime());
+        lastDayOfMonth.set(Calendar.DAY_OF_MONTH, lastDayOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
+        lastDayOfMonth.set(Calendar.HOUR_OF_DAY, 23);
+        lastDayOfMonth.set(Calendar.MINUTE, 59);
+        lastDayOfMonth.set(Calendar.SECOND, 59);
+
+        transactionsViewModel.updateMonthFilter(firstDayOfMonth.getTime(), lastDayOfMonth.getTime());
     }
 }

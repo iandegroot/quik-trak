@@ -8,22 +8,27 @@ import androidx.lifecycle.LiveData;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 import com.threehundredpercentbears.quiktrak.models.transaction.TransactionRepository;
 
+import java.util.Date;
 import java.util.List;
 
 public class TransactionsViewModel extends AndroidViewModel {
 
     private TransactionRepository repository;
 
-    private LiveData<List<Transaction>> allTransactions;
+    private LiveData<List<Transaction>> transactionsForMonth;
 
     public TransactionsViewModel(Application application) {
         super(application);
         repository = new TransactionRepository(application);
-        allTransactions = repository.getAllTransactions();
+        transactionsForMonth = repository.getTransactionsForMonth();
     }
 
-    LiveData<List<Transaction>> getAllTransactions() {
-        return allTransactions;
+    LiveData<List<Transaction>> getTransactionsForMonth() {
+        return transactionsForMonth;
+    }
+
+    void updateMonthFilter(Date startDate, Date endDate) {
+        repository.setMonthFilter(startDate, endDate);
     }
 
     public void insert(Transaction transaction) {

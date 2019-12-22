@@ -18,6 +18,39 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/transactionsEarlierMonthButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:contentDescription="@string/previous_month_button"
+                android:src="@drawable/ic_keyboard_arrow_left_white_24dp" />
+
+            <TextView
+                android:id="@+id/transactionsMonthTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/month_text_view"
+                android:textSize="24sp" />
+
+            <ImageButton
+                android:id="@+id/transactionsLaterMonthButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:contentDescription="@string/next_month_button"
+                android:src="@drawable/ic_keyboard_arrow_right_white_24dp" />
+        </LinearLayout>
+
+        <View style="@style/Divider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="@dimen/recycler_view_heading_padding"
             android:paddingBottom="@dimen/recycler_view_heading_padding">
@@ -72,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:gravity="center"
-            android:text="@string/no_transactions_message"
+            android:text="@string/no_transactions_for_month_message"
             android:layout_weight="1"
             android:textSize="24sp" />
 

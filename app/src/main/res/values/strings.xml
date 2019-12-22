@@ -20,7 +20,6 @@
 
     <!--Transactions Activity-->
     <string name="title_activity_transactions">Transactions</string>
-    <string name="no_transactions_message">You don\'t have any transactions, add some by pressing the + icon!</string>
 
     <!--Add New Transaction Activity-->
     <string name="title_activity_add_transaction">Add Transaction</string>
