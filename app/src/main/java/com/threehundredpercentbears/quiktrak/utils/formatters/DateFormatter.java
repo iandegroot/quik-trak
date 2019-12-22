@@ -2,6 +2,7 @@ package com.threehundredpercentbears.quiktrak.utils.formatters;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -29,7 +30,14 @@ public class DateFormatter {
             e.printStackTrace();
         }
 
-        return date;
+        return setTimeOfNewDateToNoon(date);
+    }
+
+    private static Date setTimeOfNewDateToNoon(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 12);
+        return calendar.getTime();
     }
 
     public static String intsToStringDate(int day, int month, int year) {

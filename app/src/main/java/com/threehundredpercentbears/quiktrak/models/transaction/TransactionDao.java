@@ -32,6 +32,6 @@ public interface TransactionDao {
     LiveData<List<Transaction>> getTransaction(int id);
 
     @TypeConverters({DateConverter.class})
-    @Query("SELECT * FROM transactions_table WHERE date BETWEEN :startDate AND :endDate")
+    @Query("SELECT * FROM transactions_table WHERE date BETWEEN :startDate AND :endDate ORDER BY date DESC")
     LiveData<List<Transaction>> getTransactionsForMonth(Date startDate, Date endDate);
 }
