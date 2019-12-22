@@ -9,6 +9,7 @@ import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.models.category.CategoryRepository;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 import com.threehundredpercentbears.quiktrak.models.transaction.TransactionRepository;
+import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SpendingViewModel extends AndroidViewModel {
+public class SpendingViewModel extends AndroidViewModel implements MonthlyTransactionsViewModel {
 
     private TransactionRepository transactionRepository;
     private CategoryRepository categoryRepository;
@@ -38,7 +39,7 @@ public class SpendingViewModel extends AndroidViewModel {
         return transactionsForMonth;
     }
 
-    void updateMonthFilter(Date startDate, Date endDate) {
+    public void updateMonthFilter(Date startDate, Date endDate) {
         transactionRepository.setMonthFilter(startDate, endDate);
     }
 

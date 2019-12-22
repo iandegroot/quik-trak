@@ -22,21 +22,21 @@ import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivi
 import com.threehundredpercentbears.quiktrak.categories.CategoriesActivity;
 import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.Constants;
+import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsHelper;
 import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.formatters.CurrencyFormatter;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 import com.threehundredpercentbears.quiktrak.transactions.TransactionsActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class SpendingActivity extends AppCompatActivity {
 
-    private SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     private SpendingViewModel spendingViewModel;
+
+    private MonthlyTransactionsHelper monthlyTransactionsHelper = new MonthlyTransactionsHelper();
 
     Button quickOpCatButton1;
     Button quickOpCatButton2;
@@ -101,23 +101,23 @@ public class SpendingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 cal.add(Calendar.MONTH, -1);
-                monthTextView.setText(format.format(cal.getTime()));
-                updateMonthFilter(cal);
+                monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
+                monthlyTransactionsHelper.updateMonthFilter(spendingViewModel, cal);
             }
         });
 
-        monthTextView.setText(format.format(cal.getTime()));
+        monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
 
         buttonLaterMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cal.add(Calendar.MONTH, 1);
-                monthTextView.setText(format.format(cal.getTime()));
-                updateMonthFilter(cal);
+                monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
+                monthlyTransactionsHelper.updateMonthFilter(spendingViewModel, cal);
             }
         });
 
-        updateMonthFilter(cal);
+        monthlyTransactionsHelper.updateMonthFilter(spendingViewModel, cal);
     }
 
     private View.OnClickListener createOnClickListenerForQuickOpCatButton(final String category) {
@@ -135,24 +135,6 @@ public class SpendingActivity extends AppCompatActivity {
         final TextView totalTextView = findViewById(R.id.totalTextView);
 
         totalTextView.setText(String.format("Total: %s", CurrencyFormatter.createCurrencyFormattedString(getSpendingTotal())));
-    }
-
-    private void updateMonthFilter(Calendar cal) {
-        Calendar firstDayOfMonth = Calendar.getInstance();
-        firstDayOfMonth.setTime(cal.getTime());
-        firstDayOfMonth.set(Calendar.DAY_OF_MONTH, 1);
-        firstDayOfMonth.set(Calendar.HOUR_OF_DAY, 0);
-        firstDayOfMonth.set(Calendar.MINUTE, 0);
-        firstDayOfMonth.set(Calendar.SECOND, 0);
-
-        Calendar lastDayOfMonth = Calendar.getInstance();
-        lastDayOfMonth.setTime(cal.getTime());
-        lastDayOfMonth.set(Calendar.DAY_OF_MONTH, lastDayOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
-        lastDayOfMonth.set(Calendar.HOUR_OF_DAY, 23);
-        lastDayOfMonth.set(Calendar.MINUTE, 59);
-        lastDayOfMonth.set(Calendar.SECOND, 59);
-
-        spendingViewModel.updateMonthFilter(firstDayOfMonth.getTime(), lastDayOfMonth.getTime());
     }
 
     @Override

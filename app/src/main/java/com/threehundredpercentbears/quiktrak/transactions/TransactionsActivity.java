@@ -19,20 +19,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivity;
+import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsHelper;
 import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class TransactionsActivity extends AppCompatActivity {
 
-    private SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     private TransactionsViewModel transactionsViewModel;
+    
+    private MonthlyTransactionsHelper monthlyTransactionsHelper = new MonthlyTransactionsHelper();
 
     // This only runs once, the first time this activity is started
     @Override
@@ -74,23 +74,23 @@ public class TransactionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 cal.add(Calendar.MONTH, -1);
-                monthTextView.setText(format.format(cal.getTime()));
-                updateMonthFilter(cal);
+                monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
+                monthlyTransactionsHelper.updateMonthFilter(transactionsViewModel, cal);
             }
         });
 
-        monthTextView.setText(format.format(cal.getTime()));
+        monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
 
         buttonLaterMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cal.add(Calendar.MONTH, 1);
-                monthTextView.setText(format.format(cal.getTime()));
-                updateMonthFilter(cal);
+                monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
+                monthlyTransactionsHelper.updateMonthFilter(transactionsViewModel, cal);
             }
         });
 
-        updateMonthFilter(cal);
+        monthlyTransactionsHelper.updateMonthFilter(transactionsViewModel, cal);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -119,23 +119,5 @@ public class TransactionsActivity extends AppCompatActivity {
                     .show();
             }
         };
-    }
-
-    private void updateMonthFilter(Calendar cal) {
-        Calendar firstDayOfMonth = Calendar.getInstance();
-        firstDayOfMonth.setTime(cal.getTime());
-        firstDayOfMonth.set(Calendar.DAY_OF_MONTH, 1);
-        firstDayOfMonth.set(Calendar.HOUR_OF_DAY, 0);
-        firstDayOfMonth.set(Calendar.MINUTE, 0);
-        firstDayOfMonth.set(Calendar.SECOND, 0);
-
-        Calendar lastDayOfMonth = Calendar.getInstance();
-        lastDayOfMonth.setTime(cal.getTime());
-        lastDayOfMonth.set(Calendar.DAY_OF_MONTH, lastDayOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
-        lastDayOfMonth.set(Calendar.HOUR_OF_DAY, 23);
-        lastDayOfMonth.set(Calendar.MINUTE, 59);
-        lastDayOfMonth.set(Calendar.SECOND, 59);
-
-        transactionsViewModel.updateMonthFilter(firstDayOfMonth.getTime(), lastDayOfMonth.getTime());
     }
 }

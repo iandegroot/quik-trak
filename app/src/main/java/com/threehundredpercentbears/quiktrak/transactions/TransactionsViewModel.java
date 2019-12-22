@@ -7,11 +7,12 @@ import androidx.lifecycle.LiveData;
 
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 import com.threehundredpercentbears.quiktrak.models.transaction.TransactionRepository;
+import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsViewModel;
 
 import java.util.Date;
 import java.util.List;
 
-public class TransactionsViewModel extends AndroidViewModel {
+public class TransactionsViewModel extends AndroidViewModel implements MonthlyTransactionsViewModel {
 
     private TransactionRepository repository;
 
@@ -27,7 +28,7 @@ public class TransactionsViewModel extends AndroidViewModel {
         return transactionsForMonth;
     }
 
-    void updateMonthFilter(Date startDate, Date endDate) {
+    public void updateMonthFilter(Date startDate, Date endDate) {
         repository.setMonthFilter(startDate, endDate);
     }
 
