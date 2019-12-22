@@ -21,12 +21,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.threehundredpercentbears.quiktrak.models.category.Category;
-import com.threehundredpercentbears.quiktrak.models.category.CategoryRoomDatabase;
 import com.threehundredpercentbears.quiktrak.utils.Constants;
 import com.threehundredpercentbears.quiktrak.utils.formatters.DateFormatter;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
-import com.threehundredpercentbears.quiktrak.models.transaction.TransactionRoomDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,9 +39,6 @@ public class AddTransactionActivity extends AppCompatActivity {
     private EditText noteEditText;
     private Button addTransButton;
 
-    private TransactionRoomDatabase transDB;
-    private CategoryRoomDatabase categoryDB;
-
     private AddTransactionViewModel addTransactionViewModel;
 
     @Override
@@ -55,9 +50,6 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        transDB = TransactionRoomDatabase.getDatabase(this);
-//        categoryDB = CategoryRoomDatabase.getDatabase(this);
-
         dateEditText = findViewById(R.id.dateEditText);
         amountEditText = findViewById(R.id.amountEditText);
         categorySpinner = findViewById(R.id.categorySpinner);
@@ -67,7 +59,6 @@ public class AddTransactionActivity extends AppCompatActivity {
         AddTransactionViewModelFactory factory = new AddTransactionViewModelFactory(this.getApplication());
         addTransactionViewModel = new ViewModelProvider(this, factory).get(AddTransactionViewModel.class);
 
-        // TODO: Setup spinner on categories change
         addTransactionViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
             @Override
             public void onChanged(@Nullable final List<Category> categories) {
@@ -113,8 +104,6 @@ public class AddTransactionActivity extends AppCompatActivity {
         amountEditText.requestFocus();
         amountEditText.addTextChangedListener(new CurrencyEditTextWatcher(amountEditText));
         amountEditText.setText("0");
-
-//        setupCategorySpinner();
     }
 
     private void addNewTransaction() {
@@ -128,24 +117,6 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         addTransactionViewModel.insert(newTrans);
     }
-
-//    private void addNewTransaction() {
-//        // Dividing the current time by 1000 to make it fit into an int and using that as
-//        // the id of the transaction
-//        Transaction newTrans = new Transaction((int) (new Date().getTime() / 1000),
-//                DateFormatter.stringToDate(dateEditText.getText().toString()),
-//                Integer.parseInt(amountEditText.getText().toString().replaceAll("[$,.]", "")),
-//                categorySpinner.getSelectedItem().toString(),
-//                noteEditText.getText().toString());
-//
-//        writeTransactionToDB(newTrans);
-//    }
-
-//    private void writeTransactionToDB(Transaction newTrans) {
-//        TransactionDao transDao = transDB.transactionDao();
-//
-//        transDao.insert(newTrans);
-//    }
 
     private void setupCategorySpinner(List<Category> categories) {
         List<String> categoryNames = new ArrayList<>();
