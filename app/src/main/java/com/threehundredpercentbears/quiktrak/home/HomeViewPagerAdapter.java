@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class HomeViewPagerAdapter extends FragmentStateAdapter {
 
-    private static final int CARD_ITEM_SIZE = 3;
+    private static final int TAB_LAYOUT_SIZE = 3;
 
     public HomeViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
@@ -18,6 +18,6 @@ public class HomeViewPagerAdapter extends FragmentStateAdapter {
     }
 
     @Override public int getItemCount() {
-        return CARD_ITEM_SIZE;
+        return TAB_LAYOUT_SIZE;
     }
 }
