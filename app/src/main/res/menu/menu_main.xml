@@ -2,21 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.threehundredpercentbears.quiktrak.transactions.TransactionsFragment">
-    <item
-        android:id="@+id/transactions_page"
-        android:orderInCategory="100"
-        android:title="@string/transactions_page"
-        app:showAsAction="never" />
 
     <item
-        android:id="@+id/categories_page"
+        android:id="@+id/add_transactions_page"
         android:orderInCategory="100"
-        android:title="@string/categories_page"
+        android:title="@string/title_activity_add_transaction"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/home_page"
-        android:orderInCategory="100"
-        android:title="@string/home_page"
-        app:showAsAction="never" />
 </menu>
