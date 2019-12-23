@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.threehundredpercentbears.quiktrak.categories.CategoriesActivity;
-import com.threehundredpercentbears.quiktrak.spending.SpendingActivity;
-import com.threehundredpercentbears.quiktrak.transactions.TransactionsActivity;
+import com.threehundredpercentbears.quiktrak.categories.CategoriesFragment;
+import com.threehundredpercentbears.quiktrak.spending.SpendingFragment;
+import com.threehundredpercentbears.quiktrak.transactions.TransactionsFragment;
 
 public class HomeViewPagerAdapter extends FragmentStateAdapter {
 
@@ -19,11 +19,11 @@ public class HomeViewPagerAdapter extends FragmentStateAdapter {
 
     @NonNull @Override public Fragment createFragment(int position) {
         if (position == 0) {
-            return new SpendingActivity();
+            return new SpendingFragment();
         } else if (position == 1) {
-            return new TransactionsActivity();
+            return new TransactionsFragment();
         } else {
-            return new CategoriesActivity();
+            return new CategoriesFragment();
         }
     }
 

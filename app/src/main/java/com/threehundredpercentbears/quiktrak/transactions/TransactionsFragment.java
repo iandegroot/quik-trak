@@ -3,7 +3,6 @@ package com.threehundredpercentbears.quiktrak.transactions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivity;
 import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsHelper;
 import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
@@ -31,14 +27,14 @@ import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 import java.util.Calendar;
 import java.util.List;
 
-public class TransactionsActivity extends Fragment {
+public class TransactionsFragment extends Fragment {
 
     private TransactionsViewModel transactionsViewModel;
 
     private MonthlyTransactionsHelper monthlyTransactionsHelper = new MonthlyTransactionsHelper();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.content_transactions, container, false);
     }
 
@@ -46,11 +42,6 @@ public class TransactionsActivity extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        setContentView(R.layout.activity_transactions);
-//        Toolbar toolbar = getView().findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Calendar cal = Calendar.getInstance();
 
@@ -99,14 +90,6 @@ public class TransactionsActivity extends Fragment {
         });
 
         monthlyTransactionsHelper.updateMonthFilter(transactionsViewModel, cal);
-
-//        FloatingActionButton fab = getView().findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(TransactionsActivity.this, AddTransactionActivity.class));
-//            }
-//        });
     }
 
     private OnItemClickListener<Transaction> createRecyclerViewItemClickListener(final Context context) {

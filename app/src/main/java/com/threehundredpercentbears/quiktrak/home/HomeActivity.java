@@ -1,9 +1,9 @@
 package com.threehundredpercentbears.quiktrak.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,7 @@ import android.view.View;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.threehundredpercentbears.quiktrak.R;
+import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -50,8 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(HomeActivity.this, AddTransactionActivity.class));
             }
         });
     }

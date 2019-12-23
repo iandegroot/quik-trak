@@ -6,7 +6,7 @@
     <string name="categories_page">Categories</string>
     <string name="home_page">Home</string>
 
-    <!--Spending Activity-->
+    <!--Spending-->
     <string name="title_activity_spending">Spending</string>
     <string name="next_month_button">Next</string>
     <string name="month_text_view">Month</string>
@@ -19,10 +19,10 @@
     <string name="quick_op_category_button_3">Category 3</string>
     <string name="quick_op_category_button_4">Category 4</string>
 
-    <!--Transactions Activity-->
+    <!--Transactions-->
     <string name="title_activity_transactions">Transactions</string>
 
-    <!--Add New Transaction Activity-->
+    <!--Add New Transaction-->
     <string name="title_activity_add_transaction">Add Transaction</string>
     <string name="date_text_view">Date</string>
     <string name="amount_text_view">Amount</string>
@@ -31,12 +31,12 @@
     <string name="add_transaction_button">Add Transaction</string>
     <string name="add_transaction_check_mark">Add Transaction</string>
 
-    <!--Categories Activity-->
+    <!--Categories-->
     <string name="title_activity_categories">Categories</string>
     <string name="add_category_button">Add Category</string>
     <string name="add_category_text_view">New category name...</string>
     <string name="no_categories_message">You don\'t have any categories, add some above!</string>
 
-    <!--Home Activity-->
+    <!--Home-->
     <string name="title_activity_home">Home</string>
 </resources>

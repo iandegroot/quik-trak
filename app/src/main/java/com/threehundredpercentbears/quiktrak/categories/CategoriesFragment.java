@@ -7,8 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -34,13 +32,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class CategoriesActivity extends Fragment {
+public class CategoriesFragment extends Fragment {
 
     private CategoriesViewModel categoriesViewModel;
     private ItemTouchHelper itemTouchHelper;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.content_categories, container, false);
     }
 

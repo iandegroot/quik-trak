@@ -1,8 +1,7 @@
 package com.threehundredpercentbears.quiktrak.spending;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -12,18 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivity;
-import com.threehundredpercentbears.quiktrak.categories.CategoriesActivity;
-import com.threehundredpercentbears.quiktrak.home.HomeActivity;
 import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.Constants;
 import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsHelper;
@@ -31,12 +25,11 @@ import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.formatters.CurrencyFormatter;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
-import com.threehundredpercentbears.quiktrak.transactions.TransactionsActivity;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class SpendingActivity extends Fragment {
+public class SpendingFragment extends Fragment {
 
     private SpendingViewModel spendingViewModel;
 
@@ -48,24 +41,13 @@ public class SpendingActivity extends Fragment {
     private Button quickOpCatButton4;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.content_spending, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        setContentView(R.layout.activity_spending);
-//        Toolbar toolbar = getView().findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
-//        FloatingActionButton fab = getView().findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(SpendingActivity.this, AddTransactionActivity.class));
-//            }
-//        });
 
         final Calendar cal = Calendar.getInstance();
 
@@ -180,33 +162,4 @@ public class SpendingActivity extends Fragment {
 
         return total;
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.transactions_page) {
-//            startActivity(new Intent(SpendingActivity.this, TransactionsActivity.class));
-//            return true;
-//        } else if (id == R.id.categories_page) {
-//            startActivity(new Intent(SpendingActivity.this, CategoriesActivity.class));
-//            return true;
-//        } else if (id == R.id.home_page) {
-//        startActivity(new Intent(SpendingActivity.this, HomeActivity.class));
-//        return true;
-//    }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 }
