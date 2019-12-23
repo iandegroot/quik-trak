@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -16,7 +17,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,22 +34,22 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class CategoriesActivity extends AppCompatActivity {
+public class CategoriesActivity extends Fragment {
 
     private CategoriesViewModel categoriesViewModel;
     private ItemTouchHelper itemTouchHelper;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_categories);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.content_categories, container, false);
+    }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        final Button addCategoryButton = findViewById(R.id.addCategoryButton);
-        final EditText addCategoryEditText = findViewById(R.id.addCategoryEditText);
+        final Button addCategoryButton = getView().findViewById(R.id.addCategoryButton);
+        final EditText addCategoryEditText = getView().findViewById(R.id.addCategoryEditText);
         addCategoryButton.requestFocus();
 
         addCategoryButton.setOnClickListener(new View.OnClickListener() {
@@ -58,13 +61,13 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
 
-        EmptyMessageRecyclerView recyclerView = findViewById(R.id.categoriesRecyclerView);
-        final CategoriesAdapter adapter = new CategoriesAdapter(this, createRecyclerViewItemClickListener(this), createRecyclerViewStartDragListener());
+        EmptyMessageRecyclerView recyclerView = getView().findViewById(R.id.categoriesRecyclerView);
+        final CategoriesAdapter adapter = new CategoriesAdapter(getContext(), createRecyclerViewItemClickListener(getContext()), createRecyclerViewStartDragListener());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setEmptyMessageView(findViewById(R.id.categoriesEmptyRecyclerViewTextView));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setEmptyMessageView(getView().findViewById(R.id.categoriesEmptyRecyclerViewTextView));
 
-        CategoriesViewModelFactory factory = new CategoriesViewModelFactory(this.getApplication());
+        CategoriesViewModelFactory factory = new CategoriesViewModelFactory(getActivity().getApplication());
         categoriesViewModel = new ViewModelProvider(this, factory).get(CategoriesViewModel.class);
 
         categoriesViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
@@ -75,7 +78,7 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         itemTouchHelper = new ItemTouchHelper(simpleCallback);
@@ -91,13 +94,13 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     private void closeKeyboardAndClearEditText(EditText addCategoryEditText) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(addCategoryEditText.getWindowToken(), 0);
         addCategoryEditText.getText().clear();
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
 
         writeNewRankingsToDB();

@@ -5,13 +5,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -28,38 +31,43 @@ import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 import java.util.Calendar;
 import java.util.List;
 
-public class TransactionsActivity extends AppCompatActivity {
+public class TransactionsActivity extends Fragment {
 
     private TransactionsViewModel transactionsViewModel;
 
     private MonthlyTransactionsHelper monthlyTransactionsHelper = new MonthlyTransactionsHelper();
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.content_transactions, container, false);
+    }
+
     // This only runs once, the first time this activity is started
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transactions);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+//        setContentView(R.layout.activity_transactions);
+//        Toolbar toolbar = getView().findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Calendar cal = Calendar.getInstance();
 
-        final ImageButton buttonEarlierMonth = findViewById(R.id.transactionsEarlierMonthButton);
-        final TextView monthTextView = findViewById(R.id.transactionsMonthTextView);
-        final ImageButton buttonLaterMonth = findViewById(R.id.transactionsLaterMonthButton);
+        final ImageButton buttonEarlierMonth = getView().findViewById(R.id.transactionsEarlierMonthButton);
+        final TextView monthTextView = getView().findViewById(R.id.transactionsMonthTextView);
+        final ImageButton buttonLaterMonth = getView().findViewById(R.id.transactionsLaterMonthButton);
 
-        EmptyMessageRecyclerView recyclerView = findViewById(R.id.transactionsRecyclerView);
-        final TransactionsAdapter adapter = new TransactionsAdapter(this, createRecyclerViewItemClickListener(this));
+        EmptyMessageRecyclerView recyclerView = getView().findViewById(R.id.transactionsRecyclerView);
+        final TransactionsAdapter adapter = new TransactionsAdapter(getContext(), createRecyclerViewItemClickListener(getContext()));
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setEmptyMessageView(findViewById(R.id.transactionsEmptyRecyclerViewTextView));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setEmptyMessageView(getView().findViewById(R.id.transactionsEmptyRecyclerViewTextView));
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        TransactionsViewModelFactory factory = new TransactionsViewModelFactory(this.getApplication());
+        TransactionsViewModelFactory factory = new TransactionsViewModelFactory(getActivity().getApplication());
         transactionsViewModel = new ViewModelProvider(this, factory).get(TransactionsViewModel.class);
 
         transactionsViewModel.getTransactionsForMonth().observe(this, new Observer<List<Transaction>>() {
@@ -92,13 +100,13 @@ public class TransactionsActivity extends AppCompatActivity {
 
         monthlyTransactionsHelper.updateMonthFilter(transactionsViewModel, cal);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(TransactionsActivity.this, AddTransactionActivity.class));
-            }
-        });
+//        FloatingActionButton fab = getView().findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(TransactionsActivity.this, AddTransactionActivity.class));
+//            }
+//        });
     }
 
     private OnItemClickListener<Transaction> createRecyclerViewItemClickListener(final Context context) {

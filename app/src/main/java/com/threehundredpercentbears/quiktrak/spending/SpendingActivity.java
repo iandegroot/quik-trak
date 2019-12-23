@@ -3,6 +3,7 @@ package com.threehundredpercentbears.quiktrak.spending;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -10,9 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -33,48 +36,53 @@ import com.threehundredpercentbears.quiktrak.transactions.TransactionsActivity;
 import java.util.Calendar;
 import java.util.List;
 
-public class SpendingActivity extends AppCompatActivity {
+public class SpendingActivity extends Fragment {
 
     private SpendingViewModel spendingViewModel;
 
     private MonthlyTransactionsHelper monthlyTransactionsHelper = new MonthlyTransactionsHelper();
 
-    Button quickOpCatButton1;
-    Button quickOpCatButton2;
-    Button quickOpCatButton3;
-    Button quickOpCatButton4;
+    private Button quickOpCatButton1;
+    private Button quickOpCatButton2;
+    private Button quickOpCatButton3;
+    private Button quickOpCatButton4;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_spending);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.content_spending, container, false);
+    }
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(SpendingActivity.this, AddTransactionActivity.class));
-            }
-        });
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+//        setContentView(R.layout.activity_spending);
+//        Toolbar toolbar = getView().findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+
+//        FloatingActionButton fab = getView().findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(SpendingActivity.this, AddTransactionActivity.class));
+//            }
+//        });
 
         final Calendar cal = Calendar.getInstance();
 
-        final ImageButton buttonEarlierMonth = findViewById(R.id.buttonEarlierMonth);
-        final TextView monthTextView = findViewById(R.id.monthTextView);
-        final ImageButton buttonLaterMonth = findViewById(R.id.buttonLaterMonth);
+        final ImageButton buttonEarlierMonth = getView().findViewById(R.id.buttonEarlierMonth);
+        final TextView monthTextView = getView().findViewById(R.id.monthTextView);
+        final ImageButton buttonLaterMonth = getView().findViewById(R.id.buttonLaterMonth);
 
-        EmptyMessageRecyclerView recyclerView = findViewById(R.id.spendingRecyclerView);
-        final SpendingAdapter adapter = new SpendingAdapter(this);
+        EmptyMessageRecyclerView recyclerView = getView().findViewById(R.id.spendingRecyclerView);
+        final SpendingAdapter adapter = new SpendingAdapter(getContext());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setEmptyMessageView(findViewById(R.id.spendingEmptyRecyclerViewTextView));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setEmptyMessageView(getView().findViewById(R.id.spendingEmptyRecyclerViewTextView));
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        SpendingViewModelFactory factory = new SpendingViewModelFactory(this.getApplication());
+        SpendingViewModelFactory factory = new SpendingViewModelFactory(getActivity().getApplication());
         spendingViewModel = new ViewModelProvider(this, factory).get(SpendingViewModel.class);
 
         spendingViewModel.getTransactionsForMonth().observe(this, new Observer<List<Transaction>>() {
@@ -86,10 +94,10 @@ public class SpendingActivity extends AppCompatActivity {
             }
         });
 
-        quickOpCatButton1 = findViewById(R.id.quickOpCategoryButton1);
-        quickOpCatButton2 = findViewById(R.id.quickOpCategoryButton2);
-        quickOpCatButton3 = findViewById(R.id.quickOpCategoryButton3);
-        quickOpCatButton4 = findViewById(R.id.quickOpCategoryButton4);
+        quickOpCatButton1 = getView().findViewById(R.id.quickOpCategoryButton1);
+        quickOpCatButton2 = getView().findViewById(R.id.quickOpCategoryButton2);
+        quickOpCatButton3 = getView().findViewById(R.id.quickOpCategoryButton3);
+        quickOpCatButton4 = getView().findViewById(R.id.quickOpCategoryButton4);
 
         spendingViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
             @Override
@@ -125,7 +133,7 @@ public class SpendingActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SpendingActivity.this, AddTransactionActivity.class);
+                Intent intent = new Intent(getActivity(), AddTransactionActivity.class);
                 intent.putExtra(Constants.CATEGORY_EXTRA_NAME, category);
                 startActivity(intent);
             }
@@ -133,13 +141,13 @@ public class SpendingActivity extends AppCompatActivity {
     }
 
     private void showTotalSpendingForMonth() {
-        final TextView totalTextView = findViewById(R.id.totalTextView);
+        final TextView totalTextView = getView().findViewById(R.id.totalTextView);
 
         totalTextView.setText(String.format("Total: %s", CurrencyFormatter.createCurrencyFormattedString(getSpendingTotal())));
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
 
         showTotalSpendingForMonth();
@@ -173,32 +181,32 @@ public class SpendingActivity extends AppCompatActivity {
         return total;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.transactions_page) {
-            startActivity(new Intent(SpendingActivity.this, TransactionsActivity.class));
-            return true;
-        } else if (id == R.id.categories_page) {
-            startActivity(new Intent(SpendingActivity.this, CategoriesActivity.class));
-            return true;
-        } else if (id == R.id.home_page) {
-        startActivity(new Intent(SpendingActivity.this, HomeActivity.class));
-        return true;
-    }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.transactions_page) {
+//            startActivity(new Intent(SpendingActivity.this, TransactionsActivity.class));
+//            return true;
+//        } else if (id == R.id.categories_page) {
+//            startActivity(new Intent(SpendingActivity.this, CategoriesActivity.class));
+//            return true;
+//        } else if (id == R.id.home_page) {
+//        startActivity(new Intent(SpendingActivity.this, HomeActivity.class));
+//        return true;
+//    }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 }

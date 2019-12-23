@@ -11,25 +11,6 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".home.HomeActivity"
-            android:label="@string/title_activity_home"
-            android:parentActivityName=".spending.SpendingActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.threehundredpercentbears.quiktrak.spending.SpendingActivity" />
-        </activity>
-        <activity
-            android:name=".categories.CategoriesActivity"
-            android:label="@string/title_activity_categories"
-            android:parentActivityName=".spending.SpendingActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.threehundredpercentbears.quiktrak.spending.SpendingActivity" />
-        </activity>
-        <activity
-            android:name=".spending.SpendingActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -38,25 +19,45 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--<activity-->
+            <!--android:name=".categories.CategoriesActivity"-->
+            <!--android:label="@string/title_activity_categories"-->
+            <!--android:parentActivityName=".spending.SpendingActivity"-->
+            <!--android:theme="@style/AppTheme.NoActionBar"-->
+            <!--android:windowSoftInputMode="stateHidden">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="com.threehundredpercentbears.quiktrak.spending.SpendingActivity" />-->
+        <!--</activity>-->
+        <!--<activity-->
+            <!--android:name=".spending.SpendingActivity"-->
+            <!--android:label="@string/app_name"-->
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
         <activity
             android:name=".addtransaction.AddTransactionActivity"
             android:label="@string/title_activity_add_transaction"
-            android:parentActivityName=".spending.SpendingActivity"
+            android:parentActivityName=".home.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.threehundredpercentbears.quiktrak.spending.SpendingActivity" />
+                android:value="com.threehundredpercentbears.quiktrak.home.HomeActivity" />
         </activity>
-        <activity
-            android:name=".transactions.TransactionsActivity"
-            android:label="@string/title_activity_transactions"
-            android:parentActivityName=".spending.SpendingActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.threehundredpercentbears.quiktrak.spending.SpendingActivity" />
-        </activity>
+        <!--<activity-->
+            <!--android:name=".transactions.TransactionsActivity"-->
+            <!--android:label="@string/title_activity_transactions"-->
+            <!--android:parentActivityName=".spending.SpendingActivity"-->
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="com.threehundredpercentbears.quiktrak.spending.SpendingActivity" />-->
+        <!--</activity>-->
     </application>
 
 </manifest>
