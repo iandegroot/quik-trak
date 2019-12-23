@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivity;
 import com.threehundredpercentbears.quiktrak.categories.CategoriesActivity;
+import com.threehundredpercentbears.quiktrak.home.HomeActivity;
 import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.Constants;
 import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsHelper;
@@ -193,7 +194,10 @@ public class SpendingActivity extends AppCompatActivity {
         } else if (id == R.id.categories_page) {
             startActivity(new Intent(SpendingActivity.this, CategoriesActivity.class));
             return true;
-        }
+        } else if (id == R.id.home_page) {
+        startActivity(new Intent(SpendingActivity.this, HomeActivity.class));
+        return true;
+    }
 
         return super.onOptionsItemSelected(item);
     }

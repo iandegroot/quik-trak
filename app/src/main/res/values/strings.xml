@@ -4,6 +4,7 @@
     <!--Activity Names-->
     <string name="transactions_page">Transactions</string>
     <string name="categories_page">Categories</string>
+    <string name="home_page">Home</string>
 
     <!--Spending Activity-->
     <string name="title_activity_spending">Spending</string>
@@ -35,4 +36,7 @@
     <string name="add_category_button">Add Category</string>
     <string name="add_category_text_view">New category name...</string>
     <string name="no_categories_message">You don\'t have any categories, add some above!</string>
+
+    <!--Home Activity-->
+    <string name="title_activity_home">Home</string>
 </resources>

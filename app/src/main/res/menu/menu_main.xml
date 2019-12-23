@@ -13,4 +13,10 @@
         android:orderInCategory="100"
         android:title="@string/categories_page"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/home_page"
+        android:orderInCategory="100"
+        android:title="@string/home_page"
+        app:showAsAction="never" />
 </menu>
