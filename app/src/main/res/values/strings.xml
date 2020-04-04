@@ -17,6 +17,7 @@
     <string name="quick_op_category_button_2">Category 2</string>
     <string name="quick_op_category_button_3">Category 3</string>
     <string name="quick_op_category_button_4">Category 4</string>
+    <string name="day_of_month_text_view">Day of Month</string>
 
     <!--Transactions-->
 

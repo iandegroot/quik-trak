@@ -122,8 +122,34 @@
                 android:text="@string/quick_op_category_button_4" />
         </LinearLayout>
 
-        <View style="@style/Divider"
-            android:layout_marginBottom="80dp"/>
+        <View style="@style/Divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center|start"
+                android:src="@drawable/ic_calendar_asset_gray_32dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="2dp" />
+
+            <TextView
+                android:id="@+id/dayOfMonthTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center|start"
+                android:text="@string/day_of_month_text_view"
+                android:textSize="24sp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

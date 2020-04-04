@@ -26,8 +26,10 @@ import com.threehundredpercentbears.quiktrak.utils.formatters.CurrencyFormatter;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class SpendingFragment extends Fragment {
 
@@ -109,6 +111,10 @@ public class SpendingFragment extends Fragment {
         });
 
         monthlyTransactionsHelper.updateMonthFilter(spendingViewModel, cal);
+
+        final TextView dayOfMonthTextView = getView().findViewById(R.id.dayOfMonthTextView);
+        SimpleDateFormat dayOfMonthFormat = new SimpleDateFormat("EEE, MMM d", Locale.ENGLISH);
+        dayOfMonthTextView.setText(dayOfMonthFormat.format(cal.getTime()));
     }
 
     private View.OnClickListener createOnClickListenerForQuickOpCatButton(final String category) {
