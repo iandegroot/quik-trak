@@ -4,24 +4,30 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.threehundredpercentbears.quiktrak.utils.Constants;
 import com.threehundredpercentbears.quiktrak.utils.formatters.CurrencyFormatter;
 import com.threehundredpercentbears.quiktrak.utils.formatters.DateFormatter;
 import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.TransactionViewHolder> {
+public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.TransactionViewHolder>
+        implements Filterable {
 
     private final LayoutInflater inflater;
     private final OnItemClickListener<Transaction> listener;
     private List<Transaction> transactions;
+    private List<Transaction> allTransactions;
 
     TransactionsAdapter(Context context, OnItemClickListener<Transaction> listener) {
         this.inflater = LayoutInflater.from(context);
@@ -50,6 +56,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
 
     void setTransactions(List<Transaction> transactions){
         this.transactions = transactions;
+        allTransactions = new ArrayList<>(transactions);
         notifyDataSetChanged();
     }
 
@@ -84,4 +91,39 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
             });
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return transactionFilter;
+    }
+
+    private Filter transactionFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Transaction> filteredTransactions = new ArrayList<>();
+            String searchCategory = charSequence.toString().toLowerCase().trim();
+
+            if (searchCategory.equals(Constants.ALL_CATEGORIES)) {
+                filteredTransactions.addAll(allTransactions);
+            } else {
+                for (Transaction trans : allTransactions) {
+                    if (trans.getCategory().toLowerCase().equals(searchCategory)) {
+                        filteredTransactions.add(trans);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredTransactions;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            transactions.clear();
+            transactions.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 }
