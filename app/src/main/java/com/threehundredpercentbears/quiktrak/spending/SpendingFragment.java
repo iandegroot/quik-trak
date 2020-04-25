@@ -28,6 +28,7 @@ import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -41,6 +42,8 @@ public class SpendingFragment extends Fragment {
     private Button quickOpCatButton2;
     private Button quickOpCatButton3;
     private Button quickOpCatButton4;
+
+    private Date currentDate;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -99,7 +102,8 @@ public class SpendingFragment extends Fragment {
             }
         });
 
-        monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
+        currentDate = cal.getTime();
+        monthTextView.setText(monthlyTransactionsHelper.getFormat().format(currentDate));
 
         buttonLaterMonth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +119,14 @@ public class SpendingFragment extends Fragment {
         final TextView dayOfMonthTextView = getView().findViewById(R.id.dayOfMonthTextView);
         SimpleDateFormat dayOfMonthFormat = new SimpleDateFormat("EEE, MMM d", Locale.ENGLISH);
         dayOfMonthTextView.setText(dayOfMonthFormat.format(cal.getTime()));
+        dayOfMonthTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cal.setTime(currentDate);
+                monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
+                monthlyTransactionsHelper.updateMonthFilter(spendingViewModel, cal);
+            }
+        });
     }
 
     private View.OnClickListener createOnClickListenerForQuickOpCatButton(final String category) {
