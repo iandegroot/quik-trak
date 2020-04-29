@@ -3,11 +3,18 @@ package com.threehundredpercentbears.quiktrak.transactions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,12 +25,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivity;
+import com.threehundredpercentbears.quiktrak.models.category.Category;
+import com.threehundredpercentbears.quiktrak.utils.Constants;
 import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsHelper;
 import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -33,8 +44,13 @@ public class TransactionsFragment extends Fragment {
 
     private MonthlyTransactionsHelper monthlyTransactionsHelper = new MonthlyTransactionsHelper();
 
+    private List<String> allCategoryNames = new ArrayList<>();
+    private Spinner categoriesFilterSpinner;
+    private TransactionsAdapter transactionsAdapter;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.content_transactions, container, false);
     }
 
@@ -50,8 +66,8 @@ public class TransactionsFragment extends Fragment {
         final ImageButton buttonLaterMonth = getView().findViewById(R.id.transactionsLaterMonthButton);
 
         EmptyMessageRecyclerView recyclerView = getView().findViewById(R.id.transactionsRecyclerView);
-        final TransactionsAdapter adapter = new TransactionsAdapter(getContext(), createRecyclerViewItemClickListener(getContext()));
-        recyclerView.setAdapter(adapter);
+        transactionsAdapter = new TransactionsAdapter(getContext(), createRecyclerViewItemClickListener(getContext()));
+        recyclerView.setAdapter(transactionsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setEmptyMessageView(getView().findViewById(R.id.transactionsEmptyRecyclerViewTextView));
 
@@ -61,11 +77,18 @@ public class TransactionsFragment extends Fragment {
         TransactionsViewModelFactory factory = new TransactionsViewModelFactory(getActivity().getApplication());
         transactionsViewModel = new ViewModelProvider(this, factory).get(TransactionsViewModel.class);
 
+        transactionsViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
+            @Override
+            public void onChanged(@Nullable final List<Category> categories) {
+                setupCategoryFilterSpinner(categories);
+            }
+        });
+
         transactionsViewModel.getTransactionsForMonth().observe(this, new Observer<List<Transaction>>() {
             @Override
             public void onChanged(@Nullable final List<Transaction> transactions) {
                 // Update the cached copy of the words in the adapter.
-                adapter.setTransactions(transactions);
+                transactionsAdapter.setTransactions(transactions);
             }
         });
 
@@ -110,5 +133,39 @@ public class TransactionsFragment extends Fragment {
                     .show();
             }
         };
+    }
+
+    private void setupCategoryFilterSpinner(List<Category> categories) {
+        allCategoryNames.clear();
+        allCategoryNames.add(Constants.ALL_CATEGORIES);
+
+        for (Category category : categories) {
+            allCategoryNames.add(category.getCategoryName());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, allCategoryNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        categoriesFilterSpinner.setAdapter(adapter);
+
+        categoriesFilterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                transactionsAdapter.getFilter().filter(adapterView.getItemAtPosition(i).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_transactions, menu);
+
+        MenuItem item = menu.findItem(R.id.transactionsCategoryFilterSpinner);
+        categoriesFilterSpinner = (Spinner) item.getActionView();
     }
 }

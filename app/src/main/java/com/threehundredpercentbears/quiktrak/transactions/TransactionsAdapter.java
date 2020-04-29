@@ -103,7 +103,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
             List<Transaction> filteredTransactions = new ArrayList<>();
             String searchCategory = charSequence.toString().toLowerCase().trim();
 
-            if (searchCategory.equals(Constants.ALL_CATEGORIES)) {
+            if (searchCategory.equals(Constants.ALL_CATEGORIES.toLowerCase())) {
                 filteredTransactions.addAll(allTransactions);
             } else {
                 for (Transaction trans : allTransactions) {

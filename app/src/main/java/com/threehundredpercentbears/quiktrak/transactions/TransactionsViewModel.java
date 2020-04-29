@@ -5,6 +5,8 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.threehundredpercentbears.quiktrak.models.category.Category;
+import com.threehundredpercentbears.quiktrak.models.category.CategoryRepository;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 import com.threehundredpercentbears.quiktrak.models.transaction.TransactionRepository;
 import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsViewModel;
@@ -14,14 +16,20 @@ import java.util.List;
 
 public class TransactionsViewModel extends AndroidViewModel implements MonthlyTransactionsViewModel {
 
-    private TransactionRepository repository;
+    private TransactionRepository transactionRepository;
+    private CategoryRepository categoryRepository;
 
     private LiveData<List<Transaction>> transactionsForMonth;
+    private LiveData<List<Category>> allCategories;
 
     public TransactionsViewModel(Application application) {
         super(application);
-        repository = new TransactionRepository(application);
-        transactionsForMonth = repository.getTransactionsForMonth();
+
+        transactionRepository = new TransactionRepository(application);
+        transactionsForMonth = transactionRepository.getTransactionsForMonth();
+
+        categoryRepository = new CategoryRepository(application);
+        allCategories = categoryRepository.getAllCategories();
     }
 
     LiveData<List<Transaction>> getTransactionsForMonth() {
@@ -29,14 +37,18 @@ public class TransactionsViewModel extends AndroidViewModel implements MonthlyTr
     }
 
     public void updateMonthFilter(Date startDate, Date endDate) {
-        repository.setMonthFilter(startDate, endDate);
+        transactionRepository.setMonthFilter(startDate, endDate);
     }
 
     public void insert(Transaction transaction) {
-        repository.insert(transaction);
+        transactionRepository.insert(transaction);
     }
 
     public void deleteTransaction(int id) {
-        repository.deleteTransaction(id);
+        transactionRepository.deleteTransaction(id);
+    }
+
+    LiveData<List<Category>> getAllCategories() {
+        return allCategories;
     }
 }

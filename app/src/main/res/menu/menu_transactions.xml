@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.threehundredpercentbears.quiktrak.transactions.TransactionsFragment">
+
+    <item
+        android:id="@+id/transactionsCategoryFilterSpinner"
+        android:title="@string/category_filter_spinner"
+        app:actionViewClass="android.widget.Spinner"
+        app:showAsAction="always" />
+
+</menu>

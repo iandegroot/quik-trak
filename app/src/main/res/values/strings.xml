@@ -20,6 +20,7 @@
     <string name="day_of_month_text_view">Day of Month</string>
 
     <!--Transactions-->
+    <string name="category_filter_spinner">Category Filter Spinner</string>
 
     <!--Add New Transaction-->
     <string name="title_activity_add_transaction">Add Transaction</string>
