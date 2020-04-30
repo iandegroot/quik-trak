@@ -3,7 +3,6 @@ package com.threehundredpercentbears.quiktrak.transactions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,7 +24,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivity;
 import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.Constants;
 import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsHelper;
@@ -143,6 +141,10 @@ public class TransactionsFragment extends Fragment {
             allCategoryNames.add(category.getCategoryName());
         }
 
+        setupCategoryFilterSpinner();
+    }
+
+    private void setupCategoryFilterSpinner() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, allCategoryNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -156,7 +158,7 @@ public class TransactionsFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                // Do nothing here
             }
         });
     }
@@ -167,5 +169,12 @@ public class TransactionsFragment extends Fragment {
 
         MenuItem item = menu.findItem(R.id.transactionsCategoryFilterSpinner);
         categoriesFilterSpinner = (Spinner) item.getActionView();
+
+        // If allCategoryNames already has values then use those to populate the spinner,
+        // otherwise we'll wait for the categories LiveData to be updated which will trigger
+        // setting up the category filter spinner.
+        if (allCategoryNames.size() > 0) {
+            setupCategoryFilterSpinner();
+        }
     }
 }
