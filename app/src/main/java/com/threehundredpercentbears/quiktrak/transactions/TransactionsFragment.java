@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -169,6 +170,7 @@ public class TransactionsFragment extends Fragment {
 
         MenuItem item = menu.findItem(R.id.transactionsCategoryFilterSpinner);
         categoriesFilterSpinner = (Spinner) item.getActionView();
+        categoriesFilterSpinner.setGravity(Gravity.END);
 
         // If allCategoryNames already has values then use those to populate the spinner,
         // otherwise we'll wait for the categories LiveData to be updated which will trigger
