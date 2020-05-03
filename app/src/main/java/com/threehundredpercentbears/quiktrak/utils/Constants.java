@@ -5,4 +5,8 @@ public class Constants {
     public static final String CATEGORY_EXTRA_NAME = "category";
 
     public static final String ALL_CATEGORIES = "All Categories";
+
+    public static final int SPENDING_TAB_POS = 0;
+    public static final int TRANSACTIONS_TAB_POS = 1;
+    public static final int CATEGORIES_TAB_POS = 2;
 }

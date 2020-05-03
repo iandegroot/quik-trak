@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivity;
+import com.threehundredpercentbears.quiktrak.utils.Constants;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -38,11 +39,11 @@ public class HomeActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, viewPager,
                 new TabLayoutMediator.TabConfigurationStrategy() {
                     @Override public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                        if (position == 0) {
+                        if (position == Constants.SPENDING_TAB_POS) {
                             tab.setText("Spending");
-                        } else if (position == 1) {
+                        } else if (position == Constants.TRANSACTIONS_TAB_POS) {
                             tab.setText("Transactions");
-                        } else if (position == 2) {
+                        } else if (position == Constants.CATEGORIES_TAB_POS) {
                             tab.setText("Categories");
                         }
                     }
