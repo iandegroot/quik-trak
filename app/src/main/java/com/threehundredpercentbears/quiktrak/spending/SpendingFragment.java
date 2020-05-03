@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,9 +18,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivity;
 import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.Constants;
+import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
+import com.threehundredpercentbears.quiktrak.utils.SharedCategoryToFilterViewModel;
+import com.threehundredpercentbears.quiktrak.utils.SharedCategoryToFilterViewModelFactory;
 import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsHelper;
 import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.formatters.CurrencyFormatter;
@@ -35,6 +40,7 @@ import java.util.Locale;
 public class SpendingFragment extends Fragment {
 
     private SpendingViewModel spendingViewModel;
+    private SharedCategoryToFilterViewModel categoryToFilterViewModel;
 
     private MonthlyTransactionsHelper monthlyTransactionsHelper = new MonthlyTransactionsHelper();
 
@@ -61,7 +67,7 @@ public class SpendingFragment extends Fragment {
         final ImageButton buttonLaterMonth = getView().findViewById(R.id.buttonLaterMonth);
 
         EmptyMessageRecyclerView recyclerView = getView().findViewById(R.id.spendingRecyclerView);
-        final SpendingAdapter adapter = new SpendingAdapter(getContext());
+        final SpendingAdapter adapter = new SpendingAdapter(getContext(), createRecyclerViewItemClickListener(getContext()));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setEmptyMessageView(getView().findViewById(R.id.spendingEmptyRecyclerViewTextView));
@@ -80,6 +86,9 @@ public class SpendingFragment extends Fragment {
                 showTotalSpendingForMonth();
             }
         });
+
+        SharedCategoryToFilterViewModelFactory sharedVMFactory = new SharedCategoryToFilterViewModelFactory();
+        categoryToFilterViewModel = new ViewModelProvider(requireActivity(), sharedVMFactory).get(SharedCategoryToFilterViewModel.class);
 
         quickOpCatButton1 = getView().findViewById(R.id.quickOpCategoryButton1);
         quickOpCatButton2 = getView().findViewById(R.id.quickOpCategoryButton2);
@@ -127,6 +136,19 @@ public class SpendingFragment extends Fragment {
                 monthlyTransactionsHelper.updateMonthFilter(spendingViewModel, cal);
             }
         });
+    }
+
+    private OnItemClickListener<CategorySpending> createRecyclerViewItemClickListener(final Context context) {
+        return new OnItemClickListener<CategorySpending>() {
+
+            @Override
+            public void onItemClick(final CategorySpending categorySpending) {
+                categoryToFilterViewModel.setCategoryToFilter(categorySpending.getCategory());
+
+                TabLayout tabLayout = getActivity().findViewById(R.id.tabs);
+                tabLayout.getTabAt(Constants.TRANSACTIONS_TAB_POS).select();
+            }
+        };
     }
 
     private View.OnClickListener createOnClickListenerForQuickOpCatButton(final String category) {

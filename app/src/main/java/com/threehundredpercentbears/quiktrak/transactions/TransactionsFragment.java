@@ -27,6 +27,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.Constants;
+import com.threehundredpercentbears.quiktrak.utils.SharedCategoryToFilterViewModel;
+import com.threehundredpercentbears.quiktrak.utils.SharedCategoryToFilterViewModelFactory;
 import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsHelper;
 import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
@@ -40,6 +42,7 @@ import java.util.List;
 public class TransactionsFragment extends Fragment {
 
     private TransactionsViewModel transactionsViewModel;
+    private SharedCategoryToFilterViewModel categoryToFilterViewModel;
 
     private MonthlyTransactionsHelper monthlyTransactionsHelper = new MonthlyTransactionsHelper();
 
@@ -90,6 +93,9 @@ public class TransactionsFragment extends Fragment {
                 transactionsAdapter.setTransactions(transactions);
             }
         });
+
+        SharedCategoryToFilterViewModelFactory sharedVMFactory = new SharedCategoryToFilterViewModelFactory();
+        categoryToFilterViewModel = new ViewModelProvider(requireActivity(), sharedVMFactory).get(SharedCategoryToFilterViewModel.class);
 
         buttonEarlierMonth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,6 +168,9 @@ public class TransactionsFragment extends Fragment {
                 // Do nothing here
             }
         });
+
+        categoriesFilterSpinner.setSelection(adapter.getPosition(categoryToFilterViewModel.getCategoryToFilter()));
+        categoryToFilterViewModel.setCategoryToFilter(Constants.ALL_CATEGORIES);
     }
 
     @Override
@@ -178,5 +187,6 @@ public class TransactionsFragment extends Fragment {
         if (allCategoryNames.size() > 0) {
             setupCategoryFilterSpinner();
         }
+
     }
 }

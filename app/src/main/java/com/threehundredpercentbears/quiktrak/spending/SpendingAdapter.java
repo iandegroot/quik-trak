@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
 import com.threehundredpercentbears.quiktrak.utils.formatters.CurrencyFormatter;
 import com.threehundredpercentbears.quiktrak.R;
 
@@ -17,9 +18,13 @@ import java.util.List;
 public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.SpendingViewHolder> {
 
     private final LayoutInflater inflater;
+    private final OnItemClickListener<CategorySpending> listener;
     private List<CategorySpending> categorySpendings;
 
-    SpendingAdapter(Context context) { inflater = LayoutInflater.from(context); }
+    SpendingAdapter(Context context, OnItemClickListener<CategorySpending> listener) {
+        this.inflater = LayoutInflater.from(context);
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -34,6 +39,7 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.Spendi
             CategorySpending currentSpending = categorySpendings.get(position);
             holder.categoryTextView.setText(currentSpending.getCategory());
             holder.amountTextView.setText(CurrencyFormatter.createCurrencyFormattedString(currentSpending.getAmount()));
+            holder.bind(currentSpending, listener);
         }
         // TODO: Add else to set rows to default values if no categorySpendings is null
     }
@@ -60,6 +66,14 @@ public class SpendingAdapter extends RecyclerView.Adapter<SpendingAdapter.Spendi
             super(itemView);
             categoryTextView = itemView.findViewById(R.id.spendingCategoryTextView);
             amountTextView = itemView.findViewById(R.id.spendingTotalByCategoryTextView);
+        }
+
+        private void bind(final CategorySpending item, final OnItemClickListener<CategorySpending> listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(item);
+                }
+            });
         }
     }
 }
