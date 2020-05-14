@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -128,12 +129,16 @@ public class TransactionsFragment extends Fragment {
             public void onItemClick(final Transaction transaction) {
 
                 new AlertDialog.Builder(context)
-                    .setMessage(String.format("Are you sure you want to delete the %s transaction for %s?",
+                    .setMessage(String.format("Are you sure you want to delete the '%s' transaction for %s?",
                             transaction.getCategory(), CurrencyFormatter.createCurrencyFormattedString(transaction.getAmount())))
                     .setCancelable(false)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             transactionsViewModel.deleteTransaction(transaction.getId());
+                            Toast.makeText(context,
+                                    String.format("Successfully deleted the '%s' transaction for %s",
+                                    transaction.getCategory(), CurrencyFormatter.createCurrencyFormattedString(transaction.getAmount())),
+                                    Toast.LENGTH_LONG).show();
                         }
                     })
                     .setNegativeButton("No", null)

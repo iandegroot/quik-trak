@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
@@ -149,6 +150,9 @@ public class CategoriesFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int id) {
                                 categoriesViewModel.deleteAllCategoryTransactions(category.getCategoryName());
                                 categoriesViewModel.deleteCategory(category.getId());
+                                Toast.makeText(context,
+                                        String.format("Successfully deleted category '%s'", category.getCategoryName()),
+                                        Toast.LENGTH_LONG).show();
                             }
                         })
                         .setNegativeButton("No", null)
