@@ -1,5 +1,6 @@
 package com.threehundredpercentbears.quiktrak.categories;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -41,9 +42,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         if (categories != null) {
-            Category currentCat = categories.get(position);
+            final Category currentCat = categories.get(position);
             holder.categoryTextView.setText(currentCat.getCategoryName());
-            holder.bind(currentCat, clickListener, dragStartListener);
+            holder.bind(dragStartListener);
+            holder.deleteImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListener.onItemClick(currentCat);
+                }
+            });
         }
         // TODO: Add else to set rows to default values if no transactions is null
     }
@@ -65,21 +72,19 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     class CategoryViewHolder extends RecyclerView.ViewHolder {
 
         TextView categoryTextView;
+        ImageView deleteImageView;
         ImageView dragHandleImageView;
 
         private CategoryViewHolder(View itemView) {
             super(itemView);
 
             categoryTextView = itemView.findViewById(R.id.recyclerViewRowItemTextView);
+            deleteImageView = itemView.findViewById(R.id.categoriesDeleteIcon);
             dragHandleImageView = itemView.findViewById(R.id.categoriesDragHandle);
         }
 
-        private void bind(final Category item, final OnItemClickListener<Category> clickListener, final OnStartDragListener startDragListener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    clickListener.onItemClick(item);
-                }
-            });
+        @SuppressLint("ClickableViewAccessibility")
+        private void bind(final OnStartDragListener startDragListener) {
 
             dragHandleImageView.setOnTouchListener(new View.OnTouchListener() {
                 @Override

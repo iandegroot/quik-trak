@@ -19,6 +19,14 @@
         android:paddingStart="@dimen/recycler_view_text_margin"/>
 
     <ImageView
+        android:id="@+id/categoriesDeleteIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="6dp"
+        android:src="@drawable/ic_delete_white_32dp" />
+
+    <ImageView
         android:id="@+id/categoriesDragHandle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
