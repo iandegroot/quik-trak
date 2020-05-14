@@ -131,7 +131,7 @@ public class TransactionsFragment extends Fragment {
                 new AlertDialog.Builder(context)
                     .setMessage(String.format("Are you sure you want to delete the '%s' transaction for %s?",
                             transaction.getCategory(), CurrencyFormatter.createCurrencyFormattedString(transaction.getAmount())))
-                    .setCancelable(false)
+                    .setCancelable(true)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             transactionsViewModel.deleteTransaction(transaction.getId());
