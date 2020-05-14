@@ -29,6 +29,7 @@ import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.Constants;
 import com.threehundredpercentbears.quiktrak.utils.SharedCategoryToFilterViewModel;
 import com.threehundredpercentbears.quiktrak.utils.SharedCategoryToFilterViewModelFactory;
+import com.threehundredpercentbears.quiktrak.utils.formatters.CurrencyFormatter;
 import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsHelper;
 import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
@@ -127,7 +128,8 @@ public class TransactionsFragment extends Fragment {
             public void onItemClick(final Transaction transaction) {
 
                 new AlertDialog.Builder(context)
-                    .setMessage("Are you sure you want to delete the transaction?")
+                    .setMessage(String.format("Are you sure you want to delete the %s transaction for %s?",
+                            transaction.getCategory(), CurrencyFormatter.createCurrencyFormattedString(transaction.getAmount())))
                     .setCancelable(false)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {

@@ -142,8 +142,8 @@ public class CategoriesFragment extends Fragment {
             public void onItemClick(final Category category) {
 
                 new AlertDialog.Builder(context)
-                        .setMessage("Are you sure you want to delete the category '" + category.getCategoryName() + "'?\n" +
-                            "All transactions of that category will also be deleted.")
+                        .setMessage(String.format("Are you sure you want to delete the category '%s'?\n" +
+                                "All transactions of that category will also be deleted.", category.getCategoryName()))
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
