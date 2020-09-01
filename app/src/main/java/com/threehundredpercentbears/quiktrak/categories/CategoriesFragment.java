@@ -58,6 +58,9 @@ public class CategoriesFragment extends Fragment {
                 String newCategoryName = addCategoryEditText.getText().toString();
                 if (isValidCategoryName(newCategoryName)) {
                     addNewCategory(newCategoryName);
+                    Toast.makeText(view.getContext(),
+                            String.format("Successfully created new category '%s'", newCategoryName),
+                            Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(view.getContext(),
                             String.format("Could not create category '%s'. Category already exists or is empty.", newCategoryName),
