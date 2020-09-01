@@ -54,7 +54,15 @@ public class CategoriesFragment extends Fragment {
         addCategoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addNewCategory(addCategoryEditText.getText().toString());
+
+                String newCategoryName = addCategoryEditText.getText().toString();
+                if (isValidCategoryName(newCategoryName)) {
+                    addNewCategory(newCategoryName);
+                } else {
+                    Toast.makeText(view.getContext(),
+                            String.format("Could not create category '%s'. Category already exists or is empty.", newCategoryName),
+                            Toast.LENGTH_LONG).show();
+                }
 
                 closeKeyboardAndClearEditText(addCategoryEditText);
             }
@@ -82,6 +90,22 @@ public class CategoriesFragment extends Fragment {
 
         itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private boolean isValidCategoryName(String newCategoryName) {
+
+        if (newCategoryName.isEmpty()) {
+            return false;
+        }
+
+        List<Category> categories = categoriesViewModel.getAllCategories().getValue();
+        for (Category category : categories) {
+            if (category.getCategoryName().equalsIgnoreCase(newCategoryName)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void addNewCategory(String categoryName) {
