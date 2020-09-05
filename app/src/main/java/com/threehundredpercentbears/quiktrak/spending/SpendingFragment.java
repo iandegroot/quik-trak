@@ -49,7 +49,9 @@ public class SpendingFragment extends Fragment implements ViewPagerFragmentLifec
     private Button quickOpCatButton2;
     private Button quickOpCatButton3;
     private Button quickOpCatButton4;
+    private TextView monthTextView;
 
+    private Calendar calendar;
     private Date currentDate;
 
     @Override
@@ -61,10 +63,10 @@ public class SpendingFragment extends Fragment implements ViewPagerFragmentLifec
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final Calendar cal = Calendar.getInstance();
+        calendar = Calendar.getInstance();
 
         final ImageButton buttonEarlierMonth = getView().findViewById(R.id.buttonEarlierMonth);
-        final TextView monthTextView = getView().findViewById(R.id.monthTextView);
+        monthTextView = getView().findViewById(R.id.monthTextView);
         final ImageButton buttonLaterMonth = getView().findViewById(R.id.buttonLaterMonth);
 
         EmptyMessageRecyclerView recyclerView = getView().findViewById(R.id.spendingRecyclerView);
@@ -90,6 +92,7 @@ public class SpendingFragment extends Fragment implements ViewPagerFragmentLifec
 
         SharedCategoryToFilterViewModelFactory sharedVMFactory = new SharedCategoryToFilterViewModelFactory();
         categoryToFilterViewModel = new ViewModelProvider(requireActivity(), sharedVMFactory).get(SharedCategoryToFilterViewModel.class);
+        categoryToFilterViewModel.setCalendar(calendar);
 
         quickOpCatButton1 = getView().findViewById(R.id.quickOpCategoryButton1);
         quickOpCatButton2 = getView().findViewById(R.id.quickOpCategoryButton2);
@@ -106,37 +109,40 @@ public class SpendingFragment extends Fragment implements ViewPagerFragmentLifec
         buttonEarlierMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cal.add(Calendar.MONTH, -1);
-                monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
-                monthlyTransactionsHelper.updateMonthFilter(spendingViewModel, cal);
+                calendar.add(Calendar.MONTH, -1);
+                setActiveMonth();
             }
         });
 
-        currentDate = cal.getTime();
-        monthTextView.setText(monthlyTransactionsHelper.getFormat().format(currentDate));
+        currentDate = calendar.getTime();
 
         buttonLaterMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cal.add(Calendar.MONTH, 1);
-                monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
-                monthlyTransactionsHelper.updateMonthFilter(spendingViewModel, cal);
+                calendar.add(Calendar.MONTH, 1);
+                setActiveMonth();
             }
         });
-
-        monthlyTransactionsHelper.updateMonthFilter(spendingViewModel, cal);
 
         final TextView dayOfMonthTextView = getView().findViewById(R.id.dayOfMonthTextView);
         SimpleDateFormat dayOfMonthFormat = new SimpleDateFormat("EEE, MMM d", Locale.ENGLISH);
-        dayOfMonthTextView.setText(dayOfMonthFormat.format(cal.getTime()));
+        dayOfMonthTextView.setText(dayOfMonthFormat.format(calendar.getTime()));
         dayOfMonthTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cal.setTime(currentDate);
-                monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
-                monthlyTransactionsHelper.updateMonthFilter(spendingViewModel, cal);
+                calendar.setTime(currentDate);
+                setActiveMonth();
             }
         });
+
+        setActiveMonth();
+    }
+
+    private void setActiveMonth() {
+        Date selectedDate = calendar.getTime();
+
+        monthTextView.setText(monthlyTransactionsHelper.getFormat().format(selectedDate));
+        monthlyTransactionsHelper.updateMonthFilter(spendingViewModel, selectedDate);
     }
 
     private OnItemClickListener<CategorySpending> createRecyclerViewItemClickListener(final Context context) {
@@ -206,7 +212,7 @@ public class SpendingFragment extends Fragment implements ViewPagerFragmentLifec
 
     @Override
     public void onViewPagerResume() {
-
+        setActiveMonth();
     }
 
     @Override

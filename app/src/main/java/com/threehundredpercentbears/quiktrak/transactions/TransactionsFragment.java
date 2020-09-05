@@ -40,6 +40,7 @@ import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class TransactionsFragment extends Fragment implements ViewPagerFragmentLifecycle {
@@ -51,6 +52,7 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
 
     private List<String> allCategoryNames = new ArrayList<>();
     private Spinner categoriesFilterSpinner;
+    private TextView monthTextView;
     private TransactionsAdapter transactionsAdapter;
 
     @Override
@@ -64,10 +66,8 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final Calendar cal = Calendar.getInstance();
-
         final ImageButton buttonEarlierMonth = getView().findViewById(R.id.transactionsEarlierMonthButton);
-        final TextView monthTextView = getView().findViewById(R.id.transactionsMonthTextView);
+        monthTextView = getView().findViewById(R.id.transactionsMonthTextView);
         final ImageButton buttonLaterMonth = getView().findViewById(R.id.transactionsLaterMonthButton);
 
         EmptyMessageRecyclerView recyclerView = getView().findViewById(R.id.transactionsRecyclerView);
@@ -99,28 +99,41 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
 
         SharedCategoryToFilterViewModelFactory sharedVMFactory = new SharedCategoryToFilterViewModelFactory();
         categoryToFilterViewModel = new ViewModelProvider(requireActivity(), sharedVMFactory).get(SharedCategoryToFilterViewModel.class);
+        final Calendar calendar = getCalendar();
 
         buttonEarlierMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cal.add(Calendar.MONTH, -1);
-                monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
-                monthlyTransactionsHelper.updateMonthFilter(transactionsViewModel, cal);
+                calendar.add(Calendar.MONTH, -1);
+                setActiveMonth();
             }
         });
-
-        monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
 
         buttonLaterMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cal.add(Calendar.MONTH, 1);
-                monthTextView.setText(monthlyTransactionsHelper.getFormat().format(cal.getTime()));
-                monthlyTransactionsHelper.updateMonthFilter(transactionsViewModel, cal);
+                calendar.add(Calendar.MONTH, 1);
+                setActiveMonth();
             }
         });
 
-        monthlyTransactionsHelper.updateMonthFilter(transactionsViewModel, cal);
+        setActiveMonth();
+    }
+
+    private Calendar getCalendar() {
+        Calendar spendingCalendar = categoryToFilterViewModel.getCalendar();
+        if (spendingCalendar == null) {
+            return Calendar.getInstance();
+        } else {
+            return spendingCalendar;
+        }
+    }
+
+    private void setActiveMonth() {
+        Date selectedDate = categoryToFilterViewModel.getCalendar().getTime();
+
+        monthTextView.setText(monthlyTransactionsHelper.getFormat().format(selectedDate));
+        monthlyTransactionsHelper.updateMonthFilter(transactionsViewModel, selectedDate);
     }
 
     private OnItemClickListener<Transaction> createRecyclerViewItemClickListener(final Context context) {
@@ -178,7 +191,6 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
         });
 
         categoriesFilterSpinner.setSelection(adapter.getPosition(categoryToFilterViewModel.getCategoryToFilter()));
-        categoryToFilterViewModel.setCategoryToFilter(Constants.ALL_CATEGORIES);
     }
 
     @Override
@@ -192,19 +204,23 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
         // If allCategoryNames already has values then use those to populate the spinner,
         // otherwise we'll wait for the categories LiveData to be updated which will trigger
         // setting up the category filter spinner.
-        if (allCategoryNames.size() > 0) {
-            setupCategoryFilterSpinner();
-        }
-
+        setupCategoryFilterSpinnerIfCategoriesAvailable();
     }
 
     @Override
     public void onViewPagerResume() {
+        setActiveMonth();
+        setupCategoryFilterSpinnerIfCategoriesAvailable();
+    }
 
+    private void setupCategoryFilterSpinnerIfCategoriesAvailable() {
+        if (allCategoryNames.size() > 0) {
+            setupCategoryFilterSpinner();
+        }
     }
 
     @Override
     public void onViewPagerPause() {
-
+        categoryToFilterViewModel.setCategoryToFilter(Constants.ALL_CATEGORIES);
     }
 }
