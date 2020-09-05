@@ -25,6 +25,7 @@ import com.threehundredpercentbears.quiktrak.utils.Constants;
 import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
 import com.threehundredpercentbears.quiktrak.utils.SharedCategoryToFilterViewModel;
 import com.threehundredpercentbears.quiktrak.utils.SharedCategoryToFilterViewModelFactory;
+import com.threehundredpercentbears.quiktrak.utils.ViewPagerFragmentLifecycle;
 import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsHelper;
 import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.formatters.CurrencyFormatter;
@@ -37,7 +38,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class SpendingFragment extends Fragment {
+public class SpendingFragment extends Fragment implements ViewPagerFragmentLifecycle {
 
     private SpendingViewModel spendingViewModel;
     private SharedCategoryToFilterViewModel categoryToFilterViewModel;
@@ -201,5 +202,15 @@ public class SpendingFragment extends Fragment {
         }
 
         return total;
+    }
+
+    @Override
+    public void onViewPagerResume() {
+
+    }
+
+    @Override
+    public void onViewPagerPause() {
+
     }
 }

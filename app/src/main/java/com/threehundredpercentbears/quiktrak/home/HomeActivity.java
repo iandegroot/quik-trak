@@ -19,6 +19,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivity;
 import com.threehundredpercentbears.quiktrak.utils.Constants;
+import com.threehundredpercentbears.quiktrak.utils.ViewPagerFragmentLifecycle;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -35,7 +36,8 @@ public class HomeActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tabs);
 
-        viewPager.setAdapter(new HomeViewPagerAdapter(this));
+        final HomeViewPagerAdapter homeViewPagerAdapter = new HomeViewPagerAdapter(this);
+        viewPager.setAdapter(homeViewPagerAdapter);
         new TabLayoutMediator(tabLayout, viewPager,
                 new TabLayoutMediator.TabConfigurationStrategy() {
                     @Override public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
@@ -49,6 +51,25 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }).attach();
 
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+
+            int currentPosition = 0;
+
+            @Override
+            public void onPageSelected(int position) {
+                ViewPagerFragmentLifecycle fragmentToShow = (ViewPagerFragmentLifecycle) homeViewPagerAdapter.getFragment(position);
+                if (fragmentToShow != null) {
+                    fragmentToShow.onViewPagerResume();
+                }
+
+                ViewPagerFragmentLifecycle fragmentToHide = (ViewPagerFragmentLifecycle) homeViewPagerAdapter.getFragment(currentPosition);
+                if (fragmentToHide != null) {
+                    fragmentToHide.onViewPagerPause();
+
+                    currentPosition = position;
+                }
+            }
+        });
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

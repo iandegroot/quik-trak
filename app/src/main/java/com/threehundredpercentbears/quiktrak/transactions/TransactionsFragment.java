@@ -30,6 +30,7 @@ import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.Constants;
 import com.threehundredpercentbears.quiktrak.utils.SharedCategoryToFilterViewModel;
 import com.threehundredpercentbears.quiktrak.utils.SharedCategoryToFilterViewModelFactory;
+import com.threehundredpercentbears.quiktrak.utils.ViewPagerFragmentLifecycle;
 import com.threehundredpercentbears.quiktrak.utils.formatters.CurrencyFormatter;
 import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsHelper;
 import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
@@ -41,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class TransactionsFragment extends Fragment {
+public class TransactionsFragment extends Fragment implements ViewPagerFragmentLifecycle {
 
     private TransactionsViewModel transactionsViewModel;
     private SharedCategoryToFilterViewModel categoryToFilterViewModel;
@@ -194,6 +195,16 @@ public class TransactionsFragment extends Fragment {
         if (allCategoryNames.size() > 0) {
             setupCategoryFilterSpinner();
         }
+
+    }
+
+    @Override
+    public void onViewPagerResume() {
+
+    }
+
+    @Override
+    public void onViewPagerPause() {
 
     }
 }

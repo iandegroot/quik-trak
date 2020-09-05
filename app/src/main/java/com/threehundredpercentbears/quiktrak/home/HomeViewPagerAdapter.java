@@ -13,21 +13,38 @@ public class HomeViewPagerAdapter extends FragmentStateAdapter {
 
     private static final int TAB_LAYOUT_SIZE = 3;
 
+    private Fragment spendingFragment;
+    private Fragment transactionsFragment;
+    private Fragment categoriesFragment;
+
     HomeViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 
     @NonNull @Override public Fragment createFragment(int position) {
         if (position == 0) {
-            return new SpendingFragment();
+            spendingFragment = new SpendingFragment();
+            return spendingFragment;
         } else if (position == 1) {
-            return new TransactionsFragment();
+            transactionsFragment = new TransactionsFragment();
+            return transactionsFragment;
         } else {
-            return new CategoriesFragment();
+            categoriesFragment = new CategoriesFragment();
+            return categoriesFragment;
         }
     }
 
     @Override public int getItemCount() {
         return TAB_LAYOUT_SIZE;
+    }
+
+    Fragment getFragment(int position) {
+        if (position == 0) {
+            return spendingFragment;
+        } else if (position == 1) {
+            return transactionsFragment;
+        } else {
+            return categoriesFragment;
+        }
     }
 }

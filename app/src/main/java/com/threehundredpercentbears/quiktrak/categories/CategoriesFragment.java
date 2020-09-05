@@ -28,12 +28,13 @@ import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.utils.OnStartDragListener;
+import com.threehundredpercentbears.quiktrak.utils.ViewPagerFragmentLifecycle;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class CategoriesFragment extends Fragment {
+public class CategoriesFragment extends Fragment implements ViewPagerFragmentLifecycle {
 
     private CategoriesViewModel categoriesViewModel;
     private ItemTouchHelper itemTouchHelper;
@@ -196,5 +197,15 @@ public class CategoriesFragment extends Fragment {
                 itemTouchHelper.startDrag(viewHolder);
             }
         };
+    }
+
+    @Override
+    public void onViewPagerResume() {
+
+    }
+
+    @Override
+    public void onViewPagerPause() {
+
     }
 }
