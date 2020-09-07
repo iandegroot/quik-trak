@@ -1,8 +1,6 @@
 package com.threehundredpercentbears.quiktrak.transactions;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,12 +23,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.threehundredpercentbears.quiktrak.addtransaction.AddTransactionActivity;
 import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.Constants;
 import com.threehundredpercentbears.quiktrak.utils.SharedCategoryToFilterViewModel;
 import com.threehundredpercentbears.quiktrak.utils.SharedCategoryToFilterViewModelFactory;
 import com.threehundredpercentbears.quiktrak.utils.ViewPagerFragmentLifecycle;
-import com.threehundredpercentbears.quiktrak.utils.formatters.CurrencyFormatter;
 import com.threehundredpercentbears.quiktrak.utils.monthlytransactions.MonthlyTransactionsHelper;
 import com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView;
 import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
@@ -71,7 +68,7 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
         final ImageButton buttonLaterMonth = getView().findViewById(R.id.transactionsLaterMonthButton);
 
         EmptyMessageRecyclerView recyclerView = getView().findViewById(R.id.transactionsRecyclerView);
-        transactionsAdapter = new TransactionsAdapter(getContext(), createRecyclerViewItemClickListener(getContext()));
+        transactionsAdapter = new TransactionsAdapter(getContext(), createRecyclerViewItemClickListener());
         recyclerView.setAdapter(transactionsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setEmptyMessageView(getView().findViewById(R.id.transactionsEmptyRecyclerViewTextView));
@@ -136,27 +133,14 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
         monthlyTransactionsHelper.updateMonthFilter(transactionsViewModel, selectedDate);
     }
 
-    private OnItemClickListener<Transaction> createRecyclerViewItemClickListener(final Context context) {
+    private OnItemClickListener<Transaction> createRecyclerViewItemClickListener() {
         return new OnItemClickListener<Transaction>() {
 
             @Override
             public void onItemClick(final Transaction transaction) {
-
-                new AlertDialog.Builder(context)
-                    .setMessage(String.format("Are you sure you want to delete the '%s' transaction for %s?",
-                            transaction.getCategory(), CurrencyFormatter.createCurrencyFormattedString(transaction.getAmount())))
-                    .setCancelable(true)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            transactionsViewModel.deleteTransaction(transaction.getId());
-                            Toast.makeText(context,
-                                    String.format("Successfully deleted the '%s' transaction for %s",
-                                    transaction.getCategory(), CurrencyFormatter.createCurrencyFormattedString(transaction.getAmount())),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
+                Intent intent = new Intent(getActivity(), AddTransactionActivity.class);
+                intent.putExtra(Constants.UPDATING_TRANSACTION_EXTRA_NAME, transaction);
+                startActivity(intent);
             }
         };
     }

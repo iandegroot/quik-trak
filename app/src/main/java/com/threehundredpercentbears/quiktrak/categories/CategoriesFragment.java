@@ -60,7 +60,7 @@ public class CategoriesFragment extends Fragment implements ViewPagerFragmentLif
                 if (isValidCategoryName(newCategoryName)) {
                     addNewCategory(newCategoryName);
                     Toast.makeText(view.getContext(),
-                            String.format("Successfully created new category '%s'", newCategoryName),
+                            String.format("Successfully created new category '%s'.", newCategoryName),
                             Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(view.getContext(),
@@ -179,7 +179,7 @@ public class CategoriesFragment extends Fragment implements ViewPagerFragmentLif
                                 categoriesViewModel.deleteAllCategoryTransactions(category.getCategoryName());
                                 categoriesViewModel.deleteCategory(category.getId());
                                 Toast.makeText(context,
-                                        String.format("Successfully deleted category '%s'", category.getCategoryName()),
+                                        String.format("Successfully deleted category '%s'.", category.getCategoryName()),
                                         Toast.LENGTH_LONG).show();
                             }
                         })

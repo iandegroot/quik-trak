@@ -1,6 +1,8 @@
 package com.threehundredpercentbears.quiktrak.addtransaction;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -19,6 +21,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.threehundredpercentbears.quiktrak.models.category.Category;
 import com.threehundredpercentbears.quiktrak.utils.Constants;
@@ -38,8 +41,12 @@ public class AddTransactionActivity extends AppCompatActivity {
     private Spinner categorySpinner;
     private EditText noteEditText;
     private Button addTransButton;
+    private Button deleteTransButton;
 
     private AddTransactionViewModel addTransactionViewModel;
+
+    private Transaction transactionToUpdate;
+    private boolean isUpdating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +62,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         categorySpinner = findViewById(R.id.categorySpinner);
         noteEditText = findViewById(R.id.noteEditText);
         addTransButton = findViewById(R.id.addTransactionButton);
+        deleteTransButton = findViewById(R.id.deleteTransactionButton);
 
         AddTransactionViewModelFactory factory = new AddTransactionViewModelFactory(this.getApplication());
         addTransactionViewModel = new ViewModelProvider(this, factory).get(AddTransactionViewModel.class);
@@ -96,14 +104,61 @@ public class AddTransactionActivity extends AppCompatActivity {
         addTransButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addNewTransaction();
+                if (isUpdating) {
+                    updateTransaction();
+                } else {
+                    addNewTransaction();
+                }
                 finish();
             }
         });
 
-        amountEditText.requestFocus();
+        deleteTransButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(view.getContext())
+                        .setMessage("Are you sure you want to delete this transaction?")
+                        .setCancelable(true)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                deleteTransaction();
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+            }
+        });
+        deleteTransButton.setVisibility(View.INVISIBLE);
+
         amountEditText.addTextChangedListener(new CurrencyEditTextWatcher(amountEditText));
-        amountEditText.setText("0");
+
+        Intent intent = getIntent();
+        transactionToUpdate = (Transaction) intent.getSerializableExtra(Constants.UPDATING_TRANSACTION_EXTRA_NAME);
+        isUpdating = transactionToUpdate != null;
+
+        if (isUpdating) {
+            dateEditText.setText(DateFormatter.dateToString(transactionToUpdate.getDate()));
+            amountEditText.setText(Integer.toString(transactionToUpdate.getAmount()));
+            noteEditText.setText(transactionToUpdate.getNote());
+            addTransButton.setText(R.string.update_transaction_button);
+            deleteTransButton.setVisibility(View.VISIBLE);
+            setTitle(R.string.title_activity_update_transaction);
+        } else {
+            amountEditText.requestFocus();
+            amountEditText.setText("0");
+        }
+    }
+
+    private void updateTransaction() {
+        Transaction transToUpdate = new Transaction(transactionToUpdate.getId(),
+                DateFormatter.stringToDate(dateEditText.getText().toString()),
+                Integer.parseInt(amountEditText.getText().toString().replaceAll("[$,.]", "")),
+                categorySpinner.getSelectedItem().toString(),
+                noteEditText.getText().toString());
+
+        addTransactionViewModel.updateTransaction(transToUpdate);
+        showActionFinishedToast(transToUpdate, "updated");
     }
 
     private void addNewTransaction() {
@@ -116,6 +171,18 @@ public class AddTransactionActivity extends AppCompatActivity {
                 noteEditText.getText().toString());
 
         addTransactionViewModel.insert(newTrans);
+        showActionFinishedToast(newTrans, "created");
+    }
+
+    private void deleteTransaction() {
+        addTransactionViewModel.deleteTransaction(transactionToUpdate.getId());
+        showActionFinishedToast(transactionToUpdate, "deleted");
+    }
+
+    private void showActionFinishedToast(Transaction transaction, String action) {
+        Toast.makeText(getBaseContext(),
+                String.format("Successfully %s '%s' transaction.", action, transaction.getCategory()),
+                Toast.LENGTH_SHORT).show();
     }
 
     private void setupCategorySpinner(List<Category> categories) {
@@ -132,6 +199,10 @@ public class AddTransactionActivity extends AppCompatActivity {
         if (chosenCategory != null) {
             categorySpinner.setSelection(adapter.getPosition(chosenCategory));
         }
+
+        if (isUpdating) {
+            categorySpinner.setSelection(adapter.getPosition(transactionToUpdate.getCategory()));
+        }
     }
 
     @Override
@@ -144,7 +215,11 @@ public class AddTransactionActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.addTransactionCheckMark) {
-            addNewTransaction();
+            if (isUpdating) {
+                updateTransaction();
+            } else {
+                addNewTransaction();
+            }
             finish();
             return true;
         }

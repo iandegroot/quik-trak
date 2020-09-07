@@ -24,11 +24,14 @@
 
     <!--Add New Transaction-->
     <string name="title_activity_add_transaction">Add Transaction</string>
+    <string name="title_activity_update_transaction">Update Transaction</string>
     <string name="date_text_view">Date</string>
     <string name="amount_text_view">Amount</string>
     <string name="category_text_view">Category</string>
     <string name="note_text_view">Note</string>
     <string name="add_transaction_button">Add Transaction</string>
+    <string name="update_transaction_button">Update Transaction</string>
+    <string name="delete_transaction_button">Delete Transaction</string>
     <string name="add_transaction_check_mark">Add Transaction</string>
 
     <!--Categories-->

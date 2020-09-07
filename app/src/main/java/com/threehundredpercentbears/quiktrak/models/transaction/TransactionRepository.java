@@ -78,6 +78,18 @@ public class TransactionRepository {
         });
     }
 
+    public void updateTransactionData(final Transaction transaction) {
+        TransactionRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                transactionDao.updateDate(transaction.getId(), transaction.getDate());
+                transactionDao.updateAmount(transaction.getId(), transaction.getAmount());
+                transactionDao.updateCategory(transaction.getId(), transaction.getCategory());
+                transactionDao.updateNote(transaction.getId(), transaction.getNote());
+            }
+        });
+    }
+
     static class MyMonth {
         final Date startDate;
         final Date endDate;

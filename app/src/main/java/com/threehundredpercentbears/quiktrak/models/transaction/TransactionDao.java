@@ -34,4 +34,17 @@ public interface TransactionDao {
     @TypeConverters({DateConverter.class})
     @Query("SELECT * FROM transactions_table WHERE date BETWEEN :startDate AND :endDate ORDER BY date DESC")
     LiveData<List<Transaction>> getTransactionsForMonth(Date startDate, Date endDate);
+
+    @TypeConverters({DateConverter.class})
+    @Query("UPDATE transactions_table SET date = :date WHERE id = :id")
+    void updateDate(int id, Date date);
+
+    @Query("UPDATE transactions_table SET amount = :amount WHERE id = :id")
+    void updateAmount(int id, int amount);
+
+    @Query("UPDATE transactions_table SET category = :category WHERE id = :id")
+    void updateCategory(int id, String category);
+
+    @Query("UPDATE transactions_table SET note = :note WHERE id = :id")
+    void updateNote(int id, String note);
 }

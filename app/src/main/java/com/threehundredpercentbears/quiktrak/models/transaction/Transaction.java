@@ -6,10 +6,11 @@ import androidx.room.TypeConverters;
 
 import com.threehundredpercentbears.quiktrak.utils.converters.DateConverter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity(tableName = "transactions_table")
-public class Transaction {
+public class Transaction implements Serializable {
 
     @PrimaryKey
     private int id;

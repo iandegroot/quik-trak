@@ -133,4 +133,18 @@
             android:text="@string/add_transaction_button" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/deleteTransactionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_transaction_button"
+            style="@style/Widget.AppCompat.Button.Colored" />
+    </LinearLayout>
+
 </LinearLayout>
