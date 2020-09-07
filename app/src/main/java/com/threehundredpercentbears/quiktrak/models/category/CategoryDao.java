@@ -26,4 +26,7 @@ public interface CategoryDao {
 
     @Query("UPDATE categories_table SET rank = :rank WHERE id = :id")
     void updateRank(int id, int rank);
+
+    @Query("UPDATE categories_table SET categoryName = :newName WHERE categoryName = :oldName")
+    void updateName(String oldName, String newName);
 }

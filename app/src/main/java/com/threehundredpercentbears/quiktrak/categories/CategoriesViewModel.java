@@ -41,7 +41,15 @@ public class CategoriesViewModel extends AndroidViewModel {
         categoryRepository.deleteCategory(id);
     }
 
+    public void updateName(String oldName, String newName) {
+        categoryRepository.updateName(oldName, newName);
+    }
+
     public void deleteAllCategoryTransactions(String categoryName) {
         transactionRepository.deleteAllCategoryTransactions(categoryName);
+    }
+
+    public void updateAllCategoryTransactionNames(String oldName, String newName) {
+        transactionRepository.updateAllCategoryTransactionNames(oldName, newName);
     }
 }

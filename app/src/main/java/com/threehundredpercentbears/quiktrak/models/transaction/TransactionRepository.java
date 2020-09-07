@@ -90,6 +90,15 @@ public class TransactionRepository {
         });
     }
 
+    public void updateAllCategoryTransactionNames(final String oldName, final String newName) {
+        TransactionRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                transactionDao.updateAllCategoryTransactionNames(oldName, newName);
+            }
+        });
+    }
+
     static class MyMonth {
         final Date startDate;
         final Date endDate;

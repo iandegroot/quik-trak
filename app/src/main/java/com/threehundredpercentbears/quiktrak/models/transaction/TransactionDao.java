@@ -47,4 +47,7 @@ public interface TransactionDao {
 
     @Query("UPDATE transactions_table SET note = :note WHERE id = :id")
     void updateNote(int id, String note);
+
+    @Query("UPDATE transactions_table SET category = :newName WHERE category = :oldName")
+    void updateAllCategoryTransactionNames(String oldName, String newName);
 }

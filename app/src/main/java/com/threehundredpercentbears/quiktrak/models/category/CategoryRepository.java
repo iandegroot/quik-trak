@@ -51,4 +51,13 @@ public class CategoryRepository {
             }
         });
     }
+
+    public void updateName(final String oldName, final String newName) {
+        CategoryRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                categoryDao.updateName(oldName, newName);
+            }
+        });
+    }
 }
