@@ -51,6 +51,7 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
     private Spinner categoriesFilterSpinner;
     private TextView monthTextView;
     private TransactionsAdapter transactionsAdapter;
+    private String currentCategory = Constants.ALL_CATEGORIES;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,6 +92,7 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
             public void onChanged(@Nullable final List<Transaction> transactions) {
                 // Update the cached copy of the words in the adapter.
                 transactionsAdapter.setTransactions(transactions);
+                transactionsAdapter.getFilter().filter(currentCategory);
             }
         });
 
@@ -165,7 +167,8 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
         categoriesFilterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                transactionsAdapter.getFilter().filter(adapterView.getItemAtPosition(i).toString());
+                currentCategory = adapterView.getItemAtPosition(i).toString();
+                transactionsAdapter.getFilter().filter(currentCategory);
             }
 
             @Override
@@ -174,7 +177,8 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
             }
         });
 
-        categoriesFilterSpinner.setSelection(adapter.getPosition(categoryToFilterViewModel.getCategoryToFilter()));
+        currentCategory = categoryToFilterViewModel.getCategoryToFilter();
+        categoriesFilterSpinner.setSelection(adapter.getPosition(currentCategory));
     }
 
     @Override
