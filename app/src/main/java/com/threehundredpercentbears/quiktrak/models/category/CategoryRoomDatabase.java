@@ -49,7 +49,7 @@ public abstract class CategoryRoomDatabase extends RoomDatabase {
                     CategoryDao dao = INSTANCE.categoryDao();
                     dao.deleteAll();
 
-                    dao.insert(new Category(0, "Eating out", 0));
+                    dao.insert(new Category(0, "Eating Out", 0));
                     dao.insert(new Category(1, "Groceries", 1));
                     dao.insert(new Category(2, "Entertainment", 2));
                     dao.insert(new Category(3, "Fuel", 3));
