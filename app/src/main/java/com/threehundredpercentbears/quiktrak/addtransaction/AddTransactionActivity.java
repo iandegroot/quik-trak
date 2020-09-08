@@ -204,26 +204,4 @@ public class AddTransactionActivity extends AppCompatActivity {
             categorySpinner.setSelection(adapter.getPosition(transactionToUpdate.getCategory()));
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_done, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.addTransactionCheckMark) {
-            if (isUpdating) {
-                updateTransaction();
-            } else {
-                addNewTransaction();
-            }
-            finish();
-            return true;
-        }
-
-        return false;
-    }
 }
