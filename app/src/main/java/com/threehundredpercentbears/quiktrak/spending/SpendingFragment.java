@@ -93,6 +93,7 @@ public class SpendingFragment extends Fragment implements ViewPagerFragmentLifec
         SharedCategoryToFilterViewModelFactory sharedVMFactory = new SharedCategoryToFilterViewModelFactory();
         categoryToFilterViewModel = new ViewModelProvider(requireActivity(), sharedVMFactory).get(SharedCategoryToFilterViewModel.class);
         categoryToFilterViewModel.setCalendar(calendar);
+        categoryToFilterViewModel.setCategoryToFilter(Constants.ALL_CATEGORIES);
 
         quickOpCatButton1 = getView().findViewById(R.id.quickOpCategoryButton1);
         quickOpCatButton2 = getView().findViewById(R.id.quickOpCategoryButton2);

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.Calendar;
 
 public class SharedCategoryToFilterViewModel extends ViewModel {
-    private String categoryToFilter;
+    private String categoryToFilter = Constants.ALL_CATEGORIES;
     private Calendar calendar;
 
     public void setCategoryToFilter(String categoryName) {

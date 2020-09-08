@@ -101,14 +101,17 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<Transaction> filteredTransactions = new ArrayList<>();
-            String searchCategory = charSequence.toString().toLowerCase().trim();
 
-            if (searchCategory.equals(Constants.ALL_CATEGORIES.toLowerCase())) {
-                filteredTransactions.addAll(allTransactions);
-            } else {
-                for (Transaction trans : allTransactions) {
-                    if (trans.getCategory().toLowerCase().equals(searchCategory)) {
-                        filteredTransactions.add(trans);
+            if (charSequence != null) {
+                String searchCategory = charSequence.toString().toLowerCase().trim();
+
+                if (searchCategory.equals(Constants.ALL_CATEGORIES.toLowerCase())) {
+                    filteredTransactions.addAll(allTransactions);
+                } else {
+                    for (Transaction trans : allTransactions) {
+                        if (trans.getCategory().toLowerCase().equals(searchCategory)) {
+                            filteredTransactions.add(trans);
+                        }
                     }
                 }
             }
