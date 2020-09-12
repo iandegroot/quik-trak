@@ -13,8 +13,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.text.InputType;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -158,7 +156,7 @@ public class AddTransactionActivity extends AppCompatActivity {
                 noteEditText.getText().toString());
 
         addTransactionViewModel.updateTransaction(transToUpdate);
-        showActionFinishedToast(transToUpdate, "updated");
+        showActionFinishedToast("updated");
     }
 
     private void addNewTransaction() {
@@ -171,18 +169,17 @@ public class AddTransactionActivity extends AppCompatActivity {
                 noteEditText.getText().toString());
 
         addTransactionViewModel.insert(newTrans);
-        showActionFinishedToast(newTrans, "created");
+        showActionFinishedToast("created");
     }
 
     private void deleteTransaction() {
         addTransactionViewModel.deleteTransaction(transactionToUpdate.getId());
-        showActionFinishedToast(transactionToUpdate, "deleted");
+        showActionFinishedToast("deleted");
     }
 
-    private void showActionFinishedToast(Transaction transaction, String action) {
+    private void showActionFinishedToast(String action) {
         Toast.makeText(getBaseContext(),
-                String.format("Successfully %s '%s' transaction.", action, transaction.getCategory()),
-                Toast.LENGTH_SHORT).show();
+                String.format("Transaction %s!", action), Toast.LENGTH_SHORT).show();
     }
 
     private void setupCategorySpinner(List<Category> categories) {

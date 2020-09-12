@@ -59,9 +59,7 @@ public class CategoriesFragment extends Fragment implements ViewPagerFragmentLif
                 String newCategoryName = addCategoryEditText.getText().toString();
                 if (isValidCategoryName(newCategoryName)) {
                     addNewCategory(newCategoryName);
-                    Toast.makeText(view.getContext(),
-                            String.format("Successfully created new category '%s'.", newCategoryName),
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(view.getContext(), "Category created!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(view.getContext(),
                             String.format("Could not create category '%s'. Category already exists or is empty.", newCategoryName),
@@ -178,9 +176,7 @@ public class CategoriesFragment extends Fragment implements ViewPagerFragmentLif
                             public void onClick(DialogInterface dialog, int id) {
                                 categoriesViewModel.deleteAllCategoryTransactions(category.getCategoryName());
                                 categoriesViewModel.deleteCategory(category.getId());
-                                Toast.makeText(context,
-                                        String.format("Successfully deleted category '%s'.", category.getCategoryName()),
-                                        Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Category deleted!", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .setNegativeButton("No", null)
