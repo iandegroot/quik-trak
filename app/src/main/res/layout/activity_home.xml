@@ -16,7 +16,22 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:layout_marginStart="@dimen/toolbar_start_margin">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:layout_alignParentStart="true"
+                android:contentDescription="@string/app_name"
+                android:paddingTop="@dimen/toolbar_logo_vertical_padding"
+                android:paddingBottom="@dimen/toolbar_logo_vertical_padding"
+                android:src="@mipmap/ic_launcher_round" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+
 
     </com.google.android.material.appbar.AppBarLayout>
 
