@@ -103,7 +103,7 @@ public class SpendingFragment extends Fragment implements ViewPagerFragmentLifec
         spendingViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
             @Override
             public void onChanged(List<Category> categories) {
-                setupQuikAddButtons(categories);
+                setupTopCategoryButtons(categories);
             }
         });
 
@@ -183,7 +183,7 @@ public class SpendingFragment extends Fragment implements ViewPagerFragmentLifec
         showTotalSpendingForMonth();
     }
 
-    private void setupQuikAddButtons(List<Category> categories) {
+    private void setupTopCategoryButtons(List<Category> categories) {
         if (categories.size() >= 4) {
             quickOpCatButton1.setText(categories.get(0).getCategoryName());
             quickOpCatButton2.setText(categories.get(1).getCategoryName());
