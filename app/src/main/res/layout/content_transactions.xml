@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".transactions.TransactionsFragment">
-
-    <data>
-
-    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -96,7 +94,8 @@
         <com.threehundredpercentbears.quiktrak.utils.EmptyMessageRecyclerView
             android:id="@+id/transactionsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             tools:listitem="@layout/transactions_row_item" />
 
         <TextView
@@ -108,5 +107,35 @@
             android:layout_weight="1"
             android:textSize="24sp" />
 
+        <View style="@style/Divider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight=".2">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center|start"
+                android:paddingStart="8dp"
+                android:paddingEnd="2dp"
+                android:src="@drawable/ic_calendar_gray_32dp" />
+
+            <TextView
+                android:id="@+id/transactionsDayOfMonthTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center|start"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:text="@string/day_of_month_text_view"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
     </LinearLayout>
-</layout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,10 +35,12 @@ import com.threehundredpercentbears.quiktrak.utils.OnItemClickListener;
 import com.threehundredpercentbears.quiktrak.R;
 import com.threehundredpercentbears.quiktrak.models.transaction.Transaction;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TransactionsFragment extends Fragment implements ViewPagerFragmentLifecycle {
 
@@ -112,6 +114,17 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
             @Override
             public void onClick(View view) {
                 calendar.add(Calendar.MONTH, 1);
+                setActiveMonth();
+            }
+        });
+
+        final TextView dayOfMonthTextView = getView().findViewById(R.id.transactionsDayOfMonthTextView);
+        SimpleDateFormat dayOfMonthFormat = new SimpleDateFormat("EEE, MMM d", Locale.ENGLISH);
+        dayOfMonthTextView.setText(dayOfMonthFormat.format(categoryToFilterViewModel.getCurrentDate()));
+        dayOfMonthTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar.setTime(categoryToFilterViewModel.getCurrentDate());
                 setActiveMonth();
             }
         });

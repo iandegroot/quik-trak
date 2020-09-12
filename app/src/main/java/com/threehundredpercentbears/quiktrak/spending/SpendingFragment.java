@@ -94,6 +94,7 @@ public class SpendingFragment extends Fragment implements ViewPagerFragmentLifec
         categoryToFilterViewModel = new ViewModelProvider(requireActivity(), sharedVMFactory).get(SharedCategoryToFilterViewModel.class);
         categoryToFilterViewModel.setCalendar(calendar);
         categoryToFilterViewModel.setCategoryToFilter(Constants.ALL_CATEGORIES);
+        categoryToFilterViewModel.setCurrentDate(calendar.getTime());
 
         quickOpCatButton1 = getView().findViewById(R.id.quickOpCategoryButton1);
         quickOpCatButton2 = getView().findViewById(R.id.quickOpCategoryButton2);
@@ -125,7 +126,7 @@ public class SpendingFragment extends Fragment implements ViewPagerFragmentLifec
             }
         });
 
-        final TextView dayOfMonthTextView = getView().findViewById(R.id.dayOfMonthTextView);
+        final TextView dayOfMonthTextView = getView().findViewById(R.id.spendingDayOfMonthTextView);
         SimpleDateFormat dayOfMonthFormat = new SimpleDateFormat("EEE, MMM d", Locale.ENGLISH);
         dayOfMonthTextView.setText(dayOfMonthFormat.format(calendar.getTime()));
         dayOfMonthTextView.setOnClickListener(new View.OnClickListener() {

@@ -140,7 +140,7 @@
                 android:paddingEnd="2dp" />
 
             <TextView
-                android:id="@+id/dayOfMonthTextView"
+                android:id="@+id/spendingDayOfMonthTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center|start"
