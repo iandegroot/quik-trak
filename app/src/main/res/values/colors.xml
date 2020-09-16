@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#29434E</color>
     <color name="colorAccent">#BB7594</color>
     <color name="colorDivider">@color/colorAccent</color>
+    <color name="colorToolbarTitleText">#FFFFFF</color>
 </resources>
