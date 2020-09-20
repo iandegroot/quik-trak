@@ -8,4 +8,5 @@
     <dimen name="toolbar_start_margin">-20dp</dimen>
     <dimen name="toolbar_logo_end_margin">-5dp</dimen>
     <dimen name="toolbar_title_text_size">20sp</dimen>
+    <dimen name="toolbar_title_width">100dp</dimen>
 </resources>
