@@ -2,6 +2,7 @@ package com.threehundredpercentbears.quiktrak.addtransaction;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.threehundredpercentbears.quiktrak.utils.formatters.CurrencyFormatter;
@@ -38,12 +39,18 @@ public class CurrencyEditTextWatcher implements TextWatcher {
             return;
         }
 
-        editText.removeTextChangedListener(this);
-        String nonFormattedValue = s.replaceAll("[$,.]", "");
-        String formattedValue = CurrencyFormatter.createCurrencyFormattedString(Integer.parseInt(nonFormattedValue));
+        String nonFormattedValue = s.replaceAll("[$,.a-zA-Z]", "");
+        nonFormattedValue = nonFormattedValue.trim();
+        try {
+            String formattedValue = CurrencyFormatter.createCurrencyFormattedString(Integer.parseInt(nonFormattedValue));
 
-        editText.setText(formattedValue);
-        editText.setSelection(formattedValue.length());
-        editText.addTextChangedListener(this);
+            editText.removeTextChangedListener(this);
+            editText.setText(formattedValue);
+            editText.setSelection(formattedValue.length());
+            editText.addTextChangedListener(this);
+        } catch (NumberFormatException e) {
+            Log.e("CurrencyEditTextWatcher", "Error parsing " + nonFormattedValue + ", was " + s, e);
+        }
+
     }
 }
