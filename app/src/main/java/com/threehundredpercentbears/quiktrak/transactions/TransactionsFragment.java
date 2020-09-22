@@ -85,7 +85,9 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
         transactionsViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
             @Override
             public void onChanged(@Nullable final List<Category> categories) {
-                setupCategoryFilterSpinner(categories);
+                if (categories != null) {
+                    setupCategoryFilterSpinner(categories);
+                }
             }
         });
 
@@ -172,6 +174,12 @@ public class TransactionsFragment extends Fragment implements ViewPagerFragmentL
     }
 
     private void setupCategoryFilterSpinner() {
+
+        // If the spinner hasn't been created yet then exit early
+        if (categoriesFilterSpinner == null) {
+            return;
+        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, allCategoryNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
